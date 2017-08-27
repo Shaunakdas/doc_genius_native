@@ -1,10 +1,21 @@
 import React from 'react';
 import { Text, View, Image } from 'react-native';
+import {PropTypes} from 'prop-types';
+
 import { commonStyle as cs, landingPageStyle as s } from '../common/styles'; 
 import { Button } from '../components';
 import IMAGES from '../common/images';
 
 export default class LandingPage extends React.Component {
+  static propTypes = {
+    navigation: PropTypes.object,
+  }
+
+  goTo = (page) => () => {
+    const { navigation } = this.props;
+    navigation.navigate(page);
+  }
+
   render() {
     return (
       <View style={[cs.container, cs.centerAlign, s.container]}>
@@ -18,6 +29,7 @@ export default class LandingPage extends React.Component {
           text="Sign Up" 
           style={cs.button} 
           textStyle={cs.buttonText}
+          onPress={this.goTo('SelectionPage')}
         />
         <Button 
           text="Log In" 

@@ -11,6 +11,9 @@ const getNavigator = () => {
     LandingPage: {
       screen: PAGES.LandingPage,
     },
+    SelectionPage: {
+      screen: PAGES.SelectionPage,
+    },
   }, {
     headerMode: 'none',
   });

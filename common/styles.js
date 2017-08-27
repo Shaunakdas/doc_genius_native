@@ -28,6 +28,20 @@ export const commonStyle = StyleSheet.create({
     fontSize: 24,
     color: COLORS.WHITE,
   },
+  backButton: {
+    width: 40,
+    height: 40,
+    alignItems:'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    left: 0,
+    top: 35,  
+  },
+  backImage: {
+    height: 20,
+    width: 20,
+    resizeMode: 'contain',
+  }
 });
 
 export const landingPageStyle = StyleSheet.create({
@@ -51,4 +65,25 @@ export const landingPageStyle = StyleSheet.create({
     lineHeight: 30,
     marginBottom: 20,
   }
+});
+
+export const selectionPageStyle = StyleSheet.create({
+  container: {
+    backgroundColor: COLORS.PRIMARY,
+    alignItems: 'center',
+  },
+  mainText: {
+    fontSize: 40,
+    marginTop: 15,
+    color: COLORS.WHITE,
+    marginBottom: 40,
+  },
+  logo: {
+    marginVertical: 35,
+    height: 60,
+    width: 60,
+  },
+  button: {
+    marginVertical: 30,
+  },
 })
