@@ -89,15 +89,16 @@ export const commonStyle = StyleSheet.create({
   navigationBar: {
     width: fullWidth,
     flexDirection: 'row',
-    shadowColor: COLORS.BLACK,
-    shadowOffset: { height: -2 },
+    shadowColor: alpha(COLORS.BLACK, 0.4),
+    shadowOffset: { height: -1 },
     shadowOpacity: 0.25,
-    shadowRadius: 2,
+    shadowRadius: 1,
     elevation: 2,
     justifyContent: 'space-around',
     backgroundColor: COLORS.PALE_GREY,
     borderColor: alpha(COLORS.BLACK, 0.3),
     borderTopWidth: 1,
+    height: 50,
   },
   tabButton: {
     flex: 1,
@@ -107,6 +108,17 @@ export const commonStyle = StyleSheet.create({
   tabText: {
     color: COLORS.PRIMARY,
     textAlign: 'center',
+  },
+  header: {
+    paddingTop: 40,
+    paddingBottom: 15,
+    alignItems: 'center',
+    backgroundColor: COLORS.PRIMARY,
+  },
+  headerText: {
+    fontSize: 14,
+    textAlign: 'center',
+    color: COLORS.WHITE,
   },
 });
 

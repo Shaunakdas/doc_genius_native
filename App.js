@@ -23,6 +23,7 @@ const getNavigator = () => {
     tabBarComponent: Navigation,
     animationEnabled: false,
     swipeEnabled: false,
+    headerMode: 'none',
   });
 
   const MainNavigator =  StackNavigator({
@@ -59,7 +60,7 @@ export default class App extends Component {
       <View style={{flex: 1}}>
         <StatusBar
           translucent
-          backgroundColor={alpha(COLORS.BLACK, 0.12)}
+          backgroundColor={alpha(COLORS.PRIMARY, 0.12)}
           animated={false}
         />
         <Navigator />

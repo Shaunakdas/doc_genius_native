@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import {PropTypes} from 'prop-types';
 
 import { commonStyle as cs, profilePageStyle as s } from '../common/styles'; 
@@ -15,7 +15,9 @@ export default class ProfilePage extends React.Component {
 
   render() {
     return (
-      <Text style={{marginTop: 30}}>Profile</Text>
-    );
+      <View style={cs.header}>
+        <Text style={cs.headerText}> Profile </Text>
+      </View>
+  );
   }
 }

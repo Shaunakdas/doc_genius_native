@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import {PropTypes} from 'prop-types';
 
 import { commonStyle as cs, forumPageStyle as s } from '../common/styles'; 
@@ -13,7 +13,9 @@ export default class ChatPage extends React.Component {
 
   render() {
     return (
-      <Text style={{marginTop: 30}}>Forum</Text>
-    );
+      <View style={cs.header}>
+      <Text style={cs.headerText}> All Posts </Text>
+    </View>
+  );
   }
 }

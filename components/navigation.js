@@ -26,19 +26,19 @@ export default class Navigation extends Component {
       <View style={s.navigationBar}>
        <Button
        style={s.tabButton}
-       textStyle={[s.tabText, {opacity: currentRouteName === 'ForumPage' ?  1 : 0.25}]}
+       textStyle={[s.tabText, {opacity: currentRouteName === 'ForumPage' ?  1 : 0.5}]}
        text="Forum"
        onPress={this.goToPage('ForumPage')}
       />
       <Button
         style={s.tabButton}
-        textStyle={[s.tabText, {opacity: currentRouteName === 'ChatPage' ?  1 : 0.25}]}
+        textStyle={[s.tabText, {opacity: currentRouteName === 'ChatPage' ?  1 : 0.5}]}
         text="Bot"
         onPress={this.goToPage('ChatPage')}
        />
        <Button
         style={s.tabButton}
-        textStyle={[s.tabText, {opacity: currentRouteName === 'ProfilePage' ?  1 : 0.25}]}
+        textStyle={[s.tabText, {opacity: currentRouteName === 'ProfilePage' ?  1 : 0.5}]}
         text="Profile"
         onPress={this.goToPage('ProfilePage')}
        />
