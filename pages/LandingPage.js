@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View, Image } from 'react-native';
-import { commonStyle as cs, landingPageStyle as s } from './common/styles'; 
-import { Button } from './components';
-import IMAGES from './common/images';
+import { commonStyle as cs, landingPageStyle as s } from '../common/styles'; 
+import { Button } from '../components';
+import IMAGES from '../common/images';
 
-export default class App extends React.Component {
+export default class LandingPage extends React.Component {
   render() {
     return (
       <View style={[cs.container, cs.centerAlign, s.container]}>

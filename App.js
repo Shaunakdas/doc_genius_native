@@ -1,30 +1,39 @@
-import React from 'react';
-import { Text, View, Image } from 'react-native';
-import { commonStyle as cs, landingPageStyle as s } from './common/styles'; 
-import { Button } from './components';
-import IMAGES from './common/images';
+import React, { Component } from 'react';
+import { StackNavigator } from 'react-navigation';
+import { StatusBar , View } from 'react-native';
 
-export default class App extends React.Component {
+import PAGES  from './pages';
+import STYLES from './common/styles';
+import COLORS, { alpha } from './common/colors';
+
+const getNavigator = () => {
+  const MainNavigator =  StackNavigator({
+    LandingPage: {
+      screen: PAGES.LandingPage,
+    },
+  }, {
+    headerMode: 'none',
+  });
+
+  return MainNavigator;
+}
+
+export default class App extends Component {
+  componentWillMount() {
+    this.navigator = getNavigator();
+  }
+
   render() {
+    const Navigator = this.navigator;
     return (
-      <View style={[cs.container, cs.centerAlign, s.container]}>
-        <Text style={s.brandText}>ConnecPath</Text>
-        <Image 
-          style={s.logo}
-          source={IMAGES.LOGO}
+      <View style={{flex: 1}}>
+        <StatusBar
+          translucent
+          backgroundColor={alpha(COLORS.BLACK, 0.12)}
+          animated={false}
         />
-        <Text style={s.typeText}>Connecting Students To Their Future</Text>
-        <Button 
-          text="Sign Up" 
-          style={cs.button} 
-          textStyle={cs.buttonText}
-        />
-        <Button 
-          text="Log In" 
-          style={cs.button} 
-          textStyle={cs.buttonText}
-        />
-    </View>
-    );
+        <Navigator />
+      </View>
+    )
   }
 }
