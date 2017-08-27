@@ -17,6 +17,7 @@ export default class Input extends Component {
     return (
       <View style={this.props.wrapperStyle}>
         <TextInput 
+          ref={input => this.input = input}
           underlineColorAndroid={COLORS.TRANSPARENT}
           {...this.props.inputProps}
         />

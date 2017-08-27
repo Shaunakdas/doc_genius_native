@@ -138,7 +138,7 @@ export const signupPageStyle = StyleSheet.create({
     alignItems: 'center',
   },
   mainText: {
-    fontSize: 40,
+    fontSize: 35,
     marginTop: 15,
     color: COLORS.WHITE,
     marginBottom: 20,
@@ -170,6 +170,6 @@ export const loginPageStyle = StyleSheet.create({
     width: 60,
   },
   button: {
-   marginTop: fullHeight - 500,
+   marginTop: fullHeight - 450,
   },
 });

@@ -12,7 +12,6 @@ const commonInputProps = {
   style: cs.input,
   autoCorrect: false,
   returnKeyType: 'next',
-  placeholder: 'Something',
   placeholderTextColor: alpha(COLORS.WHITE, 0.4),
   selectionColor: COLORS.WHITE,
   maxLength: 30,
@@ -52,14 +51,62 @@ export default class SignupPage extends React.Component {
         >
           <Text style={s.mainText}>{capitalCase(user)}'s Sign-Up</Text>
           <Input 
-            inputProps={commonInputProps}
+          inputProps={{
+            ...commonInputProps,
+            placeholder: 'School Code',
+          }}
+          wrapperStyle={cs.inputWrapper}
+          />
+          <Input 
+            inputProps={{
+              ...commonInputProps,
+              placeholder: 'First Name',
+            }}
+            wrapperStyle={cs.inputWrapper}
+          />
+          <Input 
+            inputProps={{
+              ...commonInputProps,
+              placeholder: 'Last Name',
+            }}
+            wrapperStyle={cs.inputWrapper}
+          />
+          <Input 
+            inputProps={{
+              ...commonInputProps,
+              placeholder: 'Email',
+              keyboardType: 'email-address',
+            }}
+            wrapperStyle={cs.inputWrapper}
+          />
+          <Input 
+            inputProps={{
+              ...commonInputProps,
+              placeholder: 'Username',
+            }}
+            wrapperStyle={cs.inputWrapper}
+          />
+          <Input 
+            inputProps={{
+              ...commonInputProps,
+              placeholder: 'Password',
+              secureTextEntry: true,
+            }}
+            wrapperStyle={cs.inputWrapper}
+          />
+          <Input 
+            inputProps={{
+              ...commonInputProps,
+              placeholder: 'Re-type Password',
+              secureTextEntry: true,
+            }}
             wrapperStyle={cs.inputWrapper}
           />
           <Button 
-            text="Get Started" 
-            style={[cs.getStartedButton, s.button]} 
-            textStyle={[cs.getStartedButtonText]}
-          />
+              text="Get Started" 
+              style={[cs.getStartedButton, s.button]} 
+              textStyle={[cs.getStartedButtonText]}
+            />
         </ScrollView>
         <IconButton 
           source={IMAGES.BACK}
