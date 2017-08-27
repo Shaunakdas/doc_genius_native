@@ -17,6 +17,9 @@ const getNavigator = () => {
     SignupPage: {
       screen: PAGES.SignupPage,
     },
+    LoginPage: {
+      screen: PAGES.LoginPage,
+    },
   }, {
     headerMode: 'none',
   });

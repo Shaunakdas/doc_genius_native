@@ -8,6 +8,12 @@ export const commonStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.TRANSPARENT,
   },
+  scroll: {
+    flex: 1,
+  },
+  scrollContent: {
+    alignItems: 'center',
+  },
   centerAlign: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -31,7 +37,7 @@ export const commonStyle = StyleSheet.create({
   getStartedButton: {
     marginHorizontal: 50,
     width: fullWidth - 100,
-    paddingVertical: 10,
+    paddingVertical: 20,
     borderRadius: 4,
     backgroundColor: COLORS.WHITE,
     justifyContent: 'center',
@@ -49,7 +55,7 @@ export const commonStyle = StyleSheet.create({
     fontSize: 16,
     color: COLORS.PRIMARY,
   },
-  
+
   backButton: {
     width: 40,
     height: 40,
@@ -63,7 +69,23 @@ export const commonStyle = StyleSheet.create({
     height: 20,
     width: 20,
     resizeMode: 'contain',
-  }
+  },
+  input: {
+    flex: 1,
+    fontSize: 18,
+    color: COLORS.WHITE,
+    fontWeight: '500',
+    paddingHorizontal: 10,
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    width: fullWidth - 100,
+    borderColor: COLORS.WHITE,
+    borderRadius: 4,
+    borderWidth: 1,    
+    paddingVertical: 8,
+    marginBottom: 20,
+  },
 });
 
 export const landingPageStyle = StyleSheet.create({
@@ -129,4 +151,25 @@ export const signupPageStyle = StyleSheet.create({
   button: {
     marginVertical: 30,
   },
-})
+});
+
+export const loginPageStyle = StyleSheet.create({
+  container: {
+    backgroundColor: COLORS.PRIMARY,
+    alignItems: 'center',
+  },
+  mainText: {
+    fontSize: 40,
+    marginTop: 15,
+    color: COLORS.WHITE,
+    marginBottom: 20,
+  },
+  logo: {
+    marginVertical: 35,
+    height: 60,
+    width: 60,
+  },
+  button: {
+   marginTop: fullHeight - 500,
+  },
+});

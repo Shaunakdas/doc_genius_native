@@ -35,6 +35,7 @@ export default class LandingPage extends React.Component {
           text="Log In" 
           style={cs.button} 
           textStyle={cs.buttonText}
+          onPress={this.goTo('LoginPage')}
         />
     </View>
     );

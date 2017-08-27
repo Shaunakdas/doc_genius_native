@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Image, ScrollView } from 'react-native';
 import {PropTypes} from 'prop-types';
 
-import { commonStyle as cs, signupPageStyle as s } from '../common/styles'; 
+import { commonStyle as cs, loginPageStyle as s } from '../common/styles'; 
 import { Button, IconButton, Input } from '../components';
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
@@ -12,25 +12,18 @@ const commonInputProps = {
   style: cs.input,
   autoCorrect: false,
   returnKeyType: 'next',
-  placeholder: 'Something',
   placeholderTextColor: alpha(COLORS.WHITE, 0.4),
   selectionColor: COLORS.WHITE,
   maxLength: 30,
 };
 
-export default class SignupPage extends React.Component {
+export default class LoginPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
-    const { navigation } = props;
-    const { params } = navigation.state;
-    const { user } = params;
-    this.state = {
-      user,
-    }
   }
 
   goBack = () => {
@@ -39,7 +32,6 @@ export default class SignupPage extends React.Component {
   }
   
   render() {
-    const {user} = this.state;
     return (
       <View style={[cs.container, s.container]}>
         <Image 
@@ -50,9 +42,20 @@ export default class SignupPage extends React.Component {
           style={cs.scroll}
           contentContainerStyle={cs.scrollContent}
         >
-          <Text style={s.mainText}>{capitalCase(user)}'s Sign-Up</Text>
+          <Text style={s.mainText}>Log In</Text>
           <Input 
-            inputProps={commonInputProps}
+            inputProps={{
+              ...commonInputProps,
+              placeholder: 'Username'
+            }}
+            wrapperStyle={cs.inputWrapper}
+          />
+          <Input 
+            inputProps={{
+              ...commonInputProps,
+              placeholder: 'Password',
+              secureTextEntry: true,
+            }}
             wrapperStyle={cs.inputWrapper}
           />
           <Button 
