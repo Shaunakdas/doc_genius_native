@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import COLORS from './colors';
+import COLORS, { alpha } from './colors';
 
 const {width: fullWidth, height: fullHeight } = Dimensions.get('window');
 
@@ -28,6 +28,28 @@ export const commonStyle = StyleSheet.create({
     fontSize: 24,
     color: COLORS.WHITE,
   },
+  getStartedButton: {
+    marginHorizontal: 50,
+    width: fullWidth - 100,
+    paddingVertical: 10,
+    borderRadius: 4,
+    backgroundColor: COLORS.WHITE,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    marginBottom: 20,
+    elevation: 2,
+    shadowColor: COLORS.BLACK,
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 2,
+  },
+
+  getStartedButtonText: {
+    fontSize: 16,
+    color: COLORS.PRIMARY,
+  },
+  
   backButton: {
     width: 40,
     height: 40,
@@ -77,6 +99,27 @@ export const selectionPageStyle = StyleSheet.create({
     marginTop: 15,
     color: COLORS.WHITE,
     marginBottom: 40,
+  },
+  logo: {
+    marginVertical: 35,
+    height: 60,
+    width: 60,
+  },
+  button: {
+    marginVertical: 30,
+  },
+});
+
+export const signupPageStyle = StyleSheet.create({
+  container: {
+    backgroundColor: COLORS.PRIMARY,
+    alignItems: 'center',
+  },
+  mainText: {
+    fontSize: 40,
+    marginTop: 15,
+    color: COLORS.WHITE,
+    marginBottom: 20,
   },
   logo: {
     marginVertical: 35,

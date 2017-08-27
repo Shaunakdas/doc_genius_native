@@ -15,6 +15,11 @@ export default class SelectionPage extends React.Component {
     const { navigation } = this.props;
     navigation.goBack();
   }
+
+  goTo = (page, params) => () => {
+    const { navigation } = this.props;
+    navigation.navigate(page, params);
+  }
   
   render() {
     return (
@@ -25,14 +30,16 @@ export default class SelectionPage extends React.Component {
         />
         <Text style={s.mainText}>Who are you?</Text>
         <Button 
-          text="I'm a Counsellor" 
+          text="I'm a Counselor" 
           style={[cs.button, s.button]} 
           textStyle={cs.buttonText}
+          onPress={this.goTo('SignupPage', {user: 'counselor'})}
         />
         <Button 
           text="I'm a Student" 
           style={[cs.button, s.button]} 
           textStyle={cs.buttonText}
+          onPress={this.goTo('SignupPage', {user: 'student'})}
         />
         <IconButton 
           source={IMAGES.BACK}
