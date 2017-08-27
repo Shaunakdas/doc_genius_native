@@ -86,6 +86,28 @@ export const commonStyle = StyleSheet.create({
     paddingVertical: 8,
     marginBottom: 20,
   },
+  navigationBar: {
+    width: fullWidth,
+    flexDirection: 'row',
+    shadowColor: COLORS.BLACK,
+    shadowOffset: { height: -2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 2,
+    elevation: 2,
+    justifyContent: 'space-around',
+    backgroundColor: COLORS.PALE_GREY,
+    borderColor: alpha(COLORS.BLACK, 0.3),
+    borderTopWidth: 1,
+  },
+  tabButton: {
+    flex: 1,
+    paddingVertical: 15,
+    alignItems: 'center',
+  },
+  tabText: {
+    color: COLORS.PRIMARY,
+    textAlign: 'center',
+  },
 });
 
 export const landingPageStyle = StyleSheet.create({

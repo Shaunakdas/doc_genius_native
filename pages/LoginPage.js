@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, Image, ScrollView } from 'react-native';
-import {PropTypes} from 'prop-types';
+import { PropTypes } from 'prop-types';
+import { NavigationActions } from 'react-navigation';
 
 import { commonStyle as cs, loginPageStyle as s } from '../common/styles'; 
 import { Button, IconButton, Input } from '../components';
@@ -31,6 +32,16 @@ export default class LoginPage extends React.Component {
     navigation.goBack();
   }
   
+  login = () => {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'AppPage'})
+      ]
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+
   render() {
     return (
       <View style={[cs.container, s.container]}>
@@ -62,6 +73,7 @@ export default class LoginPage extends React.Component {
             text="Get Started" 
             style={[cs.getStartedButton, s.button]} 
             textStyle={[cs.getStartedButtonText]}
+            onPress={this.login}
           />
         </ScrollView>
         <IconButton 

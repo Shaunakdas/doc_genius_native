@@ -1,12 +1,30 @@
 import React, { Component } from 'react';
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator, TabNavigator } from 'react-navigation';
 import { StatusBar , View } from 'react-native';
 
 import PAGES  from './pages';
 import STYLES from './common/styles';
 import COLORS, { alpha } from './common/colors';
+import { Navigation } from './components'
 
 const getNavigator = () => {
+  const AppNavigator = TabNavigator({
+    ChatPage: {
+      screen: PAGES.ChatPage,
+    },
+    ForumPage: {
+      screen: PAGES.ForumPage,
+    },
+    ProfilePage: {
+      screen: PAGES.ProfilePage,
+    },
+  }, {
+    tabBarPosition: 'bottom',
+    tabBarComponent: Navigation,
+    animationEnabled: false,
+    swipeEnabled: false,
+  });
+
   const MainNavigator =  StackNavigator({
     LandingPage: {
       screen: PAGES.LandingPage,
@@ -19,6 +37,9 @@ const getNavigator = () => {
     },
     LoginPage: {
       screen: PAGES.LoginPage,
+    },
+    AppPage: {
+      screen: AppNavigator,
     },
   }, {
     headerMode: 'none',

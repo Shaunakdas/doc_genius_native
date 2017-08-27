@@ -3,6 +3,9 @@ export default {
   PRIMARY: '#019AC1',
   WHITE: '#FFFFFF',
   BLACK: '#000000',
+  SECONDARY: '#95989A',
+  ALMOST_WHITE: "#FAFAFA",
+  PALE_GREY: "#eceff0",  
 };
 
 
