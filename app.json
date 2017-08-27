@@ -1,6 +1,8 @@
 {
   "expo": {
     "sdkVersion": "20.0.0",
-    "privacy": "unlisted"
+    "privacy": "unlisted",
+    "slug": "da39a3ee",
+    "orientation": "portrait"
   }
 }

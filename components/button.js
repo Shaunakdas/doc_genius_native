@@ -4,6 +4,8 @@ import {
   View,
   Text,
   TouchableNativeFeedback,
+  TouchableOpacity,
+  Platform,
 } from 'react-native';
 
 export default class Button extends Component {
@@ -20,12 +22,13 @@ export default class Button extends Component {
 
 
   render() {
+    const TouchableWrapper = Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
     return (
-      <TouchableNativeFeedback onPress={this.props.onPress}>
+      <TouchableWrapper onPress={this.props.onPress}>
         <View style={this.props.style}>
           <Text style={this.props.textStyle}>{this.props.text}</Text>
         </View>
-      </TouchableNativeFeedback>
+      </TouchableWrapper>
     );
   }
 }

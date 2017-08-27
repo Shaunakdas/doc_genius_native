@@ -1,5 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import COLORS from './colors';
+
+const {width: fullWidth, height: fullHeight } = Dimensions.get('window');
 
 export const commonStyle = StyleSheet.create({
   container: {
@@ -12,6 +14,7 @@ export const commonStyle = StyleSheet.create({
   },
   button: {
     marginHorizontal: 50,
+    width: fullWidth - 100,
     paddingVertical: 10,
     borderWidth: 2,
     borderRadius: 4,
