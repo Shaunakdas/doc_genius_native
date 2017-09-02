@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import COLORS, { alpha } from './colors';
 
 const {width: fullWidth, height: fullHeight } = Dimensions.get('window');
@@ -207,3 +207,30 @@ export const loginPageStyle = StyleSheet.create({
    marginTop: fullHeight - 450,
   },
 });
+
+export const chatPageStyle = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headerText: {
+    marginLeft: fullWidth/2 - 145,
+    flex: 1,
+  },
+  postButton: {
+    paddingVertical: 4,
+    borderRadius: 2,
+    paddingHorizontal: 12,
+    backgroundColor: COLORS.WHITE,
+    shadowColor: alpha(COLORS.BLACK, 0.4),
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 1,
+    elevation: 2,
+    marginRight: 5,
+  },
+  postButtonText: {
+    fontSize: 15,
+    color: COLORS.PRIMARY,
+  }
+})

@@ -6,6 +6,10 @@ export default {
   SECONDARY: '#95989A',
   ALMOST_WHITE: "#FAFAFA",
   PALE_GREY: "#eceff0",  
+  CHAT_BG: "#ebebeb",
+  LIGHT_BLUE: "#b3e1ed",
+  ALT_TEXT: "#93b6bf",
+  GREY: "#94979a", 
 };
 
 

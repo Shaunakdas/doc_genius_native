@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import { commonStyle as s } from '../common/styles';
 import IMAGES from '../common/images';
+import COLORS from '../common/colors';
 import { getCurrentRouteName } from '../common/helper';
 import { Button } from '../components';
 
@@ -26,19 +27,19 @@ export default class Navigation extends Component {
       <View style={s.navigationBar}>
        <Button
        style={s.tabButton}
-       textStyle={[s.tabText, {opacity: currentRouteName === 'ForumPage' ?  1 : 0.5}]}
+       textStyle={[s.tabText, {color: currentRouteName === 'ForumPage' ?  COLORS.PRIMARY : COLORS.GREY}]}
        text="Forum"
        onPress={this.goToPage('ForumPage')}
       />
       <Button
         style={s.tabButton}
-        textStyle={[s.tabText, {opacity: currentRouteName === 'ChatPage' ?  1 : 0.5}]}
+        textStyle={[s.tabText, {color: currentRouteName === 'ChatPage' ?  COLORS.PRIMARY : COLORS.GREY}]}
         text="Bot"
         onPress={this.goToPage('ChatPage')}
        />
        <Button
         style={s.tabButton}
-        textStyle={[s.tabText, {opacity: currentRouteName === 'ProfilePage' ?  1 : 0.5}]}
+        textStyle={[s.tabText, {color: currentRouteName === 'ProfilePage' ?  COLORS.PRIMARY : COLORS.GREY}]}
         text="Profile"
         onPress={this.goToPage('ProfilePage')}
        />
