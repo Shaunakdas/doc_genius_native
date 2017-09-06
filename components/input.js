@@ -9,7 +9,6 @@ import COLORS from '../common/colors';
 export default class Input extends Component {
   static propTypes = {
     inputProps: PropTypes.any.isRequired,
-    value: PropTypes.string.isRequired,
     wrapperStyle: PropTypes.any.isRequired,
   }
 

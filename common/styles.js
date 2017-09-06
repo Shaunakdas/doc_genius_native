@@ -3,6 +3,11 @@ import COLORS, { alpha } from './colors';
 
 export const { width: fullWidth, height: fullHeight } = Dimensions.get('window');
 
+export const font = (fontSize, fontWeight = 'regular', fontFamily = 'firasans') => ({
+  fontSize,
+  fontFamily: `${fontFamily}-${fontWeight}`,
+});
+
 export const commonStyle = StyleSheet.create({
   container: {
     flex: 1,
@@ -119,6 +124,23 @@ export const commonStyle = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     color: COLORS.WHITE,
+  },
+});
+
+export const splashPageStyle = StyleSheet.create({
+  container: {
+    backgroundColor: COLORS.PRIMARY,
+    alignItems: 'center',
+  },
+  brandText: {
+    marginTop: 70,
+    fontSize: 48,
+    color: COLORS.WHITE,
+  },
+  logo: {
+    marginVertical: 50,
+    height: 180,
+    width: 180,
   },
 });
 

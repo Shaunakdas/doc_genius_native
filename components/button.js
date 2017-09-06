@@ -12,8 +12,8 @@ export default class Button extends Component {
   static propTypes = {
     onPress: PropTypes.func,
     text: PropTypes.string.isRequired,
-    style: View.propTypes.style.isRequired,
-    textStyle: Text.propTypes.style.isRequired,
+    style: PropTypes.any.isRequired,
+    textStyle: PropTypes.any.isRequired,
   }
 
   static defaultProps = {

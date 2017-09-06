@@ -5,6 +5,7 @@ import LoginPage from './LoginPage';
 import ChatPage from './ChatPage';
 import ForumPage from './ForumPage';
 import ProfilePage from './ProfilePage';
+import SplashPage from './SplashPage';
 
 export default {
   LandingPage,
@@ -14,4 +15,5 @@ export default {
   ChatPage,
   ForumPage,
   ProfilePage,
+  SplashPage,
 };

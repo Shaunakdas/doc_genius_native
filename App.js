@@ -26,6 +26,9 @@ const getNavigator = () => {
   });
 
   const MainNavigator = StackNavigator({
+    SplashPage: {
+      screen: PAGES.SplashPage,
+    },
     LandingPage: {
       screen: PAGES.LandingPage,
     },
