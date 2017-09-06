@@ -11,9 +11,9 @@ import {
 export default class IconButton extends Component {
   static propTypes = {
     onPress: PropTypes.func,
-    style: View.propTypes.style,
-    imageStyle: Image.propTypes.style,
-    source: PropTypes.any,
+    style: PropTypes.any.isRequired,
+    imageStyle: PropTypes.any.isRequired,
+    source: PropTypes.any.isRequired,
   }
 
   static defaultProps = {
@@ -22,13 +22,13 @@ export default class IconButton extends Component {
 
 
   render() {
-    const TouchableWrapper = Platform.OS === "ios" ? TouchableWithoutFeedback : TouchableNativeFeedback;
+    const TouchableWrapper = Platform.OS === 'ios' ? TouchableWithoutFeedback : TouchableNativeFeedback;
     return (
       <TouchableWrapper onPress={this.props.onPress}>
         <View style={this.props.style}>
           <Image
             source={this.props.source}
-            style={this.props.imageStyle} 
+            style={this.props.imageStyle}
           />
         </View>
       </TouchableWrapper>

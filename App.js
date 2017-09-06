@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { StackNavigator, TabNavigator } from 'react-navigation';
-import { StatusBar , View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 
-import PAGES  from './pages';
-import STYLES from './common/styles';
+import PAGES from './pages';
 import COLORS, { alpha } from './common/colors';
-import { Navigation } from './components'
+import { Navigation } from './components';
 
 const getNavigator = () => {
   const AppNavigator = TabNavigator({
@@ -26,7 +25,7 @@ const getNavigator = () => {
     headerMode: 'none',
   });
 
-  const MainNavigator =  StackNavigator({
+  const MainNavigator = StackNavigator({
     LandingPage: {
       screen: PAGES.LandingPage,
     },
@@ -47,7 +46,7 @@ const getNavigator = () => {
   });
 
   return MainNavigator;
-}
+};
 
 export default class App extends Component {
   componentWillMount() {
@@ -57,7 +56,7 @@ export default class App extends Component {
   render() {
     const Navigator = this.navigator;
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <StatusBar
           translucent
           backgroundColor={alpha(COLORS.PRIMARY, 0.12)}
@@ -65,6 +64,6 @@ export default class App extends Component {
         />
         <Navigator />
       </View>
-    )
+    );
   }
 }

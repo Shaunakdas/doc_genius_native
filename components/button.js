@@ -11,9 +11,9 @@ import {
 export default class Button extends Component {
   static propTypes = {
     onPress: PropTypes.func,
-    text: PropTypes.string,
-    style: View.propTypes.style,
-    textStyle: Text.propTypes.style,
+    text: PropTypes.string.isRequired,
+    style: View.propTypes.style.isRequired,
+    textStyle: Text.propTypes.style.isRequired,
   }
 
   static defaultProps = {
@@ -22,7 +22,7 @@ export default class Button extends Component {
 
 
   render() {
-    const TouchableWrapper = Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
+    const TouchableWrapper = Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
     return (
       <TouchableWrapper onPress={this.props.onPress}>
         <View style={this.props.style}>

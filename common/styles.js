@@ -1,7 +1,7 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import COLORS, { alpha } from './colors';
 
-const {width: fullWidth, height: fullHeight } = Dimensions.get('window');
+const { width: fullWidth, height: fullHeight } = Dimensions.get('window');
 
 export const commonStyle = StyleSheet.create({
   container: {
@@ -59,11 +59,11 @@ export const commonStyle = StyleSheet.create({
   backButton: {
     width: 40,
     height: 40,
-    alignItems:'center',
+    alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
     left: 0,
-    top: 35,  
+    top: 35,
   },
   backImage: {
     height: 20,
@@ -82,7 +82,7 @@ export const commonStyle = StyleSheet.create({
     width: fullWidth - 100,
     borderColor: COLORS.WHITE,
     borderRadius: 4,
-    borderWidth: 1,    
+    borderWidth: 1,
     paddingVertical: 8,
     marginBottom: 20,
   },
@@ -142,7 +142,7 @@ export const landingPageStyle = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 30,
     marginBottom: 20,
-  }
+  },
 });
 
 export const selectionPageStyle = StyleSheet.create({
@@ -204,7 +204,7 @@ export const loginPageStyle = StyleSheet.create({
     width: 60,
   },
   button: {
-   marginTop: fullHeight - 450,
+    marginTop: fullHeight - 450,
   },
 });
 
@@ -214,7 +214,7 @@ export const chatPageStyle = StyleSheet.create({
     alignItems: 'center',
   },
   headerText: {
-    marginLeft: fullWidth/2 - 145,
+    marginLeft: fullWidth / 2 - 145,
     flex: 1,
   },
   postButton: {
@@ -232,5 +232,5 @@ export const chatPageStyle = StyleSheet.create({
   postButtonText: {
     fontSize: 15,
     color: COLORS.PRIMARY,
-  }
-})
+  },
+});

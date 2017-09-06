@@ -7,7 +7,6 @@ import { commonStyle as cs, loginPageStyle as s } from '../common/styles';
 import { Button, IconButton, Input } from '../components';
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
-import { capitalCase } from '../common/helper'
 
 const commonInputProps = {
   style: cs.input,
@@ -20,7 +19,7 @@ const commonInputProps = {
 
 export default class LoginPage extends React.Component {
   static propTypes = {
-    navigation: PropTypes.object,
+    navigation: PropTypes.object.isRequired,
   }
 
   constructor(props) {
