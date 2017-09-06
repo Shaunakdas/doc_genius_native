@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView } from 'react-native';
+import { Text, Image, ScrollView, View, KeyboardAvoidingView } from 'react-native';
 import { PropTypes } from 'prop-types';
 
 import { commonStyle as cs, signupPageStyle as s } from '../common/styles';
@@ -40,7 +40,10 @@ export default class SignupPage extends React.Component {
   render() {
     const { user } = this.state;
     return (
-      <View style={[cs.container, s.container]}>
+      <KeyboardAvoidingView
+        style={[cs.container, s.container]}
+        behavior="padding"
+      >
         <Image
           style={s.logo}
           source={IMAGES.LOGO}
@@ -115,6 +118,7 @@ export default class SignupPage extends React.Component {
             style={[cs.getStartedButton, s.button]}
             textStyle={[cs.getStartedButtonText]}
           />
+          <View style={{ height: 60 }} />
         </ScrollView>
         <IconButton
           source={IMAGES.BACK}
@@ -122,7 +126,7 @@ export default class SignupPage extends React.Component {
           imageStyle={cs.backImage}
           onPress={this.goBack}
         />
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

@@ -13,9 +13,6 @@ export const commonStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.TRANSPARENT,
   },
-  scroll: {
-    flex: 1,
-  },
   scrollContent: {
     alignItems: 'center',
   },
