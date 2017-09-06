@@ -74,7 +74,7 @@ export const commonStyle = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontSize: 18,
+    ...font(18),
     color: COLORS.WHITE,
     fontWeight: '500',
     paddingHorizontal: 10,
@@ -97,19 +97,26 @@ export const commonStyle = StyleSheet.create({
     shadowRadius: 1,
     elevation: 2,
     justifyContent: 'space-around',
-    backgroundColor: COLORS.PALE_GREY,
-    borderColor: alpha(COLORS.BLACK, 0.3),
+    backgroundColor: COLORS.WHITE,
+    borderColor: COLORS.SECONDARY,
     borderTopWidth: 1,
-    height: 50,
+    height: 60,
+  },
+  image: {
+    height: 24,
+    width: 24,
+    marginBottom: 4,
+    resizeMode: 'contain',
   },
   tabButton: {
     flex: 1,
-    paddingVertical: 15,
+    paddingVertical: 10,
     alignItems: 'center',
   },
   tabText: {
     color: COLORS.PRIMARY,
     textAlign: 'center',
+    ...font(10),
   },
   header: {
     paddingTop: 40,
@@ -118,7 +125,7 @@ export const commonStyle = StyleSheet.create({
     backgroundColor: COLORS.PRIMARY,
   },
   headerText: {
-    fontSize: 14,
+    ...font(14),
     textAlign: 'center',
     color: COLORS.WHITE,
   },
@@ -172,7 +179,7 @@ export const selectionPageStyle = StyleSheet.create({
     alignItems: 'center',
   },
   mainText: {
-    fontSize: 40,
+    ...font(48),
     marginTop: 15,
     color: COLORS.WHITE,
     marginBottom: 40,
@@ -194,7 +201,7 @@ export const signupPageStyle = StyleSheet.create({
     alignItems: 'center',
   },
   mainText: {
-    fontSize: 35,
+    ...font(35),
     marginTop: 15,
     color: COLORS.WHITE,
     marginBottom: 20,
@@ -216,7 +223,7 @@ export const loginPageStyle = StyleSheet.create({
     alignItems: 'center',
   },
   mainText: {
-    fontSize: 40,
+    ...font(48),
     marginTop: 15,
     color: COLORS.WHITE,
     marginBottom: 20,
@@ -254,7 +261,7 @@ export const chatPageStyle = StyleSheet.create({
     marginRight: 5,
   },
   postButtonText: {
-    fontSize: 15,
+    ...font(15),
     color: COLORS.PRIMARY,
   },
 });

@@ -44,14 +44,14 @@ export default class SignupPage extends React.Component {
         style={[cs.container, s.container]}
         behavior="padding"
       >
-        <Image
-          style={s.logo}
-          source={IMAGES.LOGO}
-        />
         <ScrollView
           style={cs.scroll}
           contentContainerStyle={cs.scrollContent}
         >
+          <Image
+            style={s.logo}
+            source={IMAGES.LOGO}
+          />
           <Text style={s.mainText}>{capitalCase(user)}'s Sign-Up</Text>
           <Input
             inputProps={{

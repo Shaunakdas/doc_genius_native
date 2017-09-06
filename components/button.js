@@ -6,6 +6,7 @@ import {
   TouchableNativeFeedback,
   TouchableOpacity,
   Platform,
+  Image,
 } from 'react-native';
 
 export default class Button extends Component {
@@ -14,10 +15,14 @@ export default class Button extends Component {
     text: PropTypes.string.isRequired,
     style: PropTypes.any.isRequired,
     textStyle: PropTypes.any.isRequired,
+    imageSource: PropTypes.any,
+    imageStyle: PropTypes.any,
   }
 
   static defaultProps = {
     onPress: () => {},
+    imageSource: null,
+    imageStyle: null,
   }
 
 
@@ -26,6 +31,10 @@ export default class Button extends Component {
     return (
       <TouchableWrapper onPress={this.props.onPress}>
         <View style={this.props.style}>
+          {this.props.imageSource ? <Image
+            source={this.props.imageSource}
+            style={this.props.imageStyle}
+          /> : null }
           <Text style={this.props.textStyle}>{this.props.text}</Text>
         </View>
       </TouchableWrapper>
