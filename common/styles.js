@@ -36,7 +36,7 @@ export const commonStyle = StyleSheet.create({
     marginBottom: 20,
   },
   buttonText: {
-    fontSize: 24,
+    ...font(20),
     color: COLORS.WHITE,
   },
   getStartedButton: {
@@ -57,7 +57,7 @@ export const commonStyle = StyleSheet.create({
   },
 
   getStartedButtonText: {
-    fontSize: 16,
+    ...font(14),
     color: COLORS.PRIMARY,
   },
 
@@ -138,7 +138,7 @@ export const splashPageStyle = StyleSheet.create({
     color: COLORS.WHITE,
   },
   logo: {
-    marginVertical: 50,
+    marginTop: 50,
     height: 180,
     width: 180,
   },
@@ -147,19 +147,21 @@ export const splashPageStyle = StyleSheet.create({
 export const landingPageStyle = StyleSheet.create({
   container: {
     backgroundColor: COLORS.PRIMARY,
+    alignItems: 'center',
   },
   brandText: {
-    fontSize: 40,
+    marginTop: 70,
+    ...font(48),
     color: COLORS.WHITE,
   },
   logo: {
     marginVertical: 50,
-    height: 110,
-    width: 110,
+    height: 180,
+    width: 180,
   },
   typeText: {
     color: COLORS.WHITE,
-    fontSize: 24,
+    ...font(20),
     marginHorizontal: 40,
     textAlign: 'center',
     lineHeight: 30,
@@ -179,9 +181,10 @@ export const selectionPageStyle = StyleSheet.create({
     marginBottom: 40,
   },
   logo: {
-    marginVertical: 35,
-    height: 60,
-    width: 60,
+    marginTop: 45,
+    marginBottom: 35,
+    height: 55,
+    width: 55,
   },
   button: {
     marginVertical: 30,
@@ -200,9 +203,10 @@ export const signupPageStyle = StyleSheet.create({
     marginBottom: 20,
   },
   logo: {
-    marginVertical: 35,
-    height: 60,
-    width: 60,
+    marginTop: 45,
+    marginBottom: 35,
+    height: 55,
+    width: 55,
   },
   button: {
     marginVertical: 30,
@@ -221,9 +225,10 @@ export const loginPageStyle = StyleSheet.create({
     marginBottom: 20,
   },
   logo: {
-    marginVertical: 35,
-    height: 60,
-    width: 60,
+    marginTop: 45,
+    marginBottom: 35,
+    height: 55,
+    width: 55,
   },
   button: {
     marginTop: fullHeight - 450,

@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, Image } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { Font } from 'expo';
+import { NavigationActions } from 'react-navigation';
 
 
 import { commonStyle as cs, splashPageStyle as s } from '../common/styles';
@@ -18,11 +19,17 @@ export default class SplashPage extends React.Component {
       'firasans-regular': require('../assets/fonts/regular.ttf'),
       'firasans-semibold': require('../assets/fonts/semibold.ttf'),
     });
+    this.start();
   }
 
-  goTo = page => () => {
-    const { navigation } = this.props;
-    navigation.navigate(page);
+  start = () => {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'LandingPage' }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
   }
 
   render() {

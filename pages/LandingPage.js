@@ -18,7 +18,7 @@ export default class LandingPage extends React.Component {
 
   render() {
     return (
-      <View style={[cs.container, cs.centerAlign, s.container]}>
+      <View style={[cs.container, s.container]}>
         <Text style={s.brandText}>ConnecPath</Text>
         <Image
           style={s.logo}

@@ -9,7 +9,11 @@ import COLORS from '../common/colors';
 export default class Input extends Component {
   static propTypes = {
     inputProps: PropTypes.any.isRequired,
-    wrapperStyle: PropTypes.any.isRequired,
+    wrapperStyle: PropTypes.any,
+  }
+
+  static defaultProps = {
+    wrapperStyle: null,
   }
 
   render() {
