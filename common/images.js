@@ -10,4 +10,5 @@ export default {
   NAV_PROFILE_HIGHLIGHTED: require('../assets/img/nav_profile_blue.png'),
   NAV_PROFILE: require('../assets/img/nav_profile_grey.png'),
   UP_ARROW: require('../assets/img/ic_arrow_up.png'),
+  HEADER_BG: require('../assets/img/header_bg.png'),
 };

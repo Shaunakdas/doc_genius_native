@@ -22,6 +22,10 @@ export default class ChatPage extends React.Component {
             textStyle={s.postButtonText}
             text="POST"
           />
+          <Image
+            source={IMAGES.HEADER_BG}
+            style={cs.headerImage}
+          />
         </View>
         <ScrollView
           style={cs.scroll}

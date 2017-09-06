@@ -129,6 +129,13 @@ export const commonStyle = StyleSheet.create({
     textAlign: 'center',
     color: COLORS.WHITE,
   },
+  headerImage: {
+    position: 'absolute',
+    width: fullWidth,
+    height: 42,
+    resizeMode: 'cover',
+    bottom: 0,
+  },
 });
 
 export const splashPageStyle = StyleSheet.create({
@@ -258,7 +265,7 @@ export const chatPageStyle = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 1,
     elevation: 2,
-    marginRight: 5,
+    marginRight: 15,
   },
   postButtonText: {
     ...font(15),
