@@ -3,7 +3,7 @@ import { StackNavigator, TabNavigator } from 'react-navigation';
 import { StatusBar, View } from 'react-native';
 
 import PAGES from './pages';
-import COLORS, { alpha } from './common/colors';
+import COLORS from './common/colors';
 import { Navigation } from './components';
 
 const getNavigator = () => {
@@ -62,7 +62,7 @@ export default class App extends Component {
       <View style={{ flex: 1 }}>
         <StatusBar
           translucent
-          backgroundColor={alpha(COLORS.PRIMARY, 0.12)}
+          backgroundColor={COLORS.TRANSPARENT}
           animated={false}
         />
         <Navigator />

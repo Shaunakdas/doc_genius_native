@@ -11,4 +11,6 @@ export default {
   NAV_PROFILE: require('../assets/img/nav_profile_grey.png'),
   UP_ARROW: require('../assets/img/ic_arrow_up.png'),
   HEADER_BG: require('../assets/img/header_bg.png'),
+  BOT_USER: require('../assets/img/mini_bot_blue.png'),
+  NORMAL_USER: require('../assets/img/user.png'),
 };

@@ -296,4 +296,59 @@ export const chatPageStyle = StyleSheet.create({
   chatScroll: {
     backgroundColor: COLORS.WHITE,
   },
+  chatContainer: {
+    flexDirection: 'row',
+    marginHorizontal: 10,
+    marginVertical: 15,
+    alignItems: 'flex-end',
+  },
+  chatImage: {
+    height: 30,
+    width: 30,
+    resizeMode: 'contain',
+    marginHorizontal: 5,
+  },
+  chatBotTextContainer: {
+    backgroundColor: COLORS.PRIMARY,
+    padding: 8,
+    borderRadius: 15,
+    marginLeft: 5,
+  },
+  chatUserTextContainer: {
+    backgroundColor: COLORS.CHAT_BG,
+    padding: 8,
+    borderRadius: 15,
+    marginLeft: 45,
+    marginRight: 5,
+  },
+  chatBotText: {
+    ...font(17),
+    backgroundColor: COLORS.TRANSPARENT,
+    color: COLORS.WHITE,
+    width: fullWidth - 120,
+  },
+  chatUserText: {
+    ...font(17),
+    backgroundColor: COLORS.TRANSPARENT,
+    width: fullWidth - 120,
+  },
+  chatButtonContainer: {
+    flexDirection: 'row',
+    marginLeft: 70,
+  },
+  chatButton: {
+    backgroundColor: COLORS.CHAT_BG,
+    borderColor: COLORS.PRIMARY,
+    padding: 5,
+    paddingHorizontal: 30,
+    marginRight: 40,
+    borderRadius: 5,
+    borderWidth: 1,
+    marginTop: 8,
+    marginBottom: 12,
+  },
+  chatButtonText: {
+    ...font(14),
+    color: COLORS.PRIMARY,
+  },
 });
