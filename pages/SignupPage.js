@@ -57,6 +57,14 @@ export default class SignupPage extends React.Component {
             }}
             wrapperStyle={cs.inputWrapper}
           />
+          {user === 'student' ? <Input
+            inputProps={{
+              ...commonInputProps,
+              placeholder: 'Grade',
+              keyboardType: 'numeric',
+            }}
+            wrapperStyle={cs.inputWrapper}
+          /> : null}
           <Input
             inputProps={{
               ...commonInputProps,
@@ -71,14 +79,14 @@ export default class SignupPage extends React.Component {
             }}
             wrapperStyle={cs.inputWrapper}
           />
-          <Input
+          {user === 'counselor' ? <Input
             inputProps={{
               ...commonInputProps,
               placeholder: 'Email',
               keyboardType: 'email-address',
             }}
             wrapperStyle={cs.inputWrapper}
-          />
+          /> : null}
           <Input
             inputProps={{
               ...commonInputProps,
