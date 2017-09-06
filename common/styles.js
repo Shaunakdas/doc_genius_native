@@ -250,6 +250,8 @@ export const chatPageStyle = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingTop: 35,
+    paddingBottom: 8,
   },
   headerText: {
     marginLeft: fullWidth / 2 - 145,
