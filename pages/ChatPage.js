@@ -16,25 +16,25 @@ export default class ChatPage extends React.Component {
     return (
       <View style={cs.container}>
         <View style={[cs.header, s.header]}>
+          <Image
+            source={IMAGES.HEADER_BG}
+            style={cs.headerImage}
+          />
           <Text style={[cs.headerText, s.headerText]}> Ask me Anything!</Text>
           <Button
             style={s.postButton}
             textStyle={s.postButtonText}
             text="POST"
           />
-          <Image
-            source={IMAGES.HEADER_BG}
-            style={cs.headerImage}
-          />
         </View>
         <ScrollView
-          style={cs.scroll}
+          style={[cs.scroll, s.chatScroll]}
         >
           <View style={s.hintView}>
             <Text
               style={s.hintText}
             >
-           Don't like Cheryl's answer? Ask the Forum!
+            Don't like Cheryl's answer? Ask the Forum!
             </Text>
             <Image
               source={IMAGES.UP_ARROW}

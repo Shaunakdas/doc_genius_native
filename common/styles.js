@@ -128,6 +128,7 @@ export const commonStyle = StyleSheet.create({
     ...font(14),
     textAlign: 'center',
     color: COLORS.WHITE,
+    backgroundColor: COLORS.TRANSPARENT,
   },
   headerImage: {
     position: 'absolute',
@@ -291,5 +292,8 @@ export const chatPageStyle = StyleSheet.create({
     width: 20,
     resizeMode: 'contain',
     marginLeft: 20,
+  },
+  chatScroll: {
+    backgroundColor: COLORS.WHITE,
   },
 });
