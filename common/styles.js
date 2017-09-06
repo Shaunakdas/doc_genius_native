@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import COLORS, { alpha } from './colors';
 
-const { width: fullWidth, height: fullHeight } = Dimensions.get('window');
+export const { width: fullWidth, height: fullHeight } = Dimensions.get('window');
 
 export const commonStyle = StyleSheet.create({
   container: {

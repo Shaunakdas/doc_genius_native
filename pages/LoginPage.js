@@ -3,7 +3,7 @@ import { Text, View, Image, ScrollView } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { NavigationActions } from 'react-navigation';
 
-import { commonStyle as cs, loginPageStyle as s } from '../common/styles'; 
+import { commonStyle as cs, loginPageStyle as s } from '../common/styles';
 import { Button, IconButton, Input } from '../components';
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
@@ -22,21 +22,17 @@ export default class LoginPage extends React.Component {
     navigation: PropTypes.object.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-  }
-
   goBack = () => {
     const { navigation } = this.props;
     navigation.goBack();
   }
-  
+
   login = () => {
     const resetAction = NavigationActions.reset({
       index: 0,
       actions: [
-        NavigationActions.navigate({ routeName: 'AppPage'})
-      ]
+        NavigationActions.navigate({ routeName: 'AppPage' }),
+      ],
     });
     this.props.navigation.dispatch(resetAction);
   }
@@ -44,7 +40,7 @@ export default class LoginPage extends React.Component {
   render() {
     return (
       <View style={[cs.container, s.container]}>
-        <Image 
+        <Image
           style={s.logo}
           source={IMAGES.LOGO}
         />
@@ -53,14 +49,14 @@ export default class LoginPage extends React.Component {
           contentContainerStyle={cs.scrollContent}
         >
           <Text style={s.mainText}>Log In</Text>
-          <Input 
+          <Input
             inputProps={{
               ...commonInputProps,
-              placeholder: 'Username'
+              placeholder: 'Username',
             }}
             wrapperStyle={cs.inputWrapper}
           />
-          <Input 
+          <Input
             inputProps={{
               ...commonInputProps,
               placeholder: 'Password',
@@ -68,20 +64,20 @@ export default class LoginPage extends React.Component {
             }}
             wrapperStyle={cs.inputWrapper}
           />
-          <Button 
-            text="Get Started" 
-            style={[cs.getStartedButton, s.button]} 
+          <Button
+            text="Get Started"
+            style={[cs.getStartedButton, s.button]}
             textStyle={[cs.getStartedButtonText]}
             onPress={this.login}
           />
         </ScrollView>
-        <IconButton 
+        <IconButton
           source={IMAGES.BACK}
           style={cs.backButton}
           imageStyle={cs.backImage}
           onPress={this.goBack}
         />
-    </View>
+      </View>
     );
   }
 }
