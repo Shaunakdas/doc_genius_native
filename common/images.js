@@ -9,4 +9,5 @@ export default {
   NAV_FORUM: require('../assets/img/nav_forum_grey.png'),
   NAV_PROFILE_HIGHLIGHTED: require('../assets/img/nav_profile_blue.png'),
   NAV_PROFILE: require('../assets/img/nav_profile_grey.png'),
+  UP_ARROW: require('../assets/img/ic_arrow_up.png'),
 };

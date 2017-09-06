@@ -264,4 +264,23 @@ export const chatPageStyle = StyleSheet.create({
     ...font(15),
     color: COLORS.PRIMARY,
   },
+  hintView: {
+    backgroundColor: alpha(COLORS.PRIMARY, 0.3),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+  hintText: {
+    ...font(14),
+    color: COLORS.DARK_TEXT,
+    textAlign: 'center',
+  },
+  upArrowImage: {
+    height: 20,
+    width: 20,
+    resizeMode: 'contain',
+    marginLeft: 20,
+  },
 });

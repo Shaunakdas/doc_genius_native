@@ -10,6 +10,7 @@ export default {
   LIGHT_BLUE: '#b3e1ed',
   ALT_TEXT: '#93b6bf',
   GREY: '#94979a',
+  DARK_TEXT: '#343434',
 };
 
 
