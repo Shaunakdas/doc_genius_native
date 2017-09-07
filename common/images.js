@@ -29,4 +29,7 @@ export default {
   COLLEGE_BG: require('../assets/img/college_career_bg.png'),
   APPLICATION: require('../assets/img/applications.png'),
   APPLICATION_BG: require('../assets/img/applications_bg.png'),
+  EDIT: require('../assets/img/edit.png'),
+  FILTER: require('../assets/img/filter.png'),
+  SEARCH: require('../assets/img/search.png'),
 };

@@ -12,6 +12,8 @@ export default {
   GREY: '#94979a',
   DARK_TEXT: '#343434',
   CHAT_INPUT_BORDER: '#C7C7CC',
+  SEARCH_FILL: '#F8F8F8',
+  SEARCH_TEXT: '#8E8E93',
 };
 
 

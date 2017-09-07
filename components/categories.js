@@ -8,12 +8,21 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
+import { PropTypes } from 'prop-types';
 
 import IMAGES from '../common/images';
 import COLORS from '../common/colors';
 import { commonStyle as cs } from '../common/styles';
 
 export default class Categories extends Component {
+  static propTypes = {
+    shrinked: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    shrinked: false,
+  }
+
   renderCategory = (text, image) => {
     const TouchableWrapper = Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
     return (
@@ -29,7 +38,8 @@ export default class Categories extends Component {
             shadowOpacity: 0.25,
             shadowRadius: 2,
             borderRadius: 5,
-            margin: 20,
+            marginHorizontal: this.props.shrinked ? 12 : 20,
+            marginVertical: 8,
           }}
         >
           <View
@@ -83,6 +93,7 @@ export default class Categories extends Component {
         style={cs.scroll}
         contentContainerStyle={{
           alignItems: 'center',
+          padding: 10,
         }}
       >
         <View
