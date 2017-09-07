@@ -1,17 +1,21 @@
 import React from 'react';
-import { Text, View, ScrollView, Image, TextInput, Keyboard } from 'react-native';
+import { Text, View, ScrollView, Image, TextInput, Keyboard, Platform } from 'react-native';
 import { commonStyle as cs, chatPageStyle as s, fullHeight } from '../common/styles';
 import { Button, IconButton } from '../components';
 import IMAGES from '../common/images';
 import COLORS from '../common/colors';
+
+const defaultInputHeight = 25;
 
 export default class ChatPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       chatHistory: [],
-      inputHeight: 0,
+      inputHeight: defaultInputHeight,
       keyboardHeight: 0,
+      backedupInputHeight: undefined,
+      chatInput: '',
     };
   }
 
@@ -22,16 +26,26 @@ export default class ChatPage extends React.Component {
 
   onInputHeightChange = (event) => {
     const inputHeight = event.nativeEvent.contentSize.height;
-    this.setState({ inputHeight: Math.min(inputHeight, 180) });
+    this.setState({ inputHeight: Math.min(inputHeight, 90) });
+  }
+
+  onInputChange = (chatInput) => {
+    this.setState({ chatInput });
   }
 
   keyBoardDidShow = (event) => {
     const keyboardHeight = event.endCoordinates.height;
-    this.setState({ keyboardHeight });
+    const { backedupInputHeight } = this.state;
+    this.setState({ keyboardHeight, inputHeight: backedupInputHeight || defaultInputHeight });
   }
 
   keyBoardDidHide = () => {
-    this.setState({ keyboardHeight: 0 });
+    const { inputHeight } = this.state;
+    this.setState({
+      keyboardHeight: 0,
+      backedupInputHeight: inputHeight,
+      inputHeight: defaultInputHeight,
+    });
   }
 
   componentWillUnMount() {
@@ -91,11 +105,11 @@ export default class ChatPage extends React.Component {
   );
 
   render() {
-    const { inputHeight, keyboardHeight = 0 } = this.state;
-    const extraHeight = keyboardHeight ? 85 : 135;
+    const { inputHeight, keyboardHeight = 0, chatInput } = this.state;
+    const extraHeight = keyboardHeight ? 85 : 150;
     const availableHeight = fullHeight - inputHeight - keyboardHeight - extraHeight;
     return (
-      <View style={cs.container}>
+      <View style={[cs.container, s.container]}>
         <View style={[cs.header, s.header]}>
           <Image
             source={IMAGES.HEADER_BG}
@@ -126,16 +140,21 @@ export default class ChatPage extends React.Component {
           </ScrollView>
         </View>
         <View
-          style={{
-            backgroundColor: 'red',
-          }}
+          style={s.chatInputContainer}
         >
           <TextInput
-            style={{ height: inputHeight }}
+            style={[s.chatInput, { height: inputHeight }]}
             multiline
-            placeholder="Hello"
             onContentSizeChange={this.onInputHeightChange}
             underlineColorAndroid={COLORS.TRANSPARENT}
+            value={chatInput}
+            onChangeText={this.onInputChange}
+            placeholder="hello"
+          />
+          <IconButton
+            source={IMAGES.SEND}
+            style={s.chatSendButton}
+            imageStyle={s.chatSendImage}
           />
         </View>
       </View>

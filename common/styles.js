@@ -248,6 +248,9 @@ export const loginPageStyle = StyleSheet.create({
 });
 
 export const chatPageStyle = StyleSheet.create({
+  container: {
+    backgroundColor: COLORS.WHITE,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -350,5 +353,29 @@ export const chatPageStyle = StyleSheet.create({
   chatButtonText: {
     ...font(14),
     color: COLORS.PRIMARY,
+  },
+  chatInputContainer: {
+    backgroundColor: COLORS.ALMOST_WHITE,
+    marginHorizontal: 20,
+    paddingRight: 5,
+    paddingLeft: 10,
+    minHeight: 30,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: COLORS.CHAT_INPUT_BORDER,
+    flexDirection: 'row',
+  },
+  chatInput: {
+    flex: 1,
+    ...font(16),
+  },
+  chatSendButton: {
+    marginLeft: 10,
+    marginTop: 4,
+  },
+  chatSendImage: {
+    height: 20,
+    width: 20,
+    resizeMode: 'contain',
   },
 });

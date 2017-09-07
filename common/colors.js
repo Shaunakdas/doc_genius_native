@@ -11,6 +11,7 @@ export default {
   ALT_TEXT: '#93b6bf',
   GREY: '#94979a',
   DARK_TEXT: '#343434',
+  CHAT_INPUT_BORDER: '#C7C7CC',
 };
 
 
