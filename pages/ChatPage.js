@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Text, View, ScrollView, Image, TextInput, Keyboard } from 'react-native';
 import { commonStyle as cs, chatPageStyle as s, fullHeight } from '../common/styles';
 import { Button, IconButton } from '../components';
@@ -8,6 +9,10 @@ import COLORS from '../common/colors';
 const defaultInputHeight = 25;
 
 export default class ChatPage extends React.Component {
+  static propTypes = {
+    navigation: PropTypes.any.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -31,6 +36,11 @@ export default class ChatPage extends React.Component {
 
   onInputChange = (chatInput) => {
     this.setState({ chatInput });
+  }
+
+  selectCategory = () => {
+    const { navigation } = this.props;
+    navigation.navigate('ChatCategorySelectionPage');
   }
 
   keyBoardDidShow = (event) => {
@@ -121,6 +131,7 @@ export default class ChatPage extends React.Component {
           style={s.chatButton}
           textStyle={s.chatButtonText}
           text="YES"
+          onPress={this.selectCategory}
         />
         <Button
           style={s.chatButton}
@@ -168,6 +179,7 @@ export default class ChatPage extends React.Component {
             style={s.postButton}
             textStyle={s.postButtonText}
             text="POST"
+            onPress={this.selectCategory}
           />
         </View>
         <View style={{ height: availableHeight }}>

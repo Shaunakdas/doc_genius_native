@@ -379,3 +379,10 @@ export const chatPageStyle = StyleSheet.create({
     resizeMode: 'contain',
   },
 });
+
+
+export const categorySelectionPageStyle = StyleSheet.create({
+  backButton: {
+    top: 28,
+  },
+});

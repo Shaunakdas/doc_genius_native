@@ -7,9 +7,20 @@ import COLORS from './common/colors';
 import { Navigation } from './components';
 
 const getNavigator = () => {
-  const AppNavigator = TabNavigator({
+  const ChatNavigator = StackNavigator({
     ChatPage: {
       screen: PAGES.ChatPage,
+    },
+    ChatCategorySelectionPage: {
+      screen: PAGES.CategorySelectionPage,
+    },
+  }, {
+    headerMode: 'none',
+  });
+
+  const AppNavigator = TabNavigator({
+    ChatPage: {
+      screen: ChatNavigator,
     },
     ForumPage: {
       screen: PAGES.ForumPage,

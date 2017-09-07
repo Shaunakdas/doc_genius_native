@@ -16,14 +16,18 @@ export default class Navigation extends Component {
 
   goToPage = page => () => {
     const { navigation } = this.props;
-    navigation.navigate(page);
+    const currentRouteName = getCurrentRouteName(navigation.state);
+    if (page !== currentRouteName) {
+      navigation.navigate(page);
+    }
   }
 
   render() {
     const { navigation } = this.props;
     const currentRouteName = getCurrentRouteName(navigation.state);
+    const showNavigation = ['ForumPage', 'ChatPage', 'ProfilePage'].indexOf(currentRouteName) >= 0;
     return (
-      <View style={s.navigationBar}>
+      showNavigation ? <View style={s.navigationBar}>
         <Button
           style={s.tabButton}
           imageStyle={s.image}
@@ -48,7 +52,7 @@ export default class Navigation extends Component {
           text="Profile"
           onPress={this.goToPage('ProfilePage')}
         />
-      </View>
+      </View> : null
     );
   }
 }
