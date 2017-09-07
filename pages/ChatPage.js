@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, Image, TextInput, Keyboard, Platform } from 'react-native';
+import { Text, View, ScrollView, Image, TextInput, Keyboard } from 'react-native';
 import { commonStyle as cs, chatPageStyle as s, fullHeight } from '../common/styles';
 import { Button, IconButton } from '../components';
 import IMAGES from '../common/images';
@@ -11,7 +11,17 @@ export default class ChatPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      chatHistory: [],
+      chatHistory: [
+        {
+          type: 'bot',
+          chat: 'I can’t answer it. Would you like to post your question to the forum?',
+        },
+        {
+          type: 'bot',
+          showButtons: true,
+          chat: 'I can’t answer it. Would you like to post your question to the forum?',
+        },
+      ],
       inputHeight: defaultInputHeight,
       keyboardHeight: 0,
       backedupInputHeight: undefined,
@@ -46,6 +56,24 @@ export default class ChatPage extends React.Component {
       backedupInputHeight: inputHeight,
       inputHeight: defaultInputHeight,
     });
+  }
+
+  sendUserChat = () => {
+    let { chatInput } = this.state;
+    chatInput = chatInput.trim();
+    if (chatInput.length) {
+      this.setState({
+        chatHistory: [
+          ...this.state.chatHistory,
+          {
+            type: 'user',
+            chat: chatInput,
+          },
+        ],
+        chatInput: '',
+      });
+    }
+    Keyboard.dismiss();
   }
 
   componentWillUnMount() {
@@ -105,7 +133,7 @@ export default class ChatPage extends React.Component {
   );
 
   render() {
-    const { inputHeight, keyboardHeight = 0, chatInput } = this.state;
+    const { inputHeight, keyboardHeight = 0, chatInput, chatHistory } = this.state;
     const extraHeight = keyboardHeight ? 85 : 150;
     const availableHeight = fullHeight - inputHeight - keyboardHeight - extraHeight;
     return (
@@ -137,6 +165,13 @@ export default class ChatPage extends React.Component {
                 style={s.upArrowImage}
               />
             </View>
+            {
+              chatHistory.map((item, index) => (
+                <View key={index}>
+                  {this.renderChat(item.type, item.chat, item.showButtons)}
+                </View>
+              ))
+            }
           </ScrollView>
         </View>
         <View
@@ -149,12 +184,12 @@ export default class ChatPage extends React.Component {
             underlineColorAndroid={COLORS.TRANSPARENT}
             value={chatInput}
             onChangeText={this.onInputChange}
-            placeholder="hello"
           />
           <IconButton
             source={IMAGES.SEND}
             style={s.chatSendButton}
             imageStyle={s.chatSendImage}
+            onPress={this.sendUserChat}
           />
         </View>
       </View>
