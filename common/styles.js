@@ -382,6 +382,9 @@ export const chatPageStyle = StyleSheet.create({
 
 
 export const categorySelectionPageStyle = StyleSheet.create({
+  container: {
+    backgroundColor: COLORS.WHITE,
+  },
   backButton: {
     top: 28,
   },
