@@ -10,7 +10,7 @@ export default class ChatPage extends React.Component {
     super(props);
     this.state = {
       chatHistory: [],
-      inputHeight: 80,
+      inputHeight: 0,
       keyboardHeight: 0,
     };
   }
@@ -22,7 +22,7 @@ export default class ChatPage extends React.Component {
 
   onInputHeightChange = (event) => {
     const inputHeight = event.nativeEvent.contentSize.height;
-    this.setState({ inputHeight });
+    this.setState({ inputHeight: Math.min(inputHeight, 180) });
   }
 
   keyBoardDidShow = (event) => {
@@ -92,7 +92,8 @@ export default class ChatPage extends React.Component {
 
   render() {
     const { inputHeight, keyboardHeight = 0 } = this.state;
-    const availableHeight = fullHeight - inputHeight - keyboardHeight - 160;
+    const extraHeight = keyboardHeight ? 85 : 135;
+    const availableHeight = fullHeight - inputHeight - keyboardHeight - extraHeight;
     return (
       <View style={cs.container}>
         <View style={[cs.header, s.header]}>
@@ -124,8 +125,13 @@ export default class ChatPage extends React.Component {
             </View>
           </ScrollView>
         </View>
-        <View>
+        <View
+          style={{
+            backgroundColor: 'red',
+          }}
+        >
           <TextInput
+            style={{ height: inputHeight }}
             multiline
             placeholder="Hello"
             onContentSizeChange={this.onInputHeightChange}
