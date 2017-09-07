@@ -14,6 +14,7 @@ export default {
   CHAT_INPUT_BORDER: '#C7C7CC',
   SEARCH_FILL: '#F8F8F8',
   SEARCH_TEXT: '#8E8E93',
+  QA: '#D1D5DB',
 };
 
 

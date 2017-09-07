@@ -32,4 +32,9 @@ export default {
   EDIT: require('../assets/img/edit.png'),
   FILTER: require('../assets/img/filter.png'),
   SEARCH: require('../assets/img/search.png'),
+  POST_BY: require('../assets/img/post_by.png'),
+  ANSWER_BY: require('../assets/img/answer_by.png'),
+  ANSWERS: require('../assets/img/answers.png'),
+  REPLY: require('../assets/img/respond.png'),
+  HEART: require('../assets/img/love_empty.png'),
 };

@@ -13,6 +13,117 @@ export default class ForumPage extends React.Component {
       posts: [],
     };
   }
+
+  renderQA() {
+    return (
+      <View
+        style={{
+          borderRadius: 10,
+          padding: 10,
+          backgroundColor: COLORS.WHITE,
+          margin: 10,
+        }}
+      >
+        <View
+          style={{
+            alignItems: 'flex-end',
+            marginBottom: 5,
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: COLORS.PRIMARY,
+              borderRadius: 4,
+              elevation: 2,
+              shadowColor: COLORS.BLACK,
+              shadowOffset: { width: 1, height: 2 },
+              shadowOpacity: 0.25,
+              shadowRadius: 2,
+              paddingHorizontal: 20,
+              paddingVertical: 5,
+            }}
+          >
+            <Text style={{ ...font(12), color: COLORS.WHITE }}> SAT/ ACT/ AP </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ ...font(40), color: '#D1D5DB' }}>Q</Text>
+          <Text style={{ ...font(16) }}> What is UCLA's average ACT score?</Text>
+        </View>
+        <View style={{
+          borderBottomWidth: 1,
+          borderColor: '#B1E0EC',
+          flexDirection: 'row',
+          paddingBottom: 8,
+          alignItems: 'center',
+        }}
+        >
+          <Image
+            source={IMAGES.POST_BY}
+            style={{ height: 24, width: 24, resizeMode: 'contain', marginLeft: 20 }}
+          />
+          <Text style={{ ...font(14), marginLeft: 20 }}>Aaron (11th)</Text>
+          <Text style={{ ...font(12), color: '#ACB4BE', marginLeft: 40 }}>1 hour ago</Text>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <Text style={{ ...font(12), color: '#ACB4BE' }}>0</Text>
+            <Image
+              source={IMAGES.HEART}
+              style={{ height: 16, width: 26, resizeMode: 'contain', marginLeft: 4 }}
+            />
+
+            <Text style={{ ...font(12), color: '#ACB4BE' }}>0</Text>
+            <Image
+              source={IMAGES.ANSWERS}
+              style={{ height: 16, width: 16, resizeMode: 'contain', marginLeft: 4 }}
+            />
+
+          </View>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ ...font(40), color: '#D1D5DB' }}>A</Text>
+          <Text style={{ ...font(16) }}> Freshman at UCLA had an average ACT of </Text>
+        </View>
+        <View style={{
+          flexDirection: 'row',
+          paddingBottom: 8,
+          alignItems: 'center',
+        }}
+        >
+          <Image
+            source={IMAGES.ANSWER_BY}
+            style={{ height: 24, width: 24, resizeMode: 'contain', marginLeft: 20 }}
+          />
+          <Text style={{ ...font(14), marginLeft: 20 }}>Greg</Text>
+          <Text style={{ ...font(12), color: '#ACB4BE', marginLeft: 40 }}>1 hour ago</Text>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <Text style={{ ...font(12), color: '#ACB4BE' }}>0</Text>
+            <Image
+              source={IMAGES.HEART}
+              style={{ height: 16, width: 26, resizeMode: 'contain', marginLeft: 4 }}
+            />
+
+            <Text style={{ ...font(12), color: '#ACB4BE' }}>0</Text>
+            <Image
+              source={IMAGES.REPLY}
+              style={{ height: 16, width: 16, resizeMode: 'contain', marginLeft: 4 }}
+            />
+
+          </View>
+        </View>
+      </View>
+    );
+  }
+
   render() {
     return (
       <View
@@ -88,6 +199,7 @@ export default class ForumPage extends React.Component {
             />
           </View>
         </View>
+        {this.renderQA()}
       </View>
     );
   }
