@@ -64,6 +64,7 @@ export default class App extends Component {
           translucent
           backgroundColor={COLORS.TRANSPARENT}
           animated={false}
+          barStyle="light-content"
         />
         <Navigator />
       </View>

@@ -1,15 +1,42 @@
 import React from 'react';
-import { Text, View, ScrollView, Image } from 'react-native';
-import { commonStyle as cs, chatPageStyle as s } from '../common/styles';
-import { Button } from '../components';
+import { Text, View, ScrollView, Image, TextInput, Keyboard } from 'react-native';
+import { commonStyle as cs, chatPageStyle as s, fullHeight } from '../common/styles';
+import { Button, IconButton } from '../components';
 import IMAGES from '../common/images';
+import COLORS from '../common/colors';
 
 export default class ChatPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       chatHistory: [],
+      inputHeight: 80,
+      keyboardHeight: 0,
     };
+  }
+
+  componentWillMount() {
+    this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.keyBoardDidShow);
+    this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.keyBoardDidHide);
+  }
+
+  onInputHeightChange = (event) => {
+    const inputHeight = event.nativeEvent.contentSize.height;
+    this.setState({ inputHeight });
+  }
+
+  keyBoardDidShow = (event) => {
+    const keyboardHeight = event.endCoordinates.height;
+    this.setState({ keyboardHeight });
+  }
+
+  keyBoardDidHide = () => {
+    this.setState({ keyboardHeight: 0 });
+  }
+
+  componentWillUnMount() {
+    this.keyboardDidHideSub.remove();
+    this.keyboardDidShowSub.remove();
   }
 
   renderBotChat = (chat, showButtons = false) => (
@@ -64,6 +91,8 @@ export default class ChatPage extends React.Component {
   );
 
   render() {
+    const { inputHeight, keyboardHeight = 0 } = this.state;
+    const availableHeight = fullHeight - inputHeight - keyboardHeight - 160;
     return (
       <View style={cs.container}>
         <View style={[cs.header, s.header]}>
@@ -78,23 +107,31 @@ export default class ChatPage extends React.Component {
             text="POST"
           />
         </View>
-        <ScrollView
-          style={[cs.scroll, s.chatScroll]}
-        >
-          <View style={s.hintView}>
-            <Text
-              style={s.hintText}
-            >
-            Don't like Cheryl's answer? Ask the Forum!
-            </Text>
-            <Image
-              source={IMAGES.UP_ARROW}
-              style={s.upArrowImage}
-            />
-          </View>
-          {this.renderChat('bot', 'Some very long text, so long losdsad dsa da dsakjdlshld SHDL FHGHSJDGSJKHDG KSADSAJDGSJAKDGHAK', true)}
-          {this.renderChat('user', 'Some very long text, so long losdsad dsa da dsakjdlshld SHDL FHGHSJDGSJKHDG KSADSAJDGSJAKDGHAK')}
-        </ScrollView>
+        <View style={{ height: availableHeight }}>
+          <ScrollView
+            style={[cs.scroll, s.chatScroll]}
+          >
+            <View style={s.hintView}>
+              <Text
+                style={s.hintText}
+              >
+              Don't like Cheryl's answer? Ask the Forum!
+              </Text>
+              <Image
+                source={IMAGES.UP_ARROW}
+                style={s.upArrowImage}
+              />
+            </View>
+          </ScrollView>
+        </View>
+        <View>
+          <TextInput
+            multiline
+            placeholder="Hello"
+            onContentSizeChange={this.onInputHeightChange}
+            underlineColorAndroid={COLORS.TRANSPARENT}
+          />
+        </View>
       </View>
     );
   }
