@@ -11,17 +11,7 @@ export default class ChatPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      chatHistory: [
-        {
-          type: 'bot',
-          chat: 'I can’t answer it. Would you like to post your question to the forum?',
-        },
-        {
-          type: 'bot',
-          showButtons: true,
-          chat: 'I can’t answer it. Would you like to post your question to the forum?',
-        },
-      ],
+      chatHistory: [],
       inputHeight: defaultInputHeight,
       keyboardHeight: 0,
       backedupInputHeight: undefined,
@@ -58,6 +48,36 @@ export default class ChatPage extends React.Component {
     });
   }
 
+  generateRandomBotResponse = () => {
+    const autoReply = 'I can’t answer it. Would you like to post your question to the forum?';
+    const randomReply = 'I may know the answer for this';
+    const choice = Math.random();
+    if (choice < 0.5) {
+      const reply = {
+        type: 'bot',
+        chat: autoReply,
+        showButtons: true,
+      };
+      this.setState({
+        chatHistory: [
+          ...this.state.chatHistory,
+          reply,
+        ],
+      });
+    } else {
+      const reply = {
+        type: 'bot',
+        chat: randomReply,
+      };
+      this.setState({
+        chatHistory: [
+          ...this.state.chatHistory,
+          reply,
+        ],
+      });
+    }
+  }
+
   sendUserChat = () => {
     let { chatInput } = this.state;
     chatInput = chatInput.trim();
@@ -70,8 +90,8 @@ export default class ChatPage extends React.Component {
             chat: chatInput,
           },
         ],
-        chatInput: '',
-      });
+        chatInput: null,
+      }, this.generateRandomBotResponse);
     }
     Keyboard.dismiss();
   }
