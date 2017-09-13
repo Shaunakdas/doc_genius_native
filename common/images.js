@@ -2,6 +2,7 @@ export default {
   LOGO: require('../assets/img/logo.png'),
   LOGO_SMALL: require('../assets/img/logo_small.png'),
   BACK: require('../assets/img/back.png'),
+  CLOSE: require('../assets/img/close.png'),
   SEND: require('../assets/img/send.png'),
   NAV_BOT_HIGHLIGHTED: require('../assets/img/nav_bot_blue.png'),
   NAV_BOT: require('../assets/img/nav_bot_grey.png'),

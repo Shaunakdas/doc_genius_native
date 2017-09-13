@@ -17,6 +17,7 @@ import { commonStyle as cs } from '../common/styles';
 export default class Categories extends Component {
   static propTypes = {
     shrinked: PropTypes.bool,
+    selectCategory: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -25,12 +26,16 @@ export default class Categories extends Component {
 
   renderCategory = (text, image) => {
     const TouchableWrapper = Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
+    const { shrinked } = this.props;
+    const scale = shrinked ? 0.8 : 1;
     return (
-      <TouchableWrapper>
+      <TouchableWrapper
+        onPress={this.props.selectCategory(text)}
+      >
         <View
           style={{
-            height: 125,
-            width: 125,
+            height: 125 * scale,
+            width: 125 * scale,
             backgroundColor: COLORS.PRIMARY,
             elevation: 2,
             shadowColor: COLORS.BLACK,
@@ -55,8 +60,8 @@ export default class Categories extends Component {
               source={IMAGES[`${image}_BG`]}
               style={{
                 position: 'absolute',
-                height: 95,
-                width: 125,
+                height: 95 * scale,
+                width: 125 * scale,
                 resizeMode: 'contain',
                 bottom: 0,
               }}
@@ -64,8 +69,8 @@ export default class Categories extends Component {
             <Image
               source={IMAGES[`${image}`]}
               style={{
-                height: 55,
-                width: 55,
+                height: 55 * scale,
+                width: 55 * scale,
                 resizeMode: 'contain',
               }}
             />
@@ -73,12 +78,14 @@ export default class Categories extends Component {
           <Text
             style={{
               color: COLORS.WHITE,
-              height: 25,
+              height: 25 * scale,
               textAlign: 'center',
               fontSize: 11,
               paddingTop: 4,
               marginHorizontal: 5,
             }}
+            numberOfLines={1}
+            adjustsFontSizeToFit
           >
             {text}
           </Text>

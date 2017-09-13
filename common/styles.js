@@ -420,3 +420,74 @@ export const categorySelectionPageStyle = StyleSheet.create({
     top: 22,
   },
 });
+
+
+export const askQuestionPageStyle = StyleSheet.create({
+  container: {
+    backgroundColor: alpha(COLORS.PRIMARY, 0.05),
+  },
+  hintView: {
+    backgroundColor: alpha(COLORS.PRIMARY, 0.3),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+  },
+  hintText: {
+    ...font(fullWidth < 350 ? 9 : 11),
+    color: COLORS.DARK_TEXT,
+    textAlign: 'center',
+  },
+  questionContainer: {
+    shadowColor: COLORS.BLACK,
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+    elevation: 3,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    backgroundColor: COLORS.WHITE,
+    width: fullWidth - 16,
+    alignSelf: 'center',
+    marginVertical: 10,
+  },
+  topLine: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  label: {
+    color: COLORS.SECONDARY,
+    ...font(16),
+  },
+  textInputContainer: {
+    borderColor: COLORS.SECONDARY,
+    borderRadius: 10,
+    borderWidth: 1,
+    marginVertical: 5,
+    padding: 5,
+  },
+  countLine: {
+    textAlign: 'right',
+    marginRight: 10,
+    ...font(12),
+    color: COLORS.SECONDARY,
+    marginVertical: 4,
+  },
+  textInput: {
+    height: 100,
+    ...font(12),
+  },
+  askButton: {
+    borderRadius: 10,
+    backgroundColor: COLORS.PRIMARY,
+    alignItems: 'center',
+    marginVertical: 5,
+    paddingVertical: 15,
+  },
+  askButtonText: {
+    color: COLORS.WHITE,
+  },
+});

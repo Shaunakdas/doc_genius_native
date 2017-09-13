@@ -7,6 +7,7 @@ import ForumPage from './ForumPage';
 import ProfilePage from './ProfilePage';
 import SplashPage from './SplashPage';
 import CategorySelectionPage from './CategorySelectionPage';
+import AskQuestionPage from './AskQuestionPage';
 
 export default {
   LandingPage,
@@ -18,4 +19,5 @@ export default {
   ProfilePage,
   SplashPage,
   CategorySelectionPage,
+  AskQuestionPage,
 };

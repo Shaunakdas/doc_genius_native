@@ -14,6 +14,9 @@ const getNavigator = () => {
     ChatCategorySelectionPage: {
       screen: PAGES.CategorySelectionPage,
     },
+    ChatAskForumPage: {
+      screen: PAGES.AskQuestionPage,
+    },
   }, {
     headerMode: 'none',
   });

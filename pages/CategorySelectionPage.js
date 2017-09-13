@@ -23,6 +23,11 @@ export default class CategorySelectionPage extends React.Component {
     navigation.goBack();
   }
 
+  goToAskForum = category => () => {
+    const { navigation } = this.props;
+    navigation.navigate('ChatAskForumPage', { category });
+  }
+
   render() {
     return (
       <View style={[cs.container, s.container]}>
@@ -39,7 +44,9 @@ export default class CategorySelectionPage extends React.Component {
           />
           <Text style={cs.headerText}> Which Category would you like to Post in? </Text>
         </View>
-        <Categories />
+        <Categories
+          selectCategory={this.goToAskForum}
+        />
       </View>
     );
   }
