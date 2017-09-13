@@ -1,5 +1,7 @@
 import React from 'react';
 import { Text, View, Image } from 'react-native';
+import { PropTypes } from 'prop-types';
+
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
 
@@ -7,11 +9,20 @@ import { commonStyle as cs } from '../common/styles';
 import { IconButton } from '../components';
 
 export default class ForumPage extends React.Component {
+  static propTypes = {
+    navigation: PropTypes.object.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       posts: [],
     };
+  }
+
+  selectCategory = () => {
+    const { navigation } = this.props;
+    navigation.navigate('CategorySelectionPage', { fromForum: true });
   }
 
   render() {
@@ -37,6 +48,7 @@ export default class ForumPage extends React.Component {
               width: 22,
               resizeMode: 'contain',
             }}
+            onPress={this.selectCategory}
           />
           <IconButton
             source={IMAGES.FILTER}

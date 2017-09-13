@@ -15,8 +15,8 @@ export default class AskQuestionPage extends React.Component {
   constructor(props) {
     super(props);
     const { navigation } = props;
-    const { params } = navigation.state;
-    const { category } = params;
+    const { params = {} } = navigation.state;
+    const { category = 'Others' } = params;
     this.state = {
       category,
       question: '',

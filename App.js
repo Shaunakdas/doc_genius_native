@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { StackNavigator, TabNavigator } from 'react-navigation';
+import { StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
 import { StatusBar, View } from 'react-native';
 
 import PAGES from './pages';
-import COLORS from './common/colors';
+import COLORS, { alpha } from './common/colors';
 import { Navigation } from './components';
 
 const getNavigator = () => {
@@ -21,12 +21,32 @@ const getNavigator = () => {
     headerMode: 'none',
   });
 
+  const ForumNavigator = DrawerNavigator({
+    ForumPage: {
+      screen: PAGES.ForumPage,
+    },
+    AskForumPage: {
+      screen: PAGES.AskQuestionPage,
+    },
+    CategorySelectionPage: {
+      screen: PAGES.CategorySelectionPage,
+    },
+  }, {
+    drawerWidth: 280,
+    drawerPosition: 'right',
+    contentOptions: {
+      style: {
+        backgroundColor: alpha(COLORS.BLACK, 0.3),
+      },
+    },
+  });
+
   const AppNavigator = TabNavigator({
     ChatPage: {
       screen: ChatNavigator,
     },
     ForumPage: {
-      screen: PAGES.ForumPage,
+      screen: ForumNavigator,
     },
     ProfilePage: {
       screen: PAGES.ProfilePage,
