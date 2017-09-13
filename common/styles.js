@@ -491,3 +491,25 @@ export const askQuestionPageStyle = StyleSheet.create({
     color: COLORS.WHITE,
   },
 });
+
+export const categoryDrawerStyle = StyleSheet.create({
+  header: {
+    paddingTop: 36,
+    paddingBottom: 13,
+    alignItems: 'center',
+    backgroundColor: COLORS.PRIMARY,
+  },
+  headerText: {
+    ...font(13),
+    textAlign: 'center',
+    color: COLORS.WHITE,
+    backgroundColor: COLORS.TRANSPARENT,
+  },
+  headerImage: {
+    position: 'absolute',
+    width: 280,
+    height: 40,
+    resizeMode: 'cover',
+    bottom: 0,
+  },
+});

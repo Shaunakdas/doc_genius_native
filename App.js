@@ -4,7 +4,7 @@ import { StatusBar, View } from 'react-native';
 
 import PAGES from './pages';
 import COLORS, { alpha } from './common/colors';
-import { Navigation } from './components';
+import { Navigation, CategoryDrawer } from './components';
 
 const getNavigator = () => {
   const ChatNavigator = StackNavigator({
@@ -39,6 +39,7 @@ const getNavigator = () => {
         backgroundColor: alpha(COLORS.BLACK, 0.3),
       },
     },
+    contentComponent: CategoryDrawer,
   });
 
   const AppNavigator = TabNavigator({

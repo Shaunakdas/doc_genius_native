@@ -20,6 +20,10 @@ export default class ForumPage extends React.Component {
     };
   }
 
+  openDrawer = () => {
+    this.props.navigation.navigate('DrawerOpen');
+  }
+
   selectCategory = () => {
     const { navigation } = this.props;
     navigation.navigate('CategorySelectionPage', { fromForum: true });
@@ -62,6 +66,7 @@ export default class ForumPage extends React.Component {
               width: 18,
               resizeMode: 'contain',
             }}
+            onPress={this.openDrawer}
           />
         </View>
       </View>
