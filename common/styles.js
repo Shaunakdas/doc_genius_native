@@ -146,7 +146,7 @@ export const splashPageStyle = StyleSheet.create({
   },
   brandText: {
     marginTop: 70,
-    fontSize: 48,
+    fontSize: 40,
     color: COLORS.WHITE,
   },
   logo: {
@@ -162,14 +162,14 @@ export const landingPageStyle = StyleSheet.create({
     alignItems: 'center',
   },
   brandText: {
-    marginTop: 70,
-    ...font(48),
+    marginTop: 50,
+    ...font(40),
     color: COLORS.WHITE,
   },
   logo: {
     marginVertical: 50,
-    height: 180,
-    width: 180,
+    height: 150,
+    width: 150,
   },
   typeText: {
     color: COLORS.WHITE,
@@ -187,7 +187,7 @@ export const selectionPageStyle = StyleSheet.create({
     alignItems: 'center',
   },
   mainText: {
-    ...font(48),
+    ...font(40),
     marginTop: 15,
     color: COLORS.WHITE,
     marginBottom: 40,
@@ -231,7 +231,7 @@ export const loginPageStyle = StyleSheet.create({
     alignItems: 'center',
   },
   mainText: {
-    ...font(48),
+    ...font(40),
     marginTop: 15,
     color: COLORS.WHITE,
     marginBottom: 20,

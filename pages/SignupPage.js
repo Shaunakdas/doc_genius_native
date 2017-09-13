@@ -52,7 +52,7 @@ export default class SignupPage extends React.Component {
             style={s.logo}
             source={IMAGES.LOGO}
           />
-          <Text style={s.mainText}>{capitalCase(user)}'s Sign-Up</Text>
+          <Text style={s.mainText}>{capitalCase(user)} Sign-Up</Text>
           <Input
             inputProps={{
               ...commonInputProps,
