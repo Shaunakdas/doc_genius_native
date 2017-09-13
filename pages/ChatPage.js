@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, ScrollView, Image, TextInput, Keyboard } from 'react-native';
-import { commonStyle as cs, chatPageStyle as s, fullHeight } from '../common/styles';
+import { Text, View, ScrollView, Image, TextInput, Keyboard, Platform } from 'react-native';
+import { commonStyle as cs, chatPageStyle as s, fullHeight, fullWidth } from '../common/styles';
 import { Button, IconButton } from '../components';
 import IMAGES from '../common/images';
-import COLORS from '../common/colors';
+import COLORS, { alpha } from '../common/colors';
 
 const defaultInputHeight = 25;
 
@@ -30,7 +30,13 @@ export default class ChatPage extends React.Component {
   }
 
   onInputHeightChange = (event) => {
-    const inputHeight = event.nativeEvent.contentSize.height;
+    let inputHeight = event.nativeEvent.contentSize.height;
+    if (Platform.OS === 'ios') {
+      const width = event.nativeEvent.contentSize.width;
+      if (width > fullWidth - 85) {
+        inputHeight = 19.5 * Math.ceil((width) / (fullWidth - 85));
+      }
+    }
     this.setState({ inputHeight: Math.min(inputHeight, 90) });
   }
 
@@ -38,7 +44,7 @@ export default class ChatPage extends React.Component {
     this.setState({ chatInput });
   }
 
-  selectCategory = () => {
+  moveToCategoryPage = () => {
     const { navigation } = this.props;
     navigation.navigate('ChatCategorySelectionPage');
   }
@@ -131,7 +137,7 @@ export default class ChatPage extends React.Component {
           style={s.chatButton}
           textStyle={s.chatButtonText}
           text="YES"
-          onPress={this.selectCategory}
+          onPress={this.moveToCategoryPage}
         />
         <Button
           style={s.chatButton}
@@ -179,12 +185,13 @@ export default class ChatPage extends React.Component {
             style={s.postButton}
             textStyle={s.postButtonText}
             text="POST"
-            onPress={this.selectCategory}
+            onPress={this.moveToCategoryPage}
           />
         </View>
         <View style={{ height: availableHeight }}>
           <ScrollView
-            style={[cs.scroll, s.chatScroll]}
+            style={[cs.scroll, s.chatScroll, { backgroundColor: alpha(COLORS.PRIMARY, 0.3) }]}
+            contentContainerStyle={{ backgroundColor: COLORS.WHITE, minHeight: availableHeight }}
           >
             <View style={s.hintView}>
               <Text

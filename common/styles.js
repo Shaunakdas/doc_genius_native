@@ -364,14 +364,17 @@ export const chatPageStyle = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.CHAT_INPUT_BORDER,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   chatInput: {
-    flex: 1,
+    width: fullWidth - 85,
+    maxWidth: fullWidth - 85,
     ...font(16),
   },
   chatSendButton: {
     marginLeft: 10,
     marginTop: 4,
+    alignSelf: 'flex-start',
   },
   chatSendImage: {
     height: 20,
