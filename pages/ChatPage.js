@@ -6,7 +6,7 @@ import { Button, IconButton } from '../components';
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
 
-const defaultInputHeight = 25;
+const defaultInputHeight = 19.5;
 
 export default class ChatPage extends React.Component {
   static propTypes = {
@@ -131,6 +131,10 @@ export default class ChatPage extends React.Component {
             {chat}
           </Text>
         </View>
+        <Image
+          style={s.botBubbleImage}
+          source={IMAGES.BOTBUBBLE}
+        />
       </View>
       {showButtons ? <View style={s.chatButtonContainer}>
         <Button
@@ -161,6 +165,10 @@ export default class ChatPage extends React.Component {
       <Image
         style={s.chatImage}
         source={IMAGES.NORMAL_USER}
+      />
+      <Image
+        style={s.userBubbleImage}
+        source={IMAGES.USERBUBBLE}
       />
     </View>
   );

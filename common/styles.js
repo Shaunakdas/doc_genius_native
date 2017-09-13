@@ -314,8 +314,24 @@ export const chatPageStyle = StyleSheet.create({
   chatContainer: {
     flexDirection: 'row',
     marginHorizontal: 10,
-    marginVertical: 15,
+    marginVertical: 5,
     alignItems: 'flex-end',
+  },
+  botBubbleImage: {
+    height: 12,
+    width: 12,
+    resizeMode: 'contain',
+    position: 'absolute',
+    bottom: 0,
+    left: 40,
+  },
+  userBubbleImage: {
+    height: 14,
+    width: 14,
+    position: 'absolute',
+    resizeMode: 'contain',
+    bottom: -3,
+    right: 34,
   },
   chatImage: {
     height: 30,
