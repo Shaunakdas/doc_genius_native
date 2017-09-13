@@ -25,8 +25,8 @@ export default class ChatPage extends React.Component {
   }
 
   componentWillMount() {
-    this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.keyBoardDidShow);
-    this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.keyBoardDidHide);
+    this.keyboardDidShowSub = Keyboard.addListener(Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow', this.keyBoardDidShow);
+    this.keyboardDidHideSub = Keyboard.addListener(Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide', this.keyBoardDidHide);
   }
 
   onInputHeightChange = (event) => {
@@ -110,6 +110,7 @@ export default class ChatPage extends React.Component {
       }, this.generateRandomBotResponse);
     }
     Keyboard.dismiss();
+    if (this.scrollView) this.scrollView.scrollToEnd();
   }
 
   componentWillUnMount() {
@@ -179,7 +180,7 @@ export default class ChatPage extends React.Component {
 
   render() {
     const { inputHeight, keyboardHeight = 0, chatInput, chatHistory } = this.state;
-    const extraHeight = keyboardHeight ? 85 : 150;
+    const extraHeight = keyboardHeight ? 90 : 150;
     const availableHeight = fullHeight - inputHeight - keyboardHeight - extraHeight;
     return (
       <View style={[cs.container, s.container]}>
@@ -200,6 +201,7 @@ export default class ChatPage extends React.Component {
           <ScrollView
             style={[cs.scroll, s.chatScroll, { backgroundColor: alpha(COLORS.PRIMARY, 0.3) }]}
             contentContainerStyle={{ backgroundColor: COLORS.WHITE, minHeight: availableHeight }}
+            ref={(scrollView) => { this.scrollView = scrollView; }}
           >
             <View style={s.hintView}>
               <Text
