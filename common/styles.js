@@ -100,9 +100,16 @@ export const commonStyle = StyleSheet.create({
     backgroundColor: COLORS.WHITE,
     borderColor: COLORS.SECONDARY,
     borderTopWidth: 1,
-    height: 60,
+    height: 50,
   },
-  image: {
+  tabImage: {
+    marginTop: 8,
+    height: 16,
+    width: 16,
+    marginBottom: 4,
+    resizeMode: 'contain',
+  },
+  chatBotImage: {
     height: 24,
     width: 24,
     marginBottom: 4,
@@ -110,7 +117,7 @@ export const commonStyle = StyleSheet.create({
   },
   tabButton: {
     flex: 1,
-    paddingVertical: 10,
+    paddingVertical: 5,
     alignItems: 'center',
   },
   tabText: {
@@ -119,13 +126,18 @@ export const commonStyle = StyleSheet.create({
     ...font(10),
   },
   header: {
-    paddingTop: 40,
-    paddingBottom: 15,
+    paddingTop: 36,
+    paddingBottom: 13,
     alignItems: 'center',
     backgroundColor: COLORS.PRIMARY,
+    shadowColor: COLORS.BLACK,
+    shadowOffset: { width: 1, height: 3 },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 2,
   },
   headerText: {
-    ...font(14),
+    ...font(13),
     textAlign: 'center',
     color: COLORS.WHITE,
     backgroundColor: COLORS.TRANSPARENT,
@@ -133,7 +145,7 @@ export const commonStyle = StyleSheet.create({
   headerImage: {
     position: 'absolute',
     width: fullWidth,
-    height: 42,
+    height: 40,
     resizeMode: 'cover',
     bottom: 0,
   },
@@ -243,7 +255,7 @@ export const loginPageStyle = StyleSheet.create({
     width: 55,
   },
   button: {
-    marginTop: fullHeight - 450,
+    marginTop: fullHeight - 510,
   },
 });
 
@@ -258,18 +270,18 @@ export const chatPageStyle = StyleSheet.create({
     paddingBottom: 8,
   },
   headerText: {
-    marginLeft: fullWidth / 2 - 145,
+    marginLeft: fullWidth / 2 - 120,
     flex: 1,
   },
   postButton: {
     paddingVertical: 4,
-    borderRadius: 2,
+    borderRadius: 5,
     paddingHorizontal: 12,
     backgroundColor: COLORS.WHITE,
     shadowColor: alpha(COLORS.BLACK, 0.4),
     shadowOffset: { width: 1, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 1,
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
     elevation: 2,
     marginRight: 15,
   },
@@ -282,11 +294,11 @@ export const chatPageStyle = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 5,
+    paddingVertical: 4,
     paddingHorizontal: 10,
   },
   hintText: {
-    ...font(14),
+    ...font(12),
     color: COLORS.DARK_TEXT,
     textAlign: 'center',
   },
@@ -389,6 +401,6 @@ export const categorySelectionPageStyle = StyleSheet.create({
     backgroundColor: COLORS.WHITE,
   },
   backButton: {
-    top: 28,
+    top: 22,
   },
 });

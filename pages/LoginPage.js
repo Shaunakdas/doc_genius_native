@@ -45,10 +45,18 @@ export default class LoginPage extends React.Component {
           source={IMAGES.LOGO}
         />
         <ScrollView
+          alwaysBounceVertical={false}
           style={cs.scroll}
           contentContainerStyle={cs.scrollContent}
         >
           <Text style={s.mainText}>Log In</Text>
+          <Input
+            inputProps={{
+              ...commonInputProps,
+              placeholder: 'Schoolcode',
+            }}
+            wrapperStyle={cs.inputWrapper}
+          />
           <Input
             inputProps={{
               ...commonInputProps,

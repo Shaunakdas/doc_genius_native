@@ -63,7 +63,7 @@ export default class SignupPage extends React.Component {
           {user === 'student' ? <Input
             inputProps={{
               ...commonInputProps,
-              placeholder: 'Grade',
+              placeholder: 'Graduation Year',
               keyboardType: 'numeric',
             }}
             wrapperStyle={cs.inputWrapper}

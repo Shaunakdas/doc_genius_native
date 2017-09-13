@@ -30,7 +30,7 @@ export default class Navigation extends Component {
       showNavigation ? <View style={s.navigationBar}>
         <Button
           style={s.tabButton}
-          imageStyle={s.image}
+          imageStyle={s.tabImage}
           imageSource={currentRouteName === 'ForumPage' ? IMAGES.NAV_FORUM_HIGHLIGHTED : IMAGES.NAV_FORUM}
           textStyle={[s.tabText, { color: currentRouteName === 'ForumPage' ? COLORS.PRIMARY : COLORS.GREY }]}
           text="Forum"
@@ -38,7 +38,7 @@ export default class Navigation extends Component {
         />
         <Button
           style={s.tabButton}
-          imageStyle={s.image}
+          imageStyle={s.chatBotImage}
           imageSource={currentRouteName === 'ChatPage' ? IMAGES.NAV_BOT_HIGHLIGHTED : IMAGES.NAV_BOT}
           textStyle={[s.tabText, { color: currentRouteName === 'ChatPage' ? COLORS.PRIMARY : COLORS.GREY }]}
           text="Bot"
@@ -46,7 +46,7 @@ export default class Navigation extends Component {
         />
         <Button
           style={s.tabButton}
-          imageStyle={s.image}
+          imageStyle={s.tabImage}
           imageSource={currentRouteName === 'ProfilePage' ? IMAGES.NAV_PROFILE_HIGHLIGHTED : IMAGES.NAV_PROFILE}
           textStyle={[s.tabText, { color: currentRouteName === 'ProfilePage' ? COLORS.PRIMARY : COLORS.GREY }]}
           text="Profile"
