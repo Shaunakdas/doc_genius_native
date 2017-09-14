@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, TextInput } from 'react-native';
 import { PropTypes } from 'prop-types';
 
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
 
-import { commonStyle as cs } from '../common/styles';
+import { commonStyle as cs, font } from '../common/styles';
 import { IconButton } from '../components';
 
 export default class ForumPage extends React.Component {
@@ -68,6 +68,43 @@ export default class ForumPage extends React.Component {
             }}
             onPress={this.openDrawer}
           />
+        </View>
+        <View
+          style={{
+            padding: 8,
+            backgroundColor: '#F8F8F8',
+          }}
+        >
+          <View
+            style={{
+              flexDirection: 'row',
+              backgroundColor: '#CDCDCD',
+              borderRadius: 4,
+              padding: 8,
+              paddingHorizontal: 15,
+              alignItems: 'center',
+            }}
+          >
+            <Image
+              source={IMAGES.SEARCH}
+              style={{
+                height: 14,
+                width: 14,
+                resizeMode: 'contain',
+                marginRight: 15,
+              }}
+            />
+            <TextInput
+              style={{
+                flex: 1,
+                color: COLORS.BLACK,
+                ...font(14),
+              }}
+              placeholder="Search"
+              placeholderTextColor={COLORS.SEARCH_TEXT}
+              underlineColorAndroid={COLORS.TRANSPARENT}
+            />
+          </View>
         </View>
       </View>
     );

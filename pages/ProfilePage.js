@@ -302,6 +302,21 @@ export default class ProfilePage extends React.Component {
           {this.renderNotifications()}
           {this.renderAbout()}
         </ScrollView>
+        <IconButton
+          source={IMAGES.SETTINGS}
+          style={{
+            padding: 5,
+            position: 'absolute',
+            top: 30,
+            right: 15,
+          }}
+          imageStyle={{
+            height: 20,
+            width: 20,
+            resizeMode: 'contain',
+          }}
+          onPress={this.gotoPage('ProfileEditPage')}
+        />
       </View>
     );
   }
