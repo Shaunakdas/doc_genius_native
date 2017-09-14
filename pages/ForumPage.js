@@ -8,6 +8,63 @@ import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, font } from '../common/styles';
 import { IconButton } from '../components';
 
+const questions = [{
+  id: 1,
+  text: 'What is UCLA\'s average ACT score?',
+  role: 'student',
+  user: 'Aaron',
+  ago: '5 hours ago',
+  category: 'SAT/ACT/AP',
+  liked: false,
+  likes: 3,
+  replies: 10,
+  answers: [{
+    text: 'Some logical answer, can be spanned into multiple lines',
+    user: 'Greg',
+    grade: '11th',
+    likes: 3,
+    replies: 3,
+    role: 'student',
+    ago: '3 hours ago',
+  },
+  {
+    text: 'Thanks',
+    user: 'Julian',
+    grade: '12th',
+    likes: 8,
+    replies: 5,
+    role: 'student',
+    ago: '3 hours ago',
+  }],
+}, {
+  id: 2,
+  text: 'What is SAT application deadline?',
+  role: 'student',
+  user: 'Aaron',
+  ago: '5 hours ago',
+  category: 'Applications',
+  liked: false,
+  likes: 99,
+  replies: 12,
+  answers: [{
+    text: 'Today is last day',
+    user: 'Rohin',
+    grade: '7th',
+    likes: 13,
+    replies: 0,
+    role: 'student',
+    ago: '3 hours ago',
+  },
+  {
+    text: 'Getting up to finish it',
+    user: 'Julian',
+    grade: '12th',
+    likes: 8,
+    replies: 3,
+    role: 'student',
+    ago: '3 hours ago',
+  }],
+}];
 export default class ForumPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
@@ -29,7 +86,7 @@ export default class ForumPage extends React.Component {
     navigation.navigate('CategorySelectionPage', { fromForum: true });
   }
 
-  renderCategoryLabel(category) {
+  renderCategoryLabel = (category) => {
     return (<View style={{
       flexDirection: 'row',
       justifyContent: 'flex-end',
@@ -59,7 +116,7 @@ export default class ForumPage extends React.Component {
     </View>);
   }
 
-  renderQ(question) {
+  renderQ = (question) => {
     return (
       <View style={{
         padding: 5,
@@ -82,6 +139,7 @@ export default class ForumPage extends React.Component {
           borderColor: COLORS.SECONDARY,
           paddingLeft: 15,
           paddingBottom: 4,
+          marginBottom: 4,
         }}
         >
           <Text
@@ -173,7 +231,7 @@ export default class ForumPage extends React.Component {
     );
   }
 
-  renderA(answer, key, hideBorder = false) {
+  renderA = (answer, key, hideBorder = false) => {
     return (
       <View
         style={{
@@ -182,7 +240,7 @@ export default class ForumPage extends React.Component {
         }}
         key={key}
       >
-        <Text
+        {key === 0 ? <Text
           style={{
             position: 'absolute',
             top: -8,
@@ -192,12 +250,13 @@ export default class ForumPage extends React.Component {
           }}
         >
         A
-        </Text>
+        </Text> : null}
         <View style={{
           borderBottomWidth: hideBorder ? 0 : 1,
           borderColor: COLORS.SECONDARY,
           paddingLeft: 15,
           paddingBottom: 4,
+          marginBottom: 4,
         }}
         >
           <Text
@@ -274,7 +333,7 @@ export default class ForumPage extends React.Component {
                 {answer.replies}
               </Text>
               <Image
-                source={IMAGES.ANSWERS}
+                source={IMAGES.REPLY}
                 style={{
                   height: 16,
                   width: 16,
@@ -288,27 +347,7 @@ export default class ForumPage extends React.Component {
       </View>
     );
   }
-  renderQA() {
-    const question = {
-      id: 1,
-      text: 'What is UCLA\'s average ACT score?',
-      role: 'student',
-      user: 'Aaron',
-      ago: '5 hours ago',
-      category: 'SAT/ACT/AP',
-      liked: false,
-      likes: 3,
-      replies: 10,
-      answers: [{
-        text: 'Some logical answer, can be spanned into multiple lines',
-        user: 'Greg',
-        grade: '11th',
-        likes: 3,
-        replies: 3,
-        role: 'student',
-        ago: '3 hours ago',
-      }],
-    };
+  renderQA = (question) => {
     const lastAnswerIndex = question.answers.length - 1;
     return (
       <View
@@ -319,6 +358,7 @@ export default class ForumPage extends React.Component {
           padding: 6,
           overflow: 'hidden',
         }}
+        key={question.id}
       >
         {this.renderCategoryLabel(question.category)}
         {this.renderQ(question)}
@@ -408,7 +448,7 @@ export default class ForumPage extends React.Component {
         <ScrollView
           style={{ flex: 1 }}
         >
-          {this.renderQA()}
+          {questions.map(this.renderQA)}
         </ScrollView>
       </View>
     );
