@@ -67,6 +67,9 @@ export const commonStyle = StyleSheet.create({
     left: 0,
     top: 35,
   },
+  headerBackButton: {
+    top: 25,
+  },
   backImage: {
     height: 20,
     width: 20,
@@ -509,6 +512,19 @@ export const categoryDrawerStyle = StyleSheet.create({
     position: 'absolute',
     width: 280,
     height: 40,
+    resizeMode: 'cover',
+    bottom: 0,
+  },
+});
+
+export const profilePageStyle = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  headerImage: {
+    position: 'absolute',
+    width: fullWidth,
+    height: 150,
     resizeMode: 'cover',
     bottom: 0,
   },

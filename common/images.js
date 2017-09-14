@@ -40,4 +40,7 @@ export default {
   HEART: require('../assets/img/love_empty.png'),
   USERBUBBLE: require('../assets/img/userbubble.png'),
   BOTBUBBLE: require('../assets/img/botbubble.png'),
+  PROFILE_BG: require('../assets/img/profile_bg.png'),
+  SETTINGS: require('../assets/img/settings.png'),
+  GOTO: require('../assets/img/arrow_right_blue.png'),
 };

@@ -42,6 +42,29 @@ const getNavigator = () => {
     contentComponent: CategoryDrawer,
   });
 
+  const ProfileNavigator = StackNavigator({
+    ProfilePage: {
+      screen: PAGES.ProfilePage,
+    },
+    ProfileEditPage: {
+      screen: PAGES.ProfileEditPage,
+    },
+    FeedbackPage: {
+      screen: PAGES.FeedbackPage,
+    },
+    PrivacyPage: {
+      screen: PAGES.PrivacyPage,
+    },
+    TermsPage: {
+      screen: PAGES.TermsPage,
+    },
+    NotificationsPage: {
+      screen: PAGES.NotificationsPage,
+    },
+  }, {
+    headerMode: 'none',
+  });
+
   const AppNavigator = TabNavigator({
     ChatPage: {
       screen: ChatNavigator,
@@ -50,7 +73,7 @@ const getNavigator = () => {
       screen: ForumNavigator,
     },
     ProfilePage: {
-      screen: PAGES.ProfilePage,
+      screen: ProfileNavigator,
     },
   }, {
     tabBarPosition: 'bottom',
