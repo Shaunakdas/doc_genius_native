@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
 import { StatusBar, View } from 'react-native';
+import { Provider } from 'react-redux';
+import configureStore from './store/configureStore';
 
 import PAGES from './pages';
 import COLORS, { alpha } from './common/colors';
@@ -109,7 +111,7 @@ const getNavigator = () => {
   return MainNavigator;
 };
 
-export default class App extends Component {
+class MainApp extends Component {
   componentWillMount() {
     this.navigator = getNavigator();
   }
@@ -129,3 +131,13 @@ export default class App extends Component {
     );
   }
 }
+
+const store = configureStore();
+
+const App = () => (
+  <Provider store={store}>
+    <MainApp />
+  </Provider>
+);
+
+export default App;
