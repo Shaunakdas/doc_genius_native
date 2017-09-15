@@ -86,288 +86,279 @@ export default class ForumPage extends React.Component {
     navigation.navigate('CategorySelectionPage', { fromForum: true });
   }
 
-  renderCategoryLabel = (category) => {
-    return (<View style={{
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
+  renderCategoryLabel = category => (<View style={{
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  }}
+  >
+    <View style={{
+      backgroundColor: COLORS.PRIMARY,
+      borderRadius: 5,
+      paddingHorizontal: 8,
+      paddingVertical: 3,
+      shadowColor: alpha(COLORS.BLACK, 0.4),
+      shadowOffset: { height: 3 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3,
+      elevation: 2,
     }}
     >
-      <View style={{
-        backgroundColor: COLORS.PRIMARY,
-        borderRadius: 5,
-        paddingHorizontal: 8,
-        paddingVertical: 3,
-        shadowColor: alpha(COLORS.BLACK, 0.4),
-        shadowOffset: { height: 3 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3,
-        elevation: 2,
+      <Text style={{
+        ...font(12),
+        color: COLORS.WHITE,
+        backgroundColor: COLORS.TRANSPARENT,
       }}
       >
-        <Text style={{
-          ...font(12),
-          color: COLORS.WHITE,
-          backgroundColor: COLORS.TRANSPARENT,
-        }}
-        >
-          {category}
-        </Text>
-      </View>
-    </View>);
-  }
+        {category}
+      </Text>
+    </View>
+  </View>)
 
-  renderQ = (question) => {
-    return (
+  renderQ = question => (
+    <View style={{
+      padding: 5,
+      paddingRight: 8,
+    }}
+    >
+      <Text
+        style={{
+          position: 'absolute',
+          top: -8,
+          left: -12,
+          ...font(40),
+          color: alpha(COLORS.SECONDARY, 0.3),
+        }}
+      >
+        Q
+      </Text>
       <View style={{
-        padding: 5,
-        paddingRight: 8,
+        borderBottomWidth: 1,
+        borderColor: COLORS.SECONDARY,
+        paddingLeft: 15,
+        paddingBottom: 4,
+        marginBottom: 4,
       }}
       >
         <Text
+          numberOfLines={2}
           style={{
-            position: 'absolute',
-            top: -8,
-            left: -15,
-            ...font(40),
-            color: alpha(COLORS.SECONDARY, 0.3),
+            ...font(13),
+            marginBottom: 8,
           }}
         >
-        Q
+          {question.text}
         </Text>
-        <View style={{
-          borderBottomWidth: 1,
-          borderColor: COLORS.SECONDARY,
-          paddingLeft: 15,
-          paddingBottom: 4,
-          marginBottom: 4,
-        }}
-        >
-          <Text
-            numberOfLines={2}
-            style={{
-              ...font(13),
-              marginBottom: 8,
-            }}
-          >
-            {question.text}
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }} >
-              <Image
-                source={IMAGES.POST_BY}
-                style={{
-                  height: 16,
-                  width: 16,
-                  resizeMode: 'contain',
-                }}
-              />
-              <Text
-                style={{
-                  ...font(13),
-                  marginLeft: 6,
-                }}
-              >
-                {question.user}
-              </Text>
-            </View>
-            <Text style={{
-              flex: 1,
-              marginHorizontal: 8,
-              ...font(8),
-              color: COLORS.SECONDARY,
-            }}
-            >
-              {question.ago}
-            </Text>
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-              <Text
-                style={{
-                  ...font(9),
-                  marginRight: 3,
-                  marginLeft: 10,
-                  color: COLORS.SECONDARY,
-                }}
-              >
-                {question.likes}
-              </Text>
-              <Image
-                source={IMAGES.HEART}
-                style={{
-                  height: 16,
-                  width: 16,
-                  resizeMode: 'contain',
-                  marginRight: 5,
-                }}
-              />
-              <Text
-                style={{
-                  ...font(9),
-                  marginRight: 3,
-                  marginLeft: 10,
-                  color: COLORS.SECONDARY,
-                }}
-              >
-                {question.replies}
-              </Text>
-              <Image
-                source={IMAGES.ANSWERS}
-                style={{
-                  height: 16,
-                  width: 16,
-                  resizeMode: 'contain',
-                  marginRight: 5,
-                }}
-              />
-            </View>
-          </View>
-        </View>
-      </View>
-    );
-  }
-
-  renderA = (answer, key, hideBorder = false) => {
-    return (
-      <View
-        style={{
-          padding: 5,
-          paddingRight: 8,
-        }}
-        key={key}
-      >
-        {key === 0 ? <Text
+        <View
           style={{
-            position: 'absolute',
-            top: -8,
-            left: -15,
-            ...font(40),
-            color: alpha(COLORS.SECONDARY, 0.3),
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
-        A
-        </Text> : null}
-        <View style={{
-          borderBottomWidth: hideBorder ? 0 : 1,
-          borderColor: COLORS.SECONDARY,
-          paddingLeft: 15,
-          paddingBottom: 4,
-          marginBottom: 4,
-        }}
-        >
-          <Text
-            numberOfLines={2}
-            style={{
-              ...font(13),
-              marginBottom: 8,
-            }}
-          >
-            {answer.text}
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }} >
-              <Image
-                source={IMAGES.ANSWER_BY}
-                style={{
-                  height: 16,
-                  width: 16,
-                  resizeMode: 'contain',
-                }}
-              />
-              <Text
-                style={{
-                  ...font(13),
-                  marginLeft: 6,
-                }}
-              >
-                {answer.user}
-              </Text>
-            </View>
-            <Text style={{
-              flex: 1,
-              marginHorizontal: 8,
-              ...font(8),
-              color: COLORS.SECONDARY,
-            }}
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }} >
+            <Image
+              source={IMAGES.POST_BY}
+              style={{
+                height: 16,
+                width: 16,
+                resizeMode: 'contain',
+              }}
+            />
+            <Text
+              style={{
+                ...font(13),
+                marginLeft: 6,
+              }}
             >
-              {answer.ago}
+              {question.user}
             </Text>
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-              <Text
-                style={{
-                  ...font(9),
-                  marginRight: 3,
-                  marginLeft: 10,
-                  color: COLORS.SECONDARY,
-                }}
-              >
-                {answer.likes}
-              </Text>
-              <Image
-                source={IMAGES.HEART}
-                style={{
-                  height: 16,
-                  width: 16,
-                  resizeMode: 'contain',
-                  marginRight: 5,
-                }}
-              />
-              <Text
-                style={{
-                  ...font(9),
-                  marginRight: 3,
-                  marginLeft: 10,
-                  color: COLORS.SECONDARY,
-                }}
-              >
-                {answer.replies}
-              </Text>
-              <Image
-                source={IMAGES.REPLY}
-                style={{
-                  height: 16,
-                  width: 16,
-                  resizeMode: 'contain',
-                  marginRight: 5,
-                }}
-              />
-            </View>
+          </View>
+          <Text style={{
+            flex: 1,
+            marginHorizontal: 8,
+            ...font(8),
+            color: COLORS.SECONDARY,
+          }}
+          >
+            {question.ago}
+          </Text>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+            <Text
+              style={{
+                ...font(9),
+                marginRight: 3,
+                marginLeft: 10,
+                color: COLORS.SECONDARY,
+              }}
+            >
+              {question.likes}
+            </Text>
+            <Image
+              source={IMAGES.HEART}
+              style={{
+                height: 16,
+                width: 16,
+                resizeMode: 'contain',
+                marginRight: 5,
+              }}
+            />
+            <Text
+              style={{
+                ...font(9),
+                marginRight: 3,
+                marginLeft: 10,
+                color: COLORS.SECONDARY,
+              }}
+            >
+              {question.replies}
+            </Text>
+            <Image
+              source={IMAGES.ANSWERS}
+              style={{
+                height: 16,
+                width: 16,
+                resizeMode: 'contain',
+                marginRight: 5,
+              }}
+            />
           </View>
         </View>
       </View>
-    );
-  }
-  renderQA = (question) => {
-    const lastAnswerIndex = question.answers.length - 1;
-    return (
-      <View
+    </View>
+  )
+
+  renderA = (answer, key, hideBorder = true) => (
+    <View
+      style={{
+        padding: 5,
+        paddingRight: 8,
+      }}
+      key={key}
+    >
+      {key === 0 ? <Text
         style={{
-          margin: 8,
-          backgroundColor: COLORS.WHITE,
-          borderRadius: 10,
-          padding: 6,
-          overflow: 'hidden',
+          position: 'absolute',
+          top: -8,
+          left: -12,
+          ...font(40),
+          color: alpha(COLORS.SECONDARY, 0.3),
         }}
-        key={question.id}
       >
-        {this.renderCategoryLabel(question.category)}
-        {this.renderQ(question)}
-        {question.answers.map(
-          (answer, index) => this.renderA(answer, index, index === lastAnswerIndex),
-        )}
+        A
+      </Text> : null}
+      <View style={{
+        borderBottomWidth: hideBorder ? 0 : 1,
+        borderColor: COLORS.SECONDARY,
+        paddingLeft: 15,
+        paddingBottom: 4,
+        marginBottom: 4,
+      }}
+      >
+        <Text
+          numberOfLines={2}
+          style={{
+            ...font(13),
+            marginBottom: 8,
+          }}
+        >
+          {answer.text}
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }} >
+            <Image
+              source={IMAGES.ANSWER_BY}
+              style={{
+                height: 16,
+                width: 16,
+                resizeMode: 'contain',
+              }}
+            />
+            <Text
+              style={{
+                ...font(13),
+                marginLeft: 6,
+              }}
+            >
+              {answer.user}
+            </Text>
+          </View>
+          <Text style={{
+            flex: 1,
+            marginHorizontal: 8,
+            ...font(8),
+            color: COLORS.SECONDARY,
+          }}
+          >
+            {answer.ago}
+          </Text>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+            <Text
+              style={{
+                ...font(9),
+                marginRight: 3,
+                marginLeft: 10,
+                color: COLORS.SECONDARY,
+              }}
+            >
+              {answer.likes}
+            </Text>
+            <Image
+              source={IMAGES.HEART}
+              style={{
+                height: 16,
+                width: 16,
+                resizeMode: 'contain',
+                marginRight: 5,
+              }}
+            />
+            <Text
+              style={{
+                ...font(9),
+                marginRight: 3,
+                marginLeft: 10,
+                color: COLORS.SECONDARY,
+              }}
+            >
+              {answer.replies}
+            </Text>
+            <Image
+              source={IMAGES.REPLY}
+              style={{
+                height: 16,
+                width: 16,
+                resizeMode: 'contain',
+                marginRight: 5,
+              }}
+            />
+          </View>
+        </View>
       </View>
-    );
-  }
+    </View>
+  )
+
+  renderQA = question => (
+    <View
+      style={{
+        margin: 8,
+        backgroundColor: COLORS.WHITE,
+        borderRadius: 10,
+        padding: 6,
+        overflow: 'hidden',
+      }}
+      key={question.id}
+    >
+      {this.renderCategoryLabel(question.category)}
+      {this.renderQ(question)}
+      {question.answers.slice(0, 1).map(this.renderA)}
+    </View>
+  )
+
   render() {
     return (
       <View
@@ -419,7 +410,7 @@ export default class ForumPage extends React.Component {
               flexDirection: 'row',
               backgroundColor: '#CDCDCD',
               borderRadius: 4,
-              padding: 8,
+              padding: 4,
               paddingHorizontal: 15,
               alignItems: 'center',
             }}
