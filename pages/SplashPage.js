@@ -1,11 +1,12 @@
 import React from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, ActivityIndicator } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { Font } from 'expo';
 import { NavigationActions } from 'react-navigation';
 
 
 import { commonStyle as cs, splashPageStyle as s } from '../common/styles';
+import COLORS from '../common/colors';
 import IMAGES from '../common/images';
 
 export default class SplashPage extends React.Component {
@@ -40,6 +41,23 @@ export default class SplashPage extends React.Component {
           style={s.logo}
           source={IMAGES.LOGO}
         />
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <ActivityIndicator size={20} color={COLORS.WHITE} />
+          <Text
+            style={{
+              fontSize: 14,
+              marginLeft: 20,
+              color: COLORS.WHITE,
+            }}
+          >
+            Please wait while loading assets ...
+          </Text>
+        </View>
       </View>
     );
   }

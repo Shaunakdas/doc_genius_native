@@ -165,9 +165,9 @@ export const splashPageStyle = StyleSheet.create({
     color: COLORS.WHITE,
   },
   logo: {
-    marginTop: 50,
-    height: 180,
-    width: 180,
+    marginVertical: 50,
+    height: 150,
+    width: 150,
   },
 });
 
