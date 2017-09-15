@@ -145,6 +145,7 @@ export default class LoginPage extends React.Component {
             style={[cs.getStartedButton, s.button]}
             textStyle={[cs.getStartedButtonText]}
             onPress={this.getStarted}
+            loadingColor={COLORS.PRIMARY}
           />
         </ScrollView>
         <IconButton

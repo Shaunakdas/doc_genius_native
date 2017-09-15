@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 
 export default class Button extends Component {
@@ -17,25 +18,41 @@ export default class Button extends Component {
     textStyle: PropTypes.any.isRequired,
     imageSource: PropTypes.any,
     imageStyle: PropTypes.any,
+    isLoading: PropTypes.bool,
+    loadingColor: PropTypes.any,
   }
 
   static defaultProps = {
     onPress: () => {},
     imageSource: null,
     imageStyle: null,
+    isLoading: false,
+    loadingColor: null,
   }
 
 
   render() {
     const TouchableWrapper = Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
+    const {
+      isLoading,
+      onPress,
+      text,
+      style,
+      imageSource,
+      imageStyle,
+      loadingColor,
+      textStyle } = this.props;
     return (
-      <TouchableWrapper onPress={this.props.onPress}>
-        <View style={this.props.style}>
-          {this.props.imageSource ? <Image
-            source={this.props.imageSource}
-            style={this.props.imageStyle}
+      <TouchableWrapper disabled={isLoading} onPress={onPress}>
+        <View style={style}>
+          {imageSource ? <Image
+            source={imageSource}
+            style={imageStyle}
           /> : null }
-          <Text style={this.props.textStyle}>{this.props.text}</Text>
+          { !isLoading ?
+            <Text style={textStyle}>{text}</Text> :
+            <ActivityIndicator size={14} color={loadingColor} />
+          }
         </View>
       </TouchableWrapper>
     );
