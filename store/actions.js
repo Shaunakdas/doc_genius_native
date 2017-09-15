@@ -1,11 +1,11 @@
 import {
-  APPSTATE_LOGGING_IN,
+  LOGINSTATE_LOGGING_IN,
   APPSTATE_SIGNING_UP,
 } from '../common/constants';
 
 export function startLogIn() {
   return {
-    type: APPSTATE_LOGGING_IN,
+    type: LOGINSTATE_LOGGING_IN,
   };
 }
 

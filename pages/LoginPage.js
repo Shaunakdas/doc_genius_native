@@ -21,11 +21,71 @@ export default class LoginPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
   }
+  constructor(props) {
+    super(props); this.inputs = {};
+    this.state = {
+      values: {
+        username: '',
+        password: '',
+      },
+      errors: {
+        username: '',
+        password: '',
+      },
+    };
+  }
+
+  onValueChange = fieldName => (value) => {
+    this.setState({
+      values: {
+        ...this.state.values,
+        [fieldName]: value,
+      },
+      errors: {
+        ...this.state.errors,
+        [fieldName]: '',
+      },
+    });
+  }
+
+  onSubmit = nextFieldName => () => {
+    if (nextFieldName) { this.inputs[nextFieldName].focus(); }
+  }
+
+  getStarted = () => {
+    this.setState({
+      errors: {
+        username: '',
+        password: '',
+      },
+    }, this.validate);
+  }
 
   goBack = () => {
     const { navigation } = this.props;
     navigation.goBack();
   }
+
+  validate = () => {
+    const {
+      username,
+      password,
+    } = this.state.values;
+    const errors = {
+      username: username ? '' : 'Username is required',
+      password: password ? '' : 'Password is required',
+    };
+    this.setState({
+      errors,
+    }, () => {
+      if (Object.values(errors).every(value => value === '')) { this.login(); }
+    });
+  }
+
+  addInput = fieldName => (input) => {
+    this.inputs[fieldName] = input;
+  }
+
 
   login = () => {
     const resetAction = NavigationActions.reset({
@@ -38,6 +98,11 @@ export default class LoginPage extends React.Component {
   }
 
   render() {
+    const {
+      username,
+      password,
+    } = this.state.values;
+    const { errors } = this.state;
     return (
       <View style={[cs.container, s.container]}>
         <Image
@@ -56,6 +121,11 @@ export default class LoginPage extends React.Component {
               placeholder: 'Username',
             }}
             wrapperStyle={cs.inputWrapper}
+            error={errors.username}
+            value={username}
+            ref={this.addInput('username')}
+            onChange={this.onValueChange('username')}
+            onSubmit={this.onSubmit('password')}
           />
           <Input
             inputProps={{
@@ -64,12 +134,17 @@ export default class LoginPage extends React.Component {
               secureTextEntry: true,
             }}
             wrapperStyle={cs.inputWrapper}
+            error={errors.password}
+            value={password}
+            ref={this.addInput('password')}
+            onChange={this.onValueChange('password')}
+            onSubmit={this.onSubmit('')}
           />
           <Button
             text="Get Started"
             style={[cs.getStartedButton, s.button]}
             textStyle={[cs.getStartedButtonText]}
-            onPress={this.login}
+            onPress={this.getStarted}
           />
         </ScrollView>
         <IconButton
