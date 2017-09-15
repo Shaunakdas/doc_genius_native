@@ -1,9 +1,11 @@
 import {
   APPSTATE_LOGGING_IN,
   APPSTATE_SIGNING_UP,
+  BASE_URL,
 } from '../common/constants';
 
 const initialState = {
+  baseUrl: BASE_URL,
   loggingIn: false,
   signingUp: false,
 };

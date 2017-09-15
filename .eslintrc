@@ -20,7 +20,9 @@
       "no-mixed-operators": 0,
       "global-require": 0,
       "react/no-unescaped-entities": 0,
-      "react/no-array-index-key": 0
+      "react/no-array-index-key": 0,
+      "no-return-assign": 0,
+      "dot-notation": 0
   },
   "globals": {
       "require":  true

@@ -15,6 +15,7 @@ export default {
   SEARCH_FILL: '#F8F8F8',
   SEARCH_TEXT: '#8E8E93',
   QA: '#D1D5DB',
+  RED: '#FF0000',
 };
 
 

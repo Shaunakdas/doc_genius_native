@@ -6,3 +6,17 @@ export const getCurrentRouteName = (navState) => {
   }
   return navState.routeName;
 };
+
+export const validateEmail = (email) => {
+  // eslint-disable-next-line
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+};
+
+export const validGraduationYear = (year) => {
+  const numericValue = +year;
+  return (!isNaN(numericValue) &&
+          (numericValue >= 2017) &&
+          (numericValue <= 2030) &&
+          (year.length === 4));
+};

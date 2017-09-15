@@ -17,7 +17,7 @@ const commonInputProps = {
   maxLength: 30,
 };
 
-export default class LoginPage extends React.Component {
+export default class VerifyPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
   }
@@ -49,7 +49,7 @@ export default class LoginPage extends React.Component {
           style={cs.scroll}
           contentContainerStyle={cs.scrollContent}
         >
-          <Text style={s.mainText}>Log In</Text>
+          <Text style={s.mainText}>Verify Email</Text>
           <Input
             inputProps={{
               ...commonInputProps,
@@ -66,7 +66,7 @@ export default class LoginPage extends React.Component {
             wrapperStyle={cs.inputWrapper}
           />
           <Button
-            text="Get Started"
+            text="Verify Email"
             style={[cs.getStartedButton, s.button]}
             textStyle={[cs.getStartedButtonText]}
             onPress={this.login}
