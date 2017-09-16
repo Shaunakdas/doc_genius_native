@@ -2,11 +2,14 @@ import React from 'react';
 import { Text, View, Image, ScrollView } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
 
-import { commonStyle as cs, loginPageStyle as s } from '../common/styles';
+import { commonStyle as cs, loginPageStyle as s, font } from '../common/styles';
 import { Button, IconButton, Input } from '../components';
 import IMAGES from '../common/images';
+import { loginAPI, userAPI } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
+import { startLogIn, loginError, setAuthToken, loggedIn, setLoggedInUser } from '../store/actions';
 
 const commonInputProps = {
   style: cs.input,
@@ -17,10 +20,17 @@ const commonInputProps = {
   maxLength: 30,
 };
 
-export default class LoginPage extends React.Component {
+class LoginPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
+    loggingIn: PropTypes.bool.isRequired,
+    start: PropTypes.func.isRequired,
+    finish: PropTypes.func.isRequired,
+    error: PropTypes.func.isRequired,
+    setToken: PropTypes.func.isRequired,
+    setUser: PropTypes.func.isRequired,
   }
+
   constructor(props) {
     super(props); this.inputs = {};
     this.state = {
@@ -31,6 +41,7 @@ export default class LoginPage extends React.Component {
       errors: {
         username: '',
         password: '',
+        overall: '',
       },
     };
   }
@@ -53,10 +64,13 @@ export default class LoginPage extends React.Component {
   }
 
   getStarted = () => {
+    const { start } = this.props;
+    start();
     this.setState({
       errors: {
         username: '',
         password: '',
+        overall: '',
       },
     }, this.validate);
   }
@@ -67,6 +81,7 @@ export default class LoginPage extends React.Component {
   }
 
   validate = () => {
+    const { error } = this.props;
     const {
       username,
       password,
@@ -78,7 +93,7 @@ export default class LoginPage extends React.Component {
     this.setState({
       errors,
     }, () => {
-      if (Object.values(errors).every(value => value === '')) { this.login(); }
+      if (Object.values(errors).every(value => value === '')) { this.login(); } else { error(); }
     });
   }
 
@@ -87,14 +102,32 @@ export default class LoginPage extends React.Component {
   }
 
 
-  login = () => {
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({ routeName: 'AppPage' }),
-      ],
-    });
-    this.props.navigation.dispatch(resetAction);
+  login = async () => {
+    const { username, password } = this.state.values;
+    const { finish, error, setToken, setUser } = this.props;
+    const response = await loginAPI(username, password);
+    if (response.success === false) {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          overall: response.error,
+        },
+      });
+      error();
+    } else {
+      const { authToken } = response;
+      const user = await userAPI(authToken);
+      setToken(authToken);
+      setUser(user);
+      finish();
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'AppPage' }),
+        ],
+      });
+      this.props.navigation.dispatch(resetAction);
+    }
   }
 
   render() {
@@ -103,6 +136,7 @@ export default class LoginPage extends React.Component {
       password,
     } = this.state.values;
     const { errors } = this.state;
+    const { loggingIn } = this.props;
     return (
       <View style={[cs.container, s.container]}>
         <Image
@@ -140,11 +174,19 @@ export default class LoginPage extends React.Component {
             onChange={this.onValueChange('password')}
             onSubmit={this.onSubmit('')}
           />
+          {errors.overall ? <Text style={{
+            color: alpha(COLORS.RED, 0.7),
+            marginTop: 3,
+            marginBottom: 20,
+            ...font(10),
+          }}
+          >{errors.overall}</Text> : null}
           <Button
             text="Get Started"
             style={[cs.getStartedButton, s.button]}
             textStyle={[cs.getStartedButtonText]}
             onPress={this.getStarted}
+            isLoading={loggingIn}
             loadingColor={COLORS.PRIMARY}
           />
         </ScrollView>
@@ -158,3 +200,18 @@ export default class LoginPage extends React.Component {
     );
   }
 }
+
+const mapStateToProps = ({ loginState }) => {
+  const { loggingIn } = loginState;
+  return { loggingIn };
+};
+
+const mapDispatchToProps = dispatch => ({
+  setToken: authToken => dispatch(setAuthToken(authToken)),
+  start: () => dispatch(startLogIn()),
+  finish: () => dispatch(loggedIn()),
+  error: () => dispatch(loginError()),
+  setUser: () => dispatch(setLoggedInUser()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
