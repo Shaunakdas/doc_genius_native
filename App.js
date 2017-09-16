@@ -68,14 +68,14 @@ const getNavigator = () => {
   });
 
   const AppNavigator = TabNavigator({
-    ChatPage: {
-      screen: ChatNavigator,
-    },
     ForumPage: {
       screen: ForumNavigator,
     },
     ProfilePage: {
       screen: ProfileNavigator,
+    },
+    ChatPage: {
+      screen: ChatNavigator,
     },
   }, {
     tabBarPosition: 'bottom',
