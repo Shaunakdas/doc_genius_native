@@ -1,15 +1,18 @@
 import React from 'react';
 import { Text, View, Image, ScrollView } from 'react-native';
 import { PropTypes } from 'prop-types';
+import { connect } from 'react-redux';
 
 import IMAGES from '../common/images';
+import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
 import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, profilePageStyle as s, font } from '../common/styles';
 import { IconButton, Button } from '../components';
 
-export default class ProfilePage extends React.Component {
+class ProfilePage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
+    currentUser: PropTypes.any.isRequired,
   }
 
   constructor(props) {
@@ -178,6 +181,7 @@ export default class ProfilePage extends React.Component {
   }
 
   render() {
+    const { currentUser } = this.props;
     return (
       <View style={s.container}>
         <View style={cs.header}>
@@ -220,7 +224,7 @@ export default class ProfilePage extends React.Component {
               backgroundColor: COLORS.TRANSPARENT,
             }}
           >
-            Aaron Thomas
+            {currentUser.name}
           </Text>
           <Text
             style={{
@@ -231,7 +235,11 @@ export default class ProfilePage extends React.Component {
               backgroundColor: COLORS.TRANSPARENT,
             }}
           >
-            10th Grade
+            {
+              currentUser.role === STUDENT_ROLE ?
+                (12 - (currentUser.graduation_year - 2017))
+                : COUNSELOR_ROLE
+            }
           </Text>
           <Text
             style={{
@@ -242,7 +250,7 @@ export default class ProfilePage extends React.Component {
               backgroundColor: COLORS.TRANSPARENT,
             }}
           >
-            ABC School
+            Indiez
           </Text>
         </View>
         <ScrollView
@@ -259,19 +267,22 @@ export default class ProfilePage extends React.Component {
               flexDirection: 'row',
             }}
           >
-            <View style={{ flex: 1, borderRightWidth: 1, borderColor: COLORS.SECONDARY }}>
-              <Text style={{
-                ...font(10),
-                textAlign: 'center',
-              }}
-              >Answers By Bot</Text>
-              <Text style={{
-                ...font(16),
-                textAlign: 'center',
-                marginVertical: 12,
-              }}
-              >254</Text>
-            </View>
+            {currentUser.role === STUDENT_ROLE ?
+              (<View style={{ flex: 1, borderRightWidth: 1, borderColor: COLORS.SECONDARY }}>
+                <Text style={{
+                  ...font(10),
+                  textAlign: 'center',
+                }}
+                >Answers By Bot</Text>
+                <Text style={{
+                  ...font(16),
+                  textAlign: 'center',
+                  marginVertical: 12,
+                }}
+                >
+                  {currentUser.answers_by_bot || 0}
+                </Text>
+              </View>) : null}
             <View style={{ flex: 1, borderRightWidth: 1, borderColor: COLORS.SECONDARY }}>
               <Text style={{
                 ...font(10),
@@ -283,7 +294,9 @@ export default class ProfilePage extends React.Component {
                 textAlign: 'center',
                 marginVertical: 12,
               }}
-              >40</Text>
+              >
+                {currentUser.answers_by_forum || 0}
+              </Text>
             </View>
             <View style={{ flex: 1 }}>
               <Text style={{
@@ -296,7 +309,9 @@ export default class ProfilePage extends React.Component {
                 textAlign: 'center',
                 marginVertical: 12,
               }}
-              >4</Text>
+              >
+                {currentUser.you_posted_to_forum || 0}
+              </Text>
             </View>
           </View>
           {this.renderNotifications()}
@@ -309,6 +324,7 @@ export default class ProfilePage extends React.Component {
             position: 'absolute',
             top: 30,
             right: 15,
+            elevation: 2,
           }}
           imageStyle={{
             height: 20,
@@ -321,3 +337,6 @@ export default class ProfilePage extends React.Component {
     );
   }
 }
+
+const mapStateToProps = ({ currentUser }) => ({ currentUser });
+export default connect(mapStateToProps)(ProfilePage);
