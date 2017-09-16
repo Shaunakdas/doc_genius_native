@@ -17,6 +17,6 @@ export const validGraduationYear = (year) => {
   const numericValue = +year;
   return (!isNaN(numericValue) &&
           (numericValue >= 2017) &&
-          (numericValue <= 2030) &&
+          (numericValue <= 2023) &&
           (year.length === 4));
 };
