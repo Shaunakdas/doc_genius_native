@@ -51,7 +51,7 @@ export default class Button extends Component {
           /> : null }
           { !isLoading ?
             <Text style={textStyle}>{text}</Text> :
-            <ActivityIndicator size={14} color={loadingColor} />
+            <ActivityIndicator size={Platform.OS === 'ios' ? 0 : 14} color={loadingColor} />
           }
         </View>
       </TouchableWrapper>

@@ -13,10 +13,6 @@ const buildError = (error = '') => ({ success: false, error });
 
 const jsonFetch = async (url, options = {}, authToken = '') => {
   try {
-    // console.log(url, {
-    //   ...options,
-    //   headers: headers(authToken),
-    // });
     const response = await fetch(url, {
       ...options,
       headers: headers(authToken),
@@ -107,6 +103,17 @@ export const counselorSignUpApI = async (
       ...user_fields,
       name,
     };
+  }
+  return { success: false, error: 'Invalid signup credentials. Please check Counselor Code, Username and Email are proper.' };
+};
+
+export const categoriesAPI = async (authToken) => {
+  const response = await jsonFetch(`${BASE_URL}/categories`, { method: 'GET' }, authToken);
+  if (response.success !== false) {
+    const { category_list: { categories } } = response;
+    const relevantCategories = categories.filter(category => !category.is_uncategorized)
+      .map(category => ({ id: category.id, name: category.name }));
+    return relevantCategories;
   }
   return response;
 };

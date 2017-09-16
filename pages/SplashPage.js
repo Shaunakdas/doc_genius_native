@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ActivityIndicator } from 'react-native';
+import { Text, View, Image, ActivityIndicator, Platform } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { Font } from 'expo';
 import { NavigationActions } from 'react-navigation';
@@ -47,7 +47,7 @@ export default class SplashPage extends React.Component {
             alignItems: 'center',
           }}
         >
-          <ActivityIndicator size={20} color={COLORS.WHITE} />
+          <ActivityIndicator size={Platform.OS === 'ios' ? 1 : 20} color={COLORS.WHITE} />
           <Text
             style={{
               fontSize: 14,

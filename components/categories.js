@@ -9,28 +9,46 @@ import {
   Image,
 } from 'react-native';
 import { PropTypes } from 'prop-types';
+import { connect } from 'react-redux';
 
 import IMAGES from '../common/images';
 import COLORS from '../common/colors';
 import { commonStyle as cs } from '../common/styles';
 
-export default class Categories extends Component {
+const imageMap = new Map([
+  ['SAT/ACT/AP', 'SAT'],
+  ['Course Selection', 'COURSE'],
+  ['College/Career', 'COLLEGE'],
+  ['Essay', 'ESSAY'],
+  ['Recommendation Letters', 'RECOMMENDATION'],
+  ['Applications', 'APPLICATION'],
+  ['Financial Aid', 'FINANCIAL'],
+  ['Others', 'OTHER'],
+]);
+
+class Categories extends Component {
   static propTypes = {
     shrinked: PropTypes.bool,
     selectCategory: PropTypes.func.isRequired,
+    actAsFilters: PropTypes.bool,
   }
 
   static defaultProps = {
     shrinked: false,
+    actAsFilters: false,
   }
 
-  renderCategory = (text, image) => {
+  onCategorySelect = () => {
+
+  }
+
+  renderCategory = (category, image) => {
     const TouchableWrapper = Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
     const { shrinked } = this.props;
     const scale = shrinked ? 0.8 : 1;
     return (
       <TouchableWrapper
-        onPress={this.props.selectCategory(text)}
+        onPress={this.props.selectCategory(category.name)}
       >
         <View
           style={{
@@ -87,7 +105,7 @@ export default class Categories extends Component {
             numberOfLines={1}
             adjustsFontSizeToFit
           >
-            {text}
+            {category.name}
           </Text>
         </View>
       </TouchableWrapper>
@@ -95,6 +113,7 @@ export default class Categories extends Component {
   }
 
   render() {
+    const { categories } = this.props;
     return (
       <ScrollView
         style={cs.scroll}
@@ -108,33 +127,40 @@ export default class Categories extends Component {
             flexDirection: 'row',
           }}
         >
-          {this.renderCategory('SAT / ACT / AP', 'SAT')}
-          {this.renderCategory('Course Selection', 'COURSE')}
+          {this.renderCategory(categories[0], imageMap.get(categories[0].name))}
+          {this.renderCategory(categories[1], imageMap.get(categories[1].name))}
         </View>
         <View
           style={{
             flexDirection: 'row',
           }}
         >
-          {this.renderCategory('College/Career', 'COLLEGE')}
-          {this.renderCategory('Essay', 'ESSAY')}
+          {this.renderCategory(categories[2], imageMap.get(categories[2].name))}
+          {this.renderCategory(categories[3], imageMap.get(categories[3].name))}
         </View>
         <View
           style={{
             flexDirection: 'row',
           }}
         >
-          {this.renderCategory('Recommendation', 'RECOMMENDATION')}
-          {this.renderCategory('Applications', 'APPLICATION')}
+          {this.renderCategory(categories[4], imageMap.get(categories[4].name))}
+          {this.renderCategory(categories[5], imageMap.get(categories[5].name))}
         </View>
         <View
           style={{
             flexDirection: 'row',
           }}
         >
-          {this.renderCategory('Financial Aid', 'FINANCIAL')}
-          {this.renderCategory('Other', 'OTHER')}
+          {this.renderCategory(categories[6], imageMap.get(categories[6].name))}
+          {this.renderCategory(categories[7], imageMap.get(categories[7].name))}
         </View>
       </ScrollView>);
   }
 }
+
+const mapStateToProps = ({ categories, filters }) => ({
+  categories,
+  filters,
+});
+
+export default connect(mapStateToProps)(Categories);

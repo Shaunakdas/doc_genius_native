@@ -21,6 +21,7 @@ const commonInputProps = {
   placeholderTextColor: alpha(COLORS.WHITE, 0.4),
   selectionColor: COLORS.WHITE,
   maxLength: 30,
+  autoCapitalize: 'none',
 };
 
 class SignupPage extends React.Component {
@@ -199,7 +200,7 @@ class SignupPage extends React.Component {
       if (response.success === false) {
         this.setState({ errors: {
           ...this.state.errors,
-          overall: response.message || response.error || "Counselor code didn't match!",
+          overall: response.error,
         },
         signingUp: false });
       } else {
@@ -340,6 +341,8 @@ class SignupPage extends React.Component {
             marginTop: 3,
             marginBottom: 20,
             ...font(10),
+            marginHorizontal: 50,
+            textAlign: 'center',
           }}
           >{errors.overall}</Text> : null}
           <Button

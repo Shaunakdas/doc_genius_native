@@ -4,6 +4,11 @@ import {
   SET_AUTH_TOKEN,
   LOGINSTATE_LOGGED_IN,
   SET_LOGGED_IN_USER,
+  SET_CATEGORIES,
+  ADD_CATEGORY_FILTER,
+  REMOVE_CATEGORY_FILTER,
+  REMOVE_ALL_FILTERS,
+  ADD_ALL_FILTERS,
 } from '../common/constants';
 
 export function startLogIn() {
@@ -43,5 +48,40 @@ export function setLoggedInUser(user) {
   return {
     type: SET_LOGGED_IN_USER,
     user,
+  };
+}
+
+export function setCategories(categories) {
+  return {
+    type: SET_CATEGORIES,
+    categories,
+  };
+}
+
+
+export function addCategoryFilter(category) {
+  return {
+    type: ADD_CATEGORY_FILTER,
+    category,
+  };
+}
+
+export function removeCategoryFilter(category) {
+  return {
+    type: REMOVE_CATEGORY_FILTER,
+    category,
+  };
+}
+
+export function addAllFilters(categories) {
+  return {
+    type: ADD_ALL_FILTERS,
+    categories,
+  };
+}
+
+export function removeAllFilters() {
+  return {
+    type: REMOVE_ALL_FILTERS,
   };
 }

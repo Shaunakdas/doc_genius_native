@@ -20,3 +20,8 @@ export const validGraduationYear = (year) => {
           (numericValue <= 2023) &&
           (year.length === 4));
 };
+
+export const getCategory = (categories, name) => {
+  const neededCategory = categories.filter(category => category.name === name);
+  return neededCategory.length ? neededCategory[0] : null;
+};

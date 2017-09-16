@@ -18,6 +18,7 @@ const commonInputProps = {
   placeholderTextColor: alpha(COLORS.WHITE, 0.4),
   selectionColor: COLORS.WHITE,
   maxLength: 30,
+  autoCapitalize: 'none',
 };
 
 class VerifyPage extends React.Component {

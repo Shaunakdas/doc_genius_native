@@ -7,9 +7,9 @@ import { connect } from 'react-redux';
 import { commonStyle as cs, loginPageStyle as s, font } from '../common/styles';
 import { Button, IconButton, Input } from '../components';
 import IMAGES from '../common/images';
-import { loginAPI, userAPI } from '../common/api';
+import { loginAPI, userAPI, categoriesAPI } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
-import { startLogIn, loginError, setAuthToken, loggedIn, setLoggedInUser } from '../store/actions';
+import { startLogIn, loginError, setAuthToken, loggedIn, setLoggedInUser, setCategories } from '../store/actions';
 
 const commonInputProps = {
   style: cs.input,
@@ -18,6 +18,7 @@ const commonInputProps = {
   placeholderTextColor: alpha(COLORS.WHITE, 0.4),
   selectionColor: COLORS.WHITE,
   maxLength: 30,
+  autoCapitalize: 'none',
 };
 
 class LoginPage extends React.Component {
@@ -29,6 +30,7 @@ class LoginPage extends React.Component {
     error: PropTypes.func.isRequired,
     setToken: PropTypes.func.isRequired,
     setUser: PropTypes.func.isRequired,
+    setRelevantCategories: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -104,7 +106,7 @@ class LoginPage extends React.Component {
 
   login = async () => {
     const { username, password } = this.state.values;
-    const { finish, error, setToken, setUser } = this.props;
+    const { finish, error, setToken, setUser, setRelevantCategories } = this.props;
     const response = await loginAPI(username, password);
     if (response.success === false) {
       this.setState({
@@ -119,6 +121,9 @@ class LoginPage extends React.Component {
       const user = await userAPI(authToken);
       setToken(authToken);
       setUser(user);
+      const categories = await categoriesAPI(authToken);
+      console.log(categories);
+      setRelevantCategories(categories);
       finish();
       const resetAction = NavigationActions.reset({
         index: 0,
@@ -212,6 +217,7 @@ const mapDispatchToProps = dispatch => ({
   finish: () => dispatch(loggedIn()),
   error: () => dispatch(loginError()),
   setUser: user => dispatch(setLoggedInUser(user)),
+  setRelevantCategories: categories => dispatch(setCategories(categories)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
