@@ -1,6 +1,6 @@
 import {
   SET_LOGGED_IN_USER,
-} from '../store/actions';
+} from '../common/constants';
 
 const initialState = {
   activation_token: '',
@@ -8,7 +8,7 @@ const initialState = {
   answers_by_forum: 0,
   channel_url: '',
   device_token: '',
-  email: 'shastri9999+aaron@gmail.com',
+  email: '',
   graduation_year: 0,
   head_counselor: false,
   id: 0,

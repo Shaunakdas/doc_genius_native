@@ -3,15 +3,19 @@ import PropTypes from 'prop-types';
 import {
   View,
 } from 'react-native';
+import { connect } from 'react-redux';
+
 import { commonStyle as s } from '../common/styles';
 import COLORS from '../common/colors';
 import IMAGES from '../common/images';
 import { getCurrentRouteName } from '../common/helper';
 import { Button } from '../components';
+import { STUDENT_ROLE } from '../common/constants';
 
-export default class Navigation extends Component {
+class Navigation extends Component {
   static propTypes = {
     navigation: PropTypes.any.isRequired,
+    role: PropTypes.string.isRequired,
   }
 
   goToPage = page => () => {
@@ -23,7 +27,7 @@ export default class Navigation extends Component {
   }
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, role } = this.props;
     const currentRouteName = getCurrentRouteName(navigation.state);
     const showNavigation = ['ForumPage', 'ChatPage', 'ProfilePage'].indexOf(currentRouteName) >= 0;
     return (
@@ -36,14 +40,14 @@ export default class Navigation extends Component {
           text="Forum"
           onPress={this.goToPage('ForumPage')}
         />
-        <Button
+        {role === STUDENT_ROLE ? <Button
           style={s.tabButton}
           imageStyle={s.chatBotImage}
           imageSource={currentRouteName === 'ChatPage' ? IMAGES.NAV_BOT_HIGHLIGHTED : IMAGES.NAV_BOT}
           textStyle={[s.tabText, { color: currentRouteName === 'ChatPage' ? COLORS.PRIMARY : COLORS.GREY }]}
           text="Bot"
           onPress={this.goToPage('ChatPage')}
-        />
+        /> : null }
         <Button
           style={s.tabButton}
           imageStyle={s.tabImage}
@@ -56,3 +60,12 @@ export default class Navigation extends Component {
     );
   }
 }
+
+const mapStateToProps = ({ currentUser }) => {
+  const { role } = currentUser;
+  return {
+    role,
+  };
+};
+
+export default connect(mapStateToProps)(Navigation);

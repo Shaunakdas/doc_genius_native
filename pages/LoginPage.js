@@ -211,7 +211,7 @@ const mapDispatchToProps = dispatch => ({
   start: () => dispatch(startLogIn()),
   finish: () => dispatch(loggedIn()),
   error: () => dispatch(loginError()),
-  setUser: () => dispatch(setLoggedInUser()),
+  setUser: user => dispatch(setLoggedInUser(user)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
