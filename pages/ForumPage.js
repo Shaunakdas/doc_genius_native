@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, Image, TextInput, ScrollView } from 'react-native';
 import { PropTypes } from 'prop-types';
+import { connect } from 'react-redux';
 
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
@@ -65,9 +66,11 @@ const questions = [{
     ago: '3 hours ago',
   }],
 }];
-export default class ForumPage extends React.Component {
+
+class ForumPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
+    filters: PropTypes.array.isRequired,
   }
 
   constructor(props) {
@@ -360,6 +363,9 @@ export default class ForumPage extends React.Component {
   )
 
   render() {
+    const { filters } = this.props;
+    const filteredQuestions =
+      questions.filter(q => filters.filter(f => f.name === q.category).length > 0);
     return (
       <View
         style={[cs.container, { backgroundColor: alpha(COLORS.PRIMARY, 0.3) }]}
@@ -369,7 +375,7 @@ export default class ForumPage extends React.Component {
             source={IMAGES.HEADER_BG}
             style={cs.headerImage}
           />
-          <Text style={cs.headerText}> All Posts </Text>
+          <Text style={cs.headerText}> {filters.length < 8 ? 'Filtered Posts' : 'All Posts'} </Text>
           <IconButton
             source={IMAGES.EDIT}
             style={{
@@ -439,9 +445,13 @@ export default class ForumPage extends React.Component {
         <ScrollView
           style={{ flex: 1 }}
         >
-          {questions.map(this.renderQA)}
+          {filteredQuestions.map(this.renderQA)}
         </ScrollView>
       </View>
     );
   }
 }
+
+const mapStateToProps = ({ filters }) => ({ filters });
+
+export default connect(mapStateToProps)(ForumPage);
