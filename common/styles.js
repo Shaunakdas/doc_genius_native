@@ -501,12 +501,15 @@ export const categoryDrawerStyle = StyleSheet.create({
     paddingBottom: 13,
     alignItems: 'center',
     backgroundColor: COLORS.PRIMARY,
+    flexDirection: 'row',
   },
   headerText: {
     ...font(13),
     textAlign: 'center',
     color: COLORS.WHITE,
     backgroundColor: COLORS.TRANSPARENT,
+    marginLeft: 50,
+    flex: 1,
   },
   headerImage: {
     position: 'absolute',
@@ -514,6 +517,22 @@ export const categoryDrawerStyle = StyleSheet.create({
     height: 40,
     resizeMode: 'cover',
     bottom: 0,
+  },
+  postButton: {
+    paddingVertical: 4,
+    borderRadius: 5,
+    paddingHorizontal: 12,
+    backgroundColor: COLORS.WHITE,
+    shadowColor: alpha(COLORS.BLACK, 0.4),
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+    elevation: 2,
+    marginRight: 15,
+  },
+  postButtonText: {
+    ...font(12),
+    color: COLORS.PRIMARY,
   },
 });
 

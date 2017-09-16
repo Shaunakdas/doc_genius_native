@@ -7,9 +7,9 @@ import {
   TouchableNativeFeedback,
   ScrollView,
   Image,
+  StyleSheet,
 } from 'react-native';
 import { PropTypes } from 'prop-types';
-import { connect } from 'react-redux';
 
 import IMAGES from '../common/images';
 import COLORS from '../common/colors';
@@ -26,29 +26,24 @@ const imageMap = new Map([
   ['Others', 'OTHER'],
 ]);
 
-class Categories extends Component {
+export default class Categories extends Component {
   static propTypes = {
-    shrinked: PropTypes.bool,
-    selectCategory: PropTypes.func.isRequired,
     actAsFilters: PropTypes.bool,
+    selectCategory: PropTypes.func.isRequired,
+    categories: PropTypes.array.isRequired,
   }
 
   static defaultProps = {
-    shrinked: false,
     actAsFilters: false,
-  }
-
-  onCategorySelect = () => {
-
   }
 
   renderCategory = (category, image) => {
     const TouchableWrapper = Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
-    const { shrinked } = this.props;
-    const scale = shrinked ? 0.8 : 1;
+    const { actAsFilters } = this.props;
+    const scale = actAsFilters ? 0.8 : 1;
     return (
       <TouchableWrapper
-        onPress={this.props.selectCategory(category.name)}
+        onPress={this.props.selectCategory(category)}
       >
         <View
           style={{
@@ -61,10 +56,18 @@ class Categories extends Component {
             shadowOpacity: 0.25,
             shadowRadius: 2,
             borderRadius: 5,
-            marginHorizontal: this.props.shrinked ? 12 : 20,
+            marginHorizontal: this.props.actAsFilters ? 12 : 20,
             marginVertical: 8,
           }}
         >
+          {actAsFilters && !category.selected ? <View
+            style={{
+              position: 'absolute',
+              backgroundColor: COLORS.WHITE,
+              opacity: 0.5,
+              ...StyleSheet.absoluteFillObject,
+            }}
+          /> : null}
           <View
             style={{
               flex: 1,
@@ -101,6 +104,7 @@ class Categories extends Component {
               fontSize: 11,
               paddingTop: 4,
               marginHorizontal: 5,
+              backgroundColor: COLORS.TRANSPARENT,
             }}
             numberOfLines={1}
             adjustsFontSizeToFit
@@ -157,10 +161,3 @@ class Categories extends Component {
       </ScrollView>);
   }
 }
-
-const mapStateToProps = ({ categories, filters }) => ({
-  categories,
-  filters,
-});
-
-export default connect(mapStateToProps)(Categories);

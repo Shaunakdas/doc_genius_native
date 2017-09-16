@@ -1,14 +1,16 @@
 import React from 'react';
 import { Text, View, Image } from 'react-native';
 import { PropTypes } from 'prop-types';
+import { connect } from 'react-redux';
 
 import IMAGES from '../common/images';
 import { IconButton, Categories } from '../components';
 import { commonStyle as cs, categorySelectionPageStyle as s } from '../common/styles';
 
-export default class CategorySelectionPage extends React.Component {
+class CategorySelectionPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
+    categories: PropTypes.array.isRequired,
   }
 
   constructor(props) {
@@ -32,6 +34,7 @@ export default class CategorySelectionPage extends React.Component {
   }
 
   render() {
+    const { categories } = this.props;
     return (
       <View style={[cs.container, s.container]}>
         <View style={cs.header}>
@@ -49,8 +52,12 @@ export default class CategorySelectionPage extends React.Component {
         </View>
         <Categories
           selectCategory={this.goToAskForum}
+          categories={categories}
         />
       </View>
     );
   }
 }
+
+const mapStateToProps = ({ categories }) => ({ categories });
+export default connect(mapStateToProps)(CategorySelectionPage);

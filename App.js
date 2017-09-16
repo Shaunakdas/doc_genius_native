@@ -6,6 +6,7 @@ import configureStore from './store/configureStore';
 
 import PAGES from './pages';
 import COLORS, { alpha } from './common/colors';
+import { DISMISSED_FILTER } from './common/constants';
 import { Navigation, CategoryDrawer } from './components';
 
 const getNavigator = () => {
@@ -114,9 +115,18 @@ const getNavigator = () => {
   return MainNavigator;
 };
 
+const store = configureStore();
+
 class MainApp extends Component {
   componentWillMount() {
     this.navigator = getNavigator();
+  }
+
+  onChange = (_, __, action) => {
+    const { routeName, params = {} } = action;
+    if (routeName === 'DrawerClose' && !params.filtersApplied) {
+      store.dispatch({ type: DISMISSED_FILTER });
+    }
   }
 
   render() {
@@ -129,13 +139,12 @@ class MainApp extends Component {
           animated={false}
           barStyle="light-content"
         />
-        <Navigator />
+        <Navigator onNavigationStateChange={this.onChange} />
       </View>
     );
   }
 }
 
-const store = configureStore();
 
 const App = () => (
   <Provider store={store}>

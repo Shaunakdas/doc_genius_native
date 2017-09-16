@@ -16,7 +16,7 @@ export default class AskQuestionPage extends React.Component {
     super(props);
     const { navigation } = props;
     const { params = {} } = navigation.state;
-    const { category = 'Others' } = params;
+    const { category = null } = params;
     this.state = {
       category,
       question: '',
@@ -43,7 +43,7 @@ export default class AskQuestionPage extends React.Component {
             source={IMAGES.HEADER_BG}
             style={cs.headerImage}
           />
-          <Text style={cs.headerText}> Ask the Forum ({category}) </Text>
+          <Text style={cs.headerText}> Ask the Forum ({category.name}) </Text>
         </View>
         <View style={s.hintView}>
           <Text

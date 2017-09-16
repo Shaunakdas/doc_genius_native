@@ -9,7 +9,15 @@ import { Button, IconButton, Input } from '../components';
 import IMAGES from '../common/images';
 import { loginAPI, userAPI, categoriesAPI } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
-import { startLogIn, loginError, setAuthToken, loggedIn, setLoggedInUser, setCategories } from '../store/actions';
+import {
+  startLogIn,
+  loginError,
+  setAuthToken,
+  loggedIn,
+  setLoggedInUser,
+  setCategories,
+  applyFilters,
+} from '../store/actions';
 
 const commonInputProps = {
   style: cs.input,
@@ -122,7 +130,6 @@ class LoginPage extends React.Component {
       setToken(authToken);
       setUser(user);
       const categories = await categoriesAPI(authToken);
-      console.log(categories);
       setRelevantCategories(categories);
       finish();
       const resetAction = NavigationActions.reset({
@@ -217,7 +224,10 @@ const mapDispatchToProps = dispatch => ({
   finish: () => dispatch(loggedIn()),
   error: () => dispatch(loginError()),
   setUser: user => dispatch(setLoggedInUser(user)),
-  setRelevantCategories: categories => dispatch(setCategories(categories)),
+  setRelevantCategories: (categories) => {
+    dispatch(setCategories(categories.slice(0)));
+    dispatch(applyFilters(categories.slice(0)));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
