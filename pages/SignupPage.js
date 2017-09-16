@@ -1,13 +1,18 @@
 import React from 'react';
 import { Text, Image, ScrollView, View, KeyboardAvoidingView } from 'react-native';
 import { PropTypes } from 'prop-types';
+import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
-import { commonStyle as cs, signupPageStyle as s } from '../common/styles';
+import { commonStyle as cs, signupPageStyle as s, font } from '../common/styles';
 import { Button, IconButton, Input } from '../components';
 import IMAGES from '../common/images';
 import { validateEmail, validGraduationYear } from '../common/helper';
 import COLORS, { alpha } from '../common/colors';
 import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
+import { studentSignUpApI, counselorSignUpApI } from '../common/api';
+import { setLoggedInUser } from '../store/actions';
+
 
 const commonInputProps = {
   style: cs.input,
@@ -18,9 +23,10 @@ const commonInputProps = {
   maxLength: 30,
 };
 
-export default class SignupPage extends React.Component {
+class SignupPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
+    setUser: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -30,6 +36,7 @@ export default class SignupPage extends React.Component {
     const { role = STUDENT_ROLE } = params;
     this.inputs = {};
     this.state = {
+      signingUp: false,
       values: {
         schoolCode: '',
         counselorCode: '',
@@ -49,6 +56,7 @@ export default class SignupPage extends React.Component {
         password: '',
         confirmPassword: '',
         graduationYear: '',
+        overall: '',
       },
       role,
     };
@@ -73,6 +81,7 @@ export default class SignupPage extends React.Component {
 
   getStarted = () => {
     this.setState({
+      signingUp: true,
       errors: {
         schoolCode: '',
         counselorCode: '',
@@ -82,6 +91,7 @@ export default class SignupPage extends React.Component {
         password: '',
         confirmPassword: '',
         graduationYear: '',
+        overall: '',
       },
     }, this.validate);
   }
@@ -131,6 +141,8 @@ export default class SignupPage extends React.Component {
     }
     this.setState({
       errors,
+    }, () => {
+      if (Object.values(errors).every(value => value === '')) { this.signup(); } else { this.setState({ signingUp: false }); }
     });
   }
 
@@ -138,8 +150,67 @@ export default class SignupPage extends React.Component {
     this.inputs[fieldName] = input;
   }
 
+  signup = async () => {
+    const { role } = this.state;
+    const { setUser } = this.props;
+    const {
+      fullName,
+      email,
+      username,
+      password,
+      graduationYear,
+      counselorCode,
+    } = this.state.values;
+
+    if (role === STUDENT_ROLE) {
+      const response = await studentSignUpApI({
+        fullName,
+        email,
+        username,
+        graduationYear,
+        password,
+      });
+      if (response.success === false) {
+        this.setState({ errors: {
+          ...this.state.errors,
+          overall: response.message || response.error || 'Signup failed try again!',
+        },
+        signingUp: false });
+      } else {
+        setUser(response);
+        this.setState({ signingUp: false });
+        const resetAction = NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'VerifyPage' }),
+          ],
+        });
+        this.props.navigation.dispatch(resetAction);
+      }
+    } else if (role === COUNSELOR_ROLE) {
+      const response = await counselorSignUpApI({
+        fullName,
+        email,
+        username,
+        graduationYear,
+        password,
+        counselorCode,
+      });
+      if (response.success === false) {
+        this.setState({ errors: {
+          ...this.state.errors,
+          overall: response.message || response.error || "Counselor code didn't match!",
+        },
+        signingUp: false });
+      } else {
+        console.log(response);
+        this.setState({ signingUp: false });
+      }
+    }
+  }
+
   render() {
-    const { role, errors } = this.state;
+    const { role, errors, signingUp } = this.state;
     const {
       schoolCode,
       counselorCode,
@@ -264,11 +335,20 @@ export default class SignupPage extends React.Component {
             onChange={this.onValueChange('confirmPassword')}
             onSubmit={this.onSubmit('')}
           />
+          {errors.overall ? <Text style={{
+            color: alpha(COLORS.RED, 0.7),
+            marginTop: 3,
+            marginBottom: 20,
+            ...font(10),
+          }}
+          >{errors.overall}</Text> : null}
           <Button
             text="Get Started"
             style={[cs.getStartedButton, s.button]}
             textStyle={[cs.getStartedButtonText]}
             onPress={this.getStarted}
+            loadingColor={COLORS.PRIMARY}
+            isLoading={signingUp}
           />
           <View style={{ height: 60 }} />
         </ScrollView>
@@ -282,3 +362,9 @@ export default class SignupPage extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  setUser: user => dispatch(setLoggedInUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(SignupPage);

@@ -104,6 +104,9 @@ const getNavigator = () => {
     AppPage: {
       screen: AppNavigator,
     },
+    VerifyPage: {
+      screen: PAGES.VerifyPage,
+    },
   }, {
     headerMode: 'none',
   });

@@ -1,4 +1,4 @@
-import { BASE_URL } from './constants';
+import { BASE_URL, STUDENT_ROLE, COUNSELOR_ROLE } from './constants';
 
 const headers = (authToken) => {
   const returnValue = {
@@ -35,6 +35,12 @@ export const loginAPI = async (login, password) => {
   return (response.success !== false) ? { authToken: response.auth_token } : response;
 };
 
+export const activateAPI = async (username, activation_token) => {
+  const body = JSON.stringify({ username, activation_token });
+  const response = await jsonFetch(`${BASE_URL}/user/activate`, { body, method: 'POST' });
+  return (response.success !== false) ? { authToken: response.auth_token } : response;
+};
+
 export const userAPI = async (authToken) => {
   const response = await jsonFetch(`${BASE_URL}/user`, { method: 'GET' }, authToken);
   if (response.success !== false) {
@@ -44,6 +50,60 @@ export const userAPI = async (authToken) => {
       id,
       username,
       email,
+      ...user_fields,
+      name,
+    };
+  }
+  return response;
+};
+
+export const studentSignUpApI = async ({ fullName, email, username, graduationYear, password }) => {
+  const body = JSON.stringify({
+    name: fullName,
+    email,
+    username,
+    user_fields: {
+      role: STUDENT_ROLE,
+      graduation_year: graduationYear,
+    },
+    password,
+  });
+  const response = await jsonFetch(`${BASE_URL}/user/sign_up`, { body, method: 'POST' });
+  if (response.success !== false) {
+    const { admin_user } = response;
+    const { id, username: username_r, email: email_r, user_fields, name } = admin_user;
+    return {
+      id,
+      username: username_r,
+      email: email_r,
+      ...user_fields,
+      name,
+    };
+  }
+  return response;
+};
+
+export const counselorSignUpApI = async (
+  { fullName, email, username, graduationYear, password, counselorCode }) => {
+  const body = JSON.stringify({
+    name: fullName,
+    email,
+    username,
+    user_fields: {
+      role: COUNSELOR_ROLE,
+      graduation_year: graduationYear,
+    },
+    password,
+    activation_token: counselorCode,
+  });
+  const response = await jsonFetch(`${BASE_URL}/user/sign_up`, { body, method: 'POST' });
+  if (response.success !== false) {
+    const { admin_user } = response;
+    const { id, username: username_r, email: email_r, user_fields, name } = admin_user;
+    return {
+      id,
+      username: username_r,
+      email: email_r,
       ...user_fields,
       name,
     };

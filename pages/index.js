@@ -13,6 +13,7 @@ import TermsPage from './TermsPage';
 import SplashPage from './SplashPage';
 import CategorySelectionPage from './CategorySelectionPage';
 import AskQuestionPage from './AskQuestionPage';
+import VerifyPage from './VerifyPage';
 
 export default {
   LandingPage,
@@ -30,4 +31,5 @@ export default {
   SplashPage,
   CategorySelectionPage,
   AskQuestionPage,
+  VerifyPage,
 };
