@@ -34,6 +34,8 @@ class QuestionPage extends React.Component {
       inputHeight: defaultInputHeight,
       keyboardHeight: 0,
       backedupInputHeight: undefined,
+      reply_to_post_number: null,
+      reply: '',
     };
   }
 
@@ -62,6 +64,8 @@ class QuestionPage extends React.Component {
     }
     this.setState({ inputHeight: Math.min(inputHeight, 150) });
   }
+
+  onChangeText = reply => this.setState({ reply });
 
   fetchQuestion = async () => {
     const { authToken } = this.props;
@@ -234,50 +238,61 @@ renderQ = question => (
     </View>
   </View>
 )
-  renderA = (answer, index) => (
-    <View
-      style={{
-        borderTopWidth: index ? 1 : 0,
-        borderColor: '#B1E0EC',
-        paddingLeft: 15,
-        paddingTop: index ? 12 : 4,
-        marginBottom: 4,
-        marginTop: 4,
-        paddingBottom: 4,
-      }}
-      key={answer.id}
-    >
+  renderA = (answer, index) => {
+    const isReply = !!answer.reply_to_post_number;
+    return (
       <View
         style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          borderTopWidth: index ? 1 : 0,
+          borderColor: '#B1E0EC',
+          paddingLeft: 15,
+          paddingTop: index ? 12 : 4,
+          marginBottom: 4,
+          marginTop: 4,
+          paddingBottom: 4,
         }}
+        key={answer.id}
       >
-        {this.renderUser(answer.user_id)}
-        {this.renderButtons(answer)}
+        <View
+          style={isReply ? {
+            borderLeftColor: COLORS.PRIMARY,
+            borderLeftWidth: 4,
+            paddingLeft: 6,
+          } : null}
+        >
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            {this.renderUser(answer.user_id)}
+            {this.renderButtons(answer)}
+          </View>
+          <Text
+            numberOfLines={2}
+            style={{
+              ...font(13),
+              marginBottom: 8,
+              marginTop: 12,
+            }}
+          >
+            {answer.raw}
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            {this.renderTime(answer.created_at)}
+          </View>
+        </View>
       </View>
-      <Text
-        numberOfLines={2}
-        style={{
-          ...font(13),
-          marginBottom: 8,
-          marginTop: 12,
-        }}
-      >
-        {answer.raw}
-      </Text>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        {this.renderTime(answer.created_at)}
-      </View>
-    </View>
-  );
+    );
+  };
 
   renderAs = answers => (
     <View
@@ -370,6 +385,8 @@ renderQ = question => (
               multiline
               onContentSizeChange={this.onInputHeightChange}
               underlineColorAndroid={COLORS.TRANSPARENT}
+              value={this.state.reply}
+              onChangeText={this.onChangeText}
             />
             <IconButton
               source={IMAGES.SEND}
