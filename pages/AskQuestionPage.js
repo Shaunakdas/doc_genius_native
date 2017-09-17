@@ -1,13 +1,15 @@
 import React from 'react';
 import { Text, View, Image, TextInput } from 'react-native';
 import { PropTypes } from 'prop-types';
+import { connect } from 'react-redux';
 
 import { IconButton, Button } from '../components';
 import IMAGES from '../common/images';
 import COLORS from '../common/colors';
-import { commonStyle as cs, askQuestionPageStyle as s } from '../common/styles';
+import { createQuestionAPI } from '../common/api';
+import { commonStyle as cs, askQuestionPageStyle as s, font } from '../common/styles';
 
-export default class AskQuestionPage extends React.Component {
+class AskQuestionPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
   }
@@ -20,18 +22,49 @@ export default class AskQuestionPage extends React.Component {
     this.state = {
       category,
       question: '',
+      loading: false,
+      error: '',
     };
   }
 
   onInputChange = (question) => {
     if (question.length <= 200) {
-      this.setState({ question });
+      this.setState({ question, error: '' });
     }
   }
 
   goBack = () => {
     const { navigation } = this.props;
     navigation.goBack();
+  }
+
+  moveToForum = () => {
+    this.props.navigation.dispatch(
+      {
+        type: 'Navigation/NAVIGATE',
+        routeName: 'AppPage',
+        action: {
+          type: 'Navigation/NAVIGATE',
+          routeName: 'ForumPage',
+        },
+      },
+    );
+  }
+
+  postQuestion = async () => {
+    this.setState({
+      loading: true,
+    }, this.createQuestion);
+  }
+  createQuestion = async () => {
+    const { question, category } = this.state;
+    const { authToken } = this.props;
+    const response = await createQuestionAPI(authToken, question, category.id);
+    if (response.success === false) {
+      this.setState({ error: 'Unable to post this question. Try again later', loading: false });
+    } else {
+      this.setState({ loading: false }, this.moveToForum);
+    }
   }
 
   render() {
@@ -83,9 +116,26 @@ export default class AskQuestionPage extends React.Component {
             style={s.askButton}
             textStyle={s.askButtonText}
             text="Post to Forum"
+            onPress={this.postQuestion}
+            isLoading={this.state.loading}
           />
+          {this.state.error ? <Text
+            style={{
+              color: COLORS.RED,
+              marginHorizontal: 30,
+              marginVertical: 4,
+              ...font(12),
+              textAlign: 'center',
+            }}
+          >
+            Unable to post this question. Try again later
+          </Text> : null}
         </View>
       </View>
     );
   }
 }
+
+const mapStateToProps = ({ loginState: { authToken } }) => ({ authToken });
+
+export default connect(mapStateToProps)(AskQuestionPage);

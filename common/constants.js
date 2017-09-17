@@ -10,6 +10,5 @@ export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const APPLY_FILTERS = 'APPLY_FILTERS';
 export const DISMISSED_FILTER = 'DISMISSED_FILTER';
 
-
 export const STUDENT_ROLE = 'Student';
 export const COUNSELOR_ROLE = 'Counselor';

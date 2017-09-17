@@ -125,7 +125,7 @@ class CategoryDrawer extends Component {
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
-              marginHorizontal: 20,
+              marginHorizontal: 30,
               marginTop: 10,
             }}
           >

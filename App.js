@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
 import { StatusBar, View } from 'react-native';
 import { Provider } from 'react-redux';
+import moment from 'moment';
 import configureStore from './store/configureStore';
-
 import PAGES from './pages';
 import COLORS, { alpha } from './common/colors';
 import { DISMISSED_FILTER } from './common/constants';
@@ -27,6 +27,9 @@ const getNavigator = () => {
   const ForumNavigator = DrawerNavigator({
     ForumPage: {
       screen: PAGES.ForumPage,
+    },
+    QuestionPage: {
+      screen: PAGES.QuestionPage,
     },
     AskForumPage: {
       screen: PAGES.AskQuestionPage,
@@ -120,6 +123,24 @@ const store = configureStore();
 class MainApp extends Component {
   componentWillMount() {
     this.navigator = getNavigator();
+    moment.updateLocale('en', {
+      relativeTime: {
+        future: 'in %s',
+        past: '%s ago',
+        s: 'a sec',
+        ss: '%ss',
+        m: 'a min',
+        mm: '%dm',
+        h: 'an hr',
+        hh: '%dh',
+        d: 'a day',
+        dd: '%dd',
+        M: 'a month',
+        MM: '%dM',
+        y: 'a year',
+        yy: '%dY',
+      },
+    });
   }
 
   onChange = (_, __, action) => {

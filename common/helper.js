@@ -25,3 +25,10 @@ export const getCategory = (categories, name) => {
   const neededCategory = categories.filter(category => category.name === name);
   return neededCategory.length ? neededCategory[0] : null;
 };
+
+export const getCategoryById = (categories, id) => {
+  const neededCategory = categories.filter(category => category.id === id);
+  return neededCategory.length ? neededCategory[0] : null;
+};
+
+export const createRandomSlug = () => Math.random().toString(36).substr(2);

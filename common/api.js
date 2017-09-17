@@ -1,4 +1,5 @@
 import { BASE_URL, STUDENT_ROLE, COUNSELOR_ROLE } from './constants';
+import { createRandomSlug } from './helper';
 
 const headers = (authToken) => {
   const returnValue = {
@@ -10,6 +11,22 @@ const headers = (authToken) => {
 };
 
 const buildError = (error = '') => ({ success: false, error });
+
+const buildQuery = (queryObject) => {
+  const keys = Object.keys(queryObject);
+  return keys.map((key) => {
+    let value = queryObject[key];
+    if (!value) {
+      return '';
+    }
+    if (Array.isArray(value)) {
+      value = value.map(item => encodeURIComponent(item)).join(',');
+    } else {
+      value = encodeURIComponent(value);
+    }
+    return `${encodeURIComponent(key)}=${value}`;
+  }).filter(has => !!has).join('&');
+};
 
 const jsonFetch = async (url, options = {}, authToken = '') => {
   try {
@@ -115,5 +132,37 @@ export const categoriesAPI = async (authToken) => {
       .map(category => ({ id: category.id, name: category.name }));
     return relevantCategories;
   }
+  return response;
+};
+
+export const postsAPI = async (authToken, filters, searchTerm) => {
+  const filterIds = filters.map(filter => filter.id);
+  const queryString = buildQuery({
+    query: searchTerm,
+    id: filterIds,
+  });
+  const url = `${BASE_URL}/questions?${queryString}`;
+  const response = await jsonFetch(url, { method: 'GET' }, authToken);
+  return response;
+};
+
+export const questionAPI = async (authToken, id) => {
+  const queryString = buildQuery({
+    id,
+  });
+  const url = `${BASE_URL}/question?${queryString}`;
+  const response = await jsonFetch(url, { method: 'GET' }, authToken);
+  return response;
+};
+
+export const createQuestionAPI = async (authToken, raw, category) => {
+  const url = `${BASE_URL}/question`;
+  const title = `${raw} ${createRandomSlug()}`;
+  const body = JSON.stringify({
+    title,
+    raw,
+    category,
+  });
+  const response = await jsonFetch(url, { body, method: 'POST' }, authToken);
   return response;
 };
