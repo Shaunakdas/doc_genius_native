@@ -1,16 +1,18 @@
 import React from 'react';
-import { Text, View, Image, ScrollView, ActivityIndicator, Platform } from 'react-native';
+import { Text, View, Image, ScrollView, ActivityIndicator, Platform, Keyboard, TextInput } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
-import { commonStyle as cs, font, fullWidth } from '../common/styles';
+import { commonStyle as cs, font, fullWidth, fullHeight, questionPageStyle as s } from '../common/styles';
 import { STUDENT_ROLE } from '../common/constants';
 import { questionAPI } from '../common/api';
 import { getCategoryById } from '../common/helper';
 import { IconButton } from '../components';
+
+const defaultInputHeight = 19.5;
 
 class QuestionPage extends React.Component {
   static propTypes = {
@@ -29,7 +31,15 @@ class QuestionPage extends React.Component {
       question: null,
       loading: true,
       category: getCategoryById(props.categories, category_id),
+      inputHeight: defaultInputHeight,
+      keyboardHeight: 0,
+      backedupInputHeight: undefined,
     };
+  }
+
+  componentWillMount() {
+    this.keyboardDidShowSub = Keyboard.addListener(Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow', this.keyBoardDidShow);
+    this.keyboardDidHideSub = Keyboard.addListener(Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide', this.keyBoardDidHide);
   }
 
   async componentDidMount() {
@@ -42,6 +52,17 @@ class QuestionPage extends React.Component {
     }
   }
 
+  onInputHeightChange = (event) => {
+    let inputHeight = event.nativeEvent.contentSize.height;
+    if (Platform.OS === 'ios') {
+      const width = event.nativeEvent.contentSize.width;
+      if (width > fullWidth - 85) {
+        inputHeight = 19.5 * Math.ceil((width) / (fullWidth - 85));
+      }
+    }
+    this.setState({ inputHeight: Math.min(inputHeight, 150) });
+  }
+
   fetchQuestion = async () => {
     const { authToken } = this.props;
     const { id } = this.state;
@@ -52,6 +73,17 @@ class QuestionPage extends React.Component {
   goBack = () => {
     const { navigation } = this.props;
     navigation.goBack();
+  }
+
+  keyBoardDidShow = (event) => {
+    const keyboardHeight = event.endCoordinates.height;
+    this.setState({ keyboardHeight });
+  }
+
+  keyBoardDidHide = () => {
+    this.setState({
+      keyboardHeight: 0,
+    });
   }
 
   renderUser = (user_id) => {
@@ -285,6 +317,9 @@ renderQ = question => (
   }
 
   render() {
+    const { inputHeight, keyboardHeight = 0 } = this.state;
+    const extraHeight = inputHeight === defaultInputHeight ? 85 : 78;
+    const availableHeight = fullHeight - inputHeight - keyboardHeight - extraHeight;
     const { loading, question, category } = this.state;
     const { details_stream } = question || {};
     return (
@@ -304,26 +339,45 @@ renderQ = question => (
           />
           <Text style={cs.headerText}> {category.name} </Text>
         </View>
-        <ScrollView
-          style={{ flex: 1 }}
-        >
-          { loading ? (
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                marginHorizontal: 40,
-                marginTop: 20,
-              }}
-            >
-              <ActivityIndicator
-                size={Platform.OS === 'ios' ? 1 : 20}
-                color={COLORS.SECONDARY}
-              />
-            </View>
-          ) : this.renderQA(details_stream.details)
-          }
-        </ScrollView>
+        <View style={{ height: availableHeight }}>
+          <ScrollView
+            style={{ flex: 1 }}
+          >
+            { loading ? (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  marginHorizontal: 40,
+                  marginTop: 20,
+                }}
+              >
+                <ActivityIndicator
+                  size={Platform.OS === 'ios' ? 1 : 20}
+                  color={COLORS.SECONDARY}
+                />
+              </View>
+            ) : this.renderQA(details_stream.details)
+            }
+          </ScrollView>
+        </View>
+        <View style={s.inputWrapper}>
+          <View
+            style={s.inputContainer}
+          >
+            <TextInput
+              style={[s.input, { height: inputHeight }]}
+              multiline
+              onContentSizeChange={this.onInputHeightChange}
+              underlineColorAndroid={COLORS.TRANSPARENT}
+            />
+            <IconButton
+              source={IMAGES.SEND}
+              style={s.sendButton}
+              imageStyle={s.sendImage}
+            />
+          </View>
+        </View>
       </View>
     );
   }

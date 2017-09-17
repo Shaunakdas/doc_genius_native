@@ -414,6 +414,39 @@ export const chatPageStyle = StyleSheet.create({
   },
 });
 
+export const questionPageStyle = StyleSheet.create({
+  inputWrapper: {
+    backgroundColor: COLORS.WHITE,
+    paddingVertical: 5,
+  },
+  inputContainer: {
+    backgroundColor: COLORS.ALMOST_WHITE,
+    marginHorizontal: 10,
+    paddingRight: 5,
+    paddingLeft: 10,
+    minHeight: 30,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: COLORS.CHAT_INPUT_BORDER,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  input: {
+    width: fullWidth - 75,
+    maxWidth: fullWidth - 75,
+    ...font(16),
+  },
+  sendButton: {
+    marginLeft: 10,
+    marginTop: 4,
+    alignSelf: 'flex-start',
+  },
+  sendImage: {
+    height: 20,
+    width: 20,
+    resizeMode: 'contain',
+  },
+});
 
 export const categorySelectionPageStyle = StyleSheet.create({
   container: {
