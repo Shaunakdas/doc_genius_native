@@ -166,3 +166,15 @@ export const createQuestionAPI = async (authToken, raw, category) => {
   const response = await jsonFetch(url, { body, method: 'POST' }, authToken);
   return response;
 };
+
+export const createAnswerAPI = async (authToken, raw, question_id, reply_to_post_number = null) => {
+  const url = `${BASE_URL}/answer`;
+  const title = `${raw} ${createRandomSlug()}`;
+  const body = JSON.stringify({
+    raw,
+    question_id,
+    reply_to_post_number,
+  });
+  const response = await jsonFetch(url, { body, method: 'POST' }, authToken);
+  return response;
+};
