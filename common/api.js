@@ -240,3 +240,11 @@ export const getMessages = listQuery => new Promise((resolve, reject) => {
     })).reverse());
   });
 });
+
+export const startRecievingMessages = (handler) => {
+  const ChannelHandler = new sendbird.ChannelHandler();
+  ChannelHandler.onMessageReceived = (channel, message) => {
+    handler(channel, message);
+  };
+  sendbird.addChannelHandler('ADMIN_STREAM', ChannelHandler);
+};

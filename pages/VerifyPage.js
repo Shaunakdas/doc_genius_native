@@ -5,7 +5,7 @@ import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { commonStyle as cs, loginPageStyle as s, font } from '../common/styles';
-import { Button, IconButton, Input } from '../components';
+import { Button, Input } from '../components';
 import IMAGES from '../common/images';
 import { activateAPI, userAPI, categoriesAPI, connectToChannel, connectToSendbird } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
@@ -83,11 +83,6 @@ class VerifyPage extends React.Component {
         overall: '',
       },
     }, this.validate);
-  }
-
-  goBack = () => {
-    const { navigation } = this.props;
-    navigation.goBack();
   }
 
   validate = () => {
@@ -212,12 +207,6 @@ class VerifyPage extends React.Component {
             loadingColor={COLORS.PRIMARY}
           />
         </ScrollView>
-        <IconButton
-          source={IMAGES.BACK}
-          style={cs.backButton}
-          imageStyle={cs.backImage}
-          onPress={this.goBack}
-        />
       </View>
     );
   }

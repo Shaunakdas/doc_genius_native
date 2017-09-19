@@ -158,6 +158,7 @@ class MainApp extends Component {
       console.log(_); // eslint-disable-line no-console
     }
   }
+
   render() {
     const Navigator = this.navigator;
     return (

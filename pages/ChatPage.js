@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Text, View, ScrollView, Image, TextInput, Keyboard, Platform } from 'react-native';
+import { Text, View, ScrollView, Image, TextInput, Keyboard, Platform, TouchableOpacity } from 'react-native';
 import { commonStyle as cs, chatPageStyle as s, fullHeight, fullWidth } from '../common/styles';
 import { Button, IconButton } from '../components';
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
-import { getMessages, sendMessageToBot, sendSendbirdMessage } from '../common/api';
+import { getMessages, sendMessageToBot, sendSendbirdMessage, startRecievingMessages } from '../common/api';
 
 const defaultInputHeight = 19.5;
 
@@ -41,6 +41,23 @@ class ChatPage extends React.Component {
   componentDidMount() {
     const listQuery = this.props.channel.createPreviousMessageListQuery();
     this.setState({ listQuery }, this.fetchMessages);
+    startRecievingMessages(this.onMessageReceived);
+  }
+
+  onMessageReceived = (channel, chat) => {
+    const { channelUrl, message } = chat;
+    const { channel_url } = this.props;
+    if (channelUrl !== channel_url) {
+      this.setState({
+        chatHistory: [
+          ...this.state.chatHistory,
+          {
+            type: 'bot',
+            chat: message,
+          },
+        ],
+      }, this.adjustChatScroll());
+    }
   }
 
   onInputHeightChange = (event) => {
@@ -70,9 +87,9 @@ class ChatPage extends React.Component {
           ],
           chatLoading: false,
           latestUserChat: userMessages.length ? userMessages[userMessages.length - 1].chat : '',
-        });
+        }, this.adjustChatScroll);
       } else {
-        this.setState({ chatLoading: false });
+        this.setState({ chatLoading: false }, this.adjustChatScroll);
       }
     });
   }
@@ -81,6 +98,11 @@ class ChatPage extends React.Component {
     const { navigation } = this.props;
     const { latestUserChat } = this.state;
     navigation.navigate('ChatCategorySelectionPage', { latestUserChat });
+  }
+
+  askOnForum = message => () => {
+    const { navigation } = this.props;
+    navigation.navigate('ChatCategorySelectionPage', { latestUserChat: message });
   }
 
   keyBoardDidShow = (event) => {
@@ -220,23 +242,25 @@ class ChatPage extends React.Component {
 
 
   renderUserChat = chat => (
-    <View
-      style={s.chatContainer}
-    >
-      <View style={s.chatUserTextContainer}>
-        <Text style={s.chatUserText}>
-          {chat}
-        </Text>
+    <TouchableOpacity onPress={this.askOnForum(chat)}>
+      <View
+        style={s.chatContainer}
+      >
+        <View style={s.chatUserTextContainer}>
+          <Text style={s.chatUserText}>
+            {chat}
+          </Text>
+        </View>
+        <Image
+          style={s.chatImage}
+          source={IMAGES.NORMAL_USER}
+        />
+        <Image
+          style={s.userBubbleImage}
+          source={IMAGES.USERBUBBLE}
+        />
       </View>
-      <Image
-        style={s.chatImage}
-        source={IMAGES.NORMAL_USER}
-      />
-      <Image
-        style={s.userBubbleImage}
-        source={IMAGES.USERBUBBLE}
-      />
-    </View>
+    </TouchableOpacity>
   );
 
   renderChat = (type, chat, index, showButtons = false) => (

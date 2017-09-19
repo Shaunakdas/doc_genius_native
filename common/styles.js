@@ -404,8 +404,8 @@ export const chatPageStyle = StyleSheet.create({
   },
   chatSendButton: {
     marginLeft: 10,
-    marginTop: 4,
-    alignSelf: 'flex-start',
+    marginBottom: 4,
+    alignSelf: 'flex-end',
   },
   chatSendImage: {
     height: 20,
@@ -514,7 +514,7 @@ export const askQuestionPageStyle = StyleSheet.create({
   },
   textInput: {
     height: 100,
-    ...font(12),
+    ...font(14),
   },
   askButton: {
     borderRadius: 10,
