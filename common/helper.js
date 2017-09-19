@@ -39,9 +39,12 @@ export const getCategoryById = (categories, id) => {
 export const createRandomSlug = () => Math.random().toString(36).substr(2);
 
 export const getUserImage = (user, size = 30, resolution = 3) => {
-  const { avatar_url } = user.user_fields;
+  let avatar_url = user.avatar_url;
+  if (user.user_fields) {
+    avatar_url = user.user_fields.avatar_url;
+  }
   if (avatar_url) {
-    return { uri: `${SCHOOL_BASE}${avatar_url.replace('{size}', size * resolution)}` };
+    return { uri: `${SCHOOL_BASE}${avatar_url.replace('{size}', size * resolution)}`, height: size, width: size };
   }
   return IMAGES.NORMAL_USER;
 };

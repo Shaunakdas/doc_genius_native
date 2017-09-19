@@ -16,6 +16,7 @@ class ChatPage extends React.Component {
     channel: PropTypes.any.isRequired,
     authToken: PropTypes.string.isRequired,
     channel_url: PropTypes.string.isRequired,
+    currentUser: PropTypes.any.isRequired,
   }
 
   constructor(props) {
@@ -252,8 +253,8 @@ class ChatPage extends React.Component {
           </Text>
         </View>
         <Image
-          style={s.chatImage}
-          source={IMAGES.NORMAL_USER}
+          style={[s.chatImage, { borderRadius: 15 }]}
+          source={this.props.currentUser.image}
         />
         <Image
           style={s.userBubbleImage}
@@ -339,7 +340,7 @@ const mapStateToProps =
    ({
      chat: { channel },
      loginState: { authToken },
-     currentUser: { channel_url } }) =>
-     ({ channel, authToken, channel_url });
+     currentUser }) =>
+     ({ channel, authToken, channel_url: currentUser.channel_url, currentUser });
 
 export default connect(mapStateToProps)(ChatPage);

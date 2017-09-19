@@ -9,7 +9,7 @@ import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, font, fullWidth, fullHeight, questionPageStyle as s } from '../common/styles';
 import { STUDENT_ROLE } from '../common/constants';
 import { questionAPI } from '../common/api';
-import { getCategoryById } from '../common/helper';
+import { getCategoryById, getUserImage } from '../common/helper';
 import { IconButton } from '../components';
 
 const defaultInputHeight = 19.5;
@@ -97,6 +97,7 @@ class QuestionPage extends React.Component {
 
   renderUser = (user_id) => {
     const user = this.state.question.user_stream[user_id];
+    const image = getUserImage(user);
     let [ display, ...ignore ] = user.name.split(' '); // eslint-disable-line
     if (user.user_fields.role === STUDENT_ROLE) {
       const grade = 12 - (user.user_fields.graduation_year - 2017);
@@ -111,10 +112,11 @@ class QuestionPage extends React.Component {
           paddingRight: 5 }}
       >
         <Image
-          source={IMAGES.POST_BY}
+          source={image}
           style={{
-            height: 16,
-            width: 16,
+            height: 20,
+            width: 20,
+            borderRadius: 4,
             resizeMode: 'contain',
           }}
         />
