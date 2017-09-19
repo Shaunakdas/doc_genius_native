@@ -47,7 +47,7 @@ class ChatPage extends React.Component {
   onMessageReceived = (channel, chat) => {
     const { channelUrl, message } = chat;
     const { channel_url } = this.props;
-    if (channelUrl !== channel_url) {
+    if (channelUrl !== channel_url || chat.data === '') {
       this.setState({
         chatHistory: [
           ...this.state.chatHistory,

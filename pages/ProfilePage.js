@@ -4,6 +4,7 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
 import IMAGES from '../common/images';
+import { removeData } from '../common/helper';
 import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
 import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, profilePageStyle as s, font } from '../common/styles';
@@ -27,158 +28,185 @@ class ProfilePage extends React.Component {
     navigation.navigate(page);
   }
 
-  renderAbout() {
-    return (
-      <View>
-        <View style={{
-          backgroundColor: alpha(COLORS.PRIMARY, 0.3),
-          paddingLeft: 20,
-          paddingVertical: 6 }}
-        >
-          <Text style={{ ...font(14) }}> About this App </Text>
-        </View>
-        <View
-          style={{ marginHorizontal: 8 }}
-        >
-          <View style={{
-            marginVertical: 8,
-            borderBottomWidth: 1,
-            borderColor: COLORS.SECONDARY,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-          >
-            <Text style={{ marginLeft: 15, ...font(13) }}> Feedback </Text>
-            <IconButton
-              source={IMAGES.GOTO}
-              style={{ marginVertical: 5 }}
-              imageStyle={{
-                height: 20,
-                width: 20,
-                resizeMode: 'contain',
-              }}
-              onPress={this.gotoPage('FeedbackPage')}
-            />
-          </View>
-          <View style={{
-            marginVertical: 8,
-            borderBottomWidth: 1,
-            borderColor: COLORS.SECONDARY,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-          >
-            <Text style={{ marginLeft: 15, ...font(13) }}> Terms & Conditions </Text>
-            <IconButton
-              source={IMAGES.GOTO}
-              style={{ marginVertical: 5 }}
-              imageStyle={{
-                height: 20,
-                width: 20,
-                resizeMode: 'contain',
-              }}
-              onPress={this.gotoPage('TermsPage')}
-            />
-          </View>
-          <View style={{
-            marginVertical: 8,
-            borderBottomWidth: 1,
-            borderColor: COLORS.SECONDARY,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-          >
-            <Text style={{ marginLeft: 15, ...font(13) }}> PrivacyPolicy </Text>
-            <IconButton
-              source={IMAGES.GOTO}
-              style={{ marginVertical: 5 }}
-              imageStyle={{
-                height: 20,
-                width: 20,
-                resizeMode: 'contain',
-              }}
-              onPress={this.gotoPage('PrivacyPage')}
-            />
-          </View>
-        </View>
-      </View>
+  logout = async () => {
+    await removeData('AUTH_TOKEN');
+    this.props.navigation.dispatch(
+      {
+        type: 'Navigation/NAVIGATE',
+        routeName: 'LandingPage',
+      },
     );
   }
 
-  renderNotifications() {
-    return (
-      <View>
+  renderAbout = () => (
+    <View>
+      <View style={{
+        backgroundColor: alpha(COLORS.PRIMARY, 0.3),
+        paddingLeft: 20,
+        paddingVertical: 6 }}
+      >
+        <Text style={{ ...font(14) }}> About this App </Text>
+      </View>
+      <View
+        style={{ marginHorizontal: 8 }}
+      >
         <View style={{
-          backgroundColor: alpha(COLORS.PRIMARY, 0.3),
-          paddingLeft: 20,
-          paddingVertical: 6 }}
+          marginVertical: 8,
+          borderBottomWidth: 1,
+          borderColor: COLORS.SECONDARY,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
         >
-          <Text style={{ ...font(14) }}> Notifications </Text>
+          <Text style={{ marginLeft: 15, ...font(13) }}> Feedback </Text>
+          <IconButton
+            source={IMAGES.GOTO}
+            style={{ marginVertical: 5 }}
+            imageStyle={{
+              height: 20,
+              width: 20,
+              resizeMode: 'contain',
+            }}
+            onPress={this.gotoPage('FeedbackPage')}
+          />
         </View>
-        <View
-          style={{ marginHorizontal: 8 }}
+        <View style={{
+          marginVertical: 8,
+          borderBottomWidth: 1,
+          borderColor: COLORS.SECONDARY,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
         >
-          <View style={{
-            marginVertical: 8,
-            borderBottomWidth: 1,
-            borderColor: COLORS.SECONDARY,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-          >
-            <View>
-              <Text style={{ marginLeft: 15, ...font(13) }}>
-                Greg commentend on your question
-              </Text>
-              <Text style={{ marginLeft: 15, ...font(10), marginVertical: 3 }}> 2 hours ago </Text>
-            </View>
-            <IconButton
-              source={IMAGES.GOTO}
-              style={{ marginVertical: 5 }}
-              imageStyle={{
-                height: 20,
-                width: 20,
-                resizeMode: 'contain',
-              }}
-            />
-          </View>
-          <View style={{
-            marginVertical: 8,
-            borderBottomWidth: 1,
-            borderColor: COLORS.SECONDARY,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-          >
-            <View>
-              <Text style={{ marginLeft: 15, ...font(13) }}> Aron liked your answer </Text>
-              <Text style={{ marginLeft: 15, ...font(10), marginVertical: 3 }}> 5 hours ago </Text>
-            </View>
-            <IconButton
-              source={IMAGES.GOTO}
-              style={{ marginVertical: 5 }}
-              imageStyle={{
-                height: 20,
-                width: 20,
-                resizeMode: 'contain',
-              }}
-            />
-          </View>
-          <Button
-            text="See More ..."
-            textStyle={{ ...font(12), color: COLORS.SECONDARY }}
-            style={{ paddingVertical: 8, paddingLeft: 20 }}
-            onPress={this.gotoPage('NotificationsPage')}
+          <Text style={{ marginLeft: 15, ...font(13) }}> Terms & Conditions </Text>
+          <IconButton
+            source={IMAGES.GOTO}
+            style={{ marginVertical: 5 }}
+            imageStyle={{
+              height: 20,
+              width: 20,
+              resizeMode: 'contain',
+            }}
+            onPress={this.gotoPage('TermsPage')}
+          />
+        </View>
+        <View style={{
+          marginVertical: 8,
+          borderBottomWidth: 1,
+          borderColor: COLORS.SECONDARY,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+        >
+          <Text style={{ marginLeft: 15, ...font(13) }}> PrivacyPolicy </Text>
+          <IconButton
+            source={IMAGES.GOTO}
+            style={{ marginVertical: 5 }}
+            imageStyle={{
+              height: 20,
+              width: 20,
+              resizeMode: 'contain',
+            }}
+            onPress={this.gotoPage('PrivacyPage')}
+          />
+        </View>
+        <View style={{
+          marginVertical: 8,
+          borderBottomWidth: 1,
+          borderColor: COLORS.SECONDARY,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+        >
+          <Text style={{ marginLeft: 15, ...font(13) }}> Logout </Text>
+          <IconButton
+            source={IMAGES.GOTO}
+            style={{ marginVertical: 5 }}
+            imageStyle={{
+              height: 20,
+              width: 20,
+              resizeMode: 'contain',
+            }}
+            onPress={this.logout}
           />
         </View>
       </View>
-    );
-  }
+    </View>
+  )
+
+  renderNotifications = () => (
+    <View>
+      <View style={{
+        backgroundColor: alpha(COLORS.PRIMARY, 0.3),
+        paddingLeft: 20,
+        paddingVertical: 6 }}
+      >
+        <Text style={{ ...font(14) }}> Notifications </Text>
+      </View>
+      <View
+        style={{ marginHorizontal: 8 }}
+      >
+        <View style={{
+          marginVertical: 8,
+          borderBottomWidth: 1,
+          borderColor: COLORS.SECONDARY,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+        >
+          <View>
+            <Text style={{ marginLeft: 15, ...font(13) }}>
+                Greg commentend on your question
+            </Text>
+            <Text style={{ marginLeft: 15, ...font(10), marginVertical: 3 }}> 2 hours ago </Text>
+          </View>
+          <IconButton
+            source={IMAGES.GOTO}
+            style={{ marginVertical: 5 }}
+            imageStyle={{
+              height: 20,
+              width: 20,
+              resizeMode: 'contain',
+            }}
+          />
+        </View>
+        <View style={{
+          marginVertical: 8,
+          borderBottomWidth: 1,
+          borderColor: COLORS.SECONDARY,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+        >
+          <View>
+            <Text style={{ marginLeft: 15, ...font(13) }}> Aron liked your answer </Text>
+            <Text style={{ marginLeft: 15, ...font(10), marginVertical: 3 }}> 5 hours ago </Text>
+          </View>
+          <IconButton
+            source={IMAGES.GOTO}
+            style={{ marginVertical: 5 }}
+            imageStyle={{
+              height: 20,
+              width: 20,
+              resizeMode: 'contain',
+            }}
+          />
+        </View>
+        <Button
+          text="See More ..."
+          textStyle={{ ...font(12), color: COLORS.SECONDARY }}
+          style={{ paddingVertical: 8, paddingLeft: 20 }}
+          onPress={this.gotoPage('NotificationsPage')}
+        />
+      </View>
+    </View>
+  )
 
   render() {
     const { currentUser } = this.props;

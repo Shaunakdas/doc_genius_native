@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { commonStyle as cs, loginPageStyle as s, font } from '../common/styles';
 import { Button, IconButton, Input } from '../components';
 import IMAGES from '../common/images';
+import { saveData } from '../common/helper';
 import { loginAPI, userAPI, categoriesAPI, connectToSendbird, connectToChannel } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
 import { STUDENT_ROLE } from '../common/constants';
@@ -131,6 +132,7 @@ class LoginPage extends React.Component {
       const { authToken } = response;
       const user = await userAPI(authToken);
       setToken(authToken);
+      await saveData('AUTH_TOKEN', authToken);
       setUser(user);
       const categories = await categoriesAPI(authToken);
       setRelevantCategories(categories);

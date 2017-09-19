@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, TextInput } from 'react-native';
+import { Text, View, Image, TextInput, Keyboard } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -40,6 +40,7 @@ class AskQuestionPage extends React.Component {
   }
 
   moveToForum = () => {
+    Keyboard.dismiss();
     this.props.navigation.dispatch(
       {
         type: 'Navigation/NAVIGATE',

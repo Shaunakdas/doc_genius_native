@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native';
 import IMAGES from './images';
 
 const SCHOOL_BASE = 'http://connecpath.tk';
@@ -43,4 +44,32 @@ export const getUserImage = (user, size = 30, resolution = 3) => {
     return { uri: `${SCHOOL_BASE}${avatar_url.replace('{size}', size * resolution)}` };
   }
   return IMAGES.NORMAL_USER;
+};
+
+export const saveData = async (key, data) => {
+  try {
+    await AsyncStorage.setItem(key, JSON.stringify(data));
+  } catch (error) {
+    // Do nothing
+  }
+};
+
+export const getData = async (key) => {
+  try {
+    const value = await AsyncStorage.getItem(key);
+    if (value !== null) {
+      return JSON.parse(value);
+    }
+  } catch (error) {
+    return null;
+  }
+  return null;
+};
+
+export const removeData = async (key) => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (error) {
+    // do nothing
+  }
 };
