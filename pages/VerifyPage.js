@@ -7,9 +7,20 @@ import { connect } from 'react-redux';
 import { commonStyle as cs, loginPageStyle as s, font } from '../common/styles';
 import { Button, IconButton, Input } from '../components';
 import IMAGES from '../common/images';
-import { activateAPI, userAPI } from '../common/api';
+import { activateAPI, userAPI, categoriesAPI, connectToChannel, connectToSendbird } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
-import { startLogIn, loginError, setAuthToken, loggedIn, setLoggedInUser } from '../store/actions';
+import {
+  startLogIn,
+  loginError,
+  setAuthToken,
+  loggedIn,
+  setLoggedInUser,
+  setCategories,
+  applyFilters,
+  setChannel,
+} from '../store/actions';
+
+import { STUDENT_ROLE } from '../common/constants';
 
 const commonInputProps = {
   style: cs.input,
@@ -101,7 +112,14 @@ class VerifyPage extends React.Component {
 
   login = async () => {
     const { password } = this.state.values;
-    const { finish, error, setToken, setUser, username } = this.props;
+    const {
+      finish,
+      error,
+      setToken,
+      setUser,
+      username,
+      setRelevantCategories,
+      setBotChannel } = this.props;
     const response = await activateAPI(username, password);
     if (response.success === false) {
       this.setState({
@@ -116,14 +134,34 @@ class VerifyPage extends React.Component {
       const user = await userAPI(authToken);
       setToken(authToken);
       setUser(user);
+      const categories = await categoriesAPI(authToken);
+      setRelevantCategories(categories);
+      if (user.role === STUDENT_ROLE) {
+        await connectToSendbird(user.sendbird_id);
+        const channel = await connectToChannel(user.channel_url);
+        setBotChannel(channel);
+      }
       finish();
-      const resetAction = NavigationActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: 'AppPage' }),
-        ],
-      });
-      this.props.navigation.dispatch(resetAction);
+      if (user.role === STUDENT_ROLE) {
+        this.props.navigation.dispatch(
+          {
+            type: 'Navigation/NAVIGATE',
+            routeName: 'AppPage',
+            action: {
+              type: 'Navigation/NAVIGATE',
+              routeName: 'ChatPage',
+            },
+          },
+        );
+      } else {
+        const resetAction = NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'AppPage' }),
+          ],
+        });
+        this.props.navigation.dispatch(resetAction);
+      }
     }
   }
 
@@ -197,6 +235,11 @@ const mapDispatchToProps = dispatch => ({
   finish: () => dispatch(loggedIn()),
   error: () => dispatch(loginError()),
   setUser: user => dispatch(setLoggedInUser(user)),
+  setRelevantCategories: (categories) => {
+    dispatch(setCategories(categories.slice(0)));
+    dispatch(applyFilters(categories.slice(0)));
+  },
+  setBotChannel: channel => dispatch(setChannel(channel)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(VerifyPage);

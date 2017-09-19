@@ -240,4 +240,3 @@ export const getMessages = listQuery => new Promise((resolve, reject) => {
     })).reverse());
   });
 });
-

@@ -6,7 +6,7 @@ import { commonStyle as cs, chatPageStyle as s, fullHeight, fullWidth } from '..
 import { Button, IconButton } from '../components';
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
-import { getMessages } from '../common/api';
+import { getMessages, sendMessageToBot, sendSendbirdMessage } from '../common/api';
 
 const defaultInputHeight = 19.5;
 
@@ -14,6 +14,8 @@ class ChatPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.any.isRequired,
     channel: PropTypes.any.isRequired,
+    authToken: PropTypes.string.isRequired,
+    channel_url: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -96,10 +98,17 @@ class ChatPage extends React.Component {
     });
   }
 
+  adjustChatScroll = () => {
+    if (this.scrollView) {
+      setTimeout(() => this.scrollView.scrollToEnd({ animated: false }), 200);
+    }
+  }
+
   sendUserChat = () => {
     let { chatInput } = this.state;
     chatInput = chatInput.trim();
     if (chatInput.length) {
+      Keyboard.dismiss();
       this.setState({
         chatHistory: [
           ...this.state.chatHistory,
@@ -110,10 +119,57 @@ class ChatPage extends React.Component {
         ],
         latestUserChat: chatInput,
         chatInput: null,
-      });
+      }, this.adjustChatScroll);
     }
-    Keyboard.dismiss();
-    if (this.scrollView) this.scrollView.scrollToEnd();
+    this.setState({
+      waitingForBot: true,
+    }, () => this.sendUserMessage(chatInput));
+  }
+
+  sendUserMessage = async (message) => {
+    const { channel, channel_url, authToken } = this.props;
+    await sendSendbirdMessage(channel, message);
+    const response = await sendMessageToBot(message, channel_url, authToken);
+    this.setState({ waitingForBot: false }, () => this.addChatBotReply(response));
+  }
+
+  addChatBotReply = (botResponse) => {
+    if (botResponse) {
+      let showButtons = false;
+      try {
+        const data = JSON.parse(botResponse.data);
+        showButtons = (data.result.action === 'input.unknown');
+      } catch (error) {
+        console.log(error); // eslint-disable-line no-console
+      }
+      this.setState({
+        chatHistory: [
+          ...this.state.chatHistory,
+          {
+            type: 'bot',
+            chat: botResponse.message,
+            showButtons,
+          },
+        ],
+      }, this.adjustChatScroll());
+    }
+  }
+
+  botButtonClick = type => () => {
+    const { chatHistory } = this.state;
+    const lastReply = chatHistory[chatHistory.length - 1];
+    const messages = chatHistory.slice(0, chatHistory.length - 1);
+    this.setState({
+      chatHistory: [
+        ...messages,
+        { ...lastReply, showButtons: false },
+      ],
+    });
+    if (type === 'YES') {
+      this.moveToCategoryPage();
+    } else {
+      this.adjustChatScroll();
+    }
   }
 
   componentWillUnMount() {
@@ -121,40 +177,46 @@ class ChatPage extends React.Component {
     this.keyboardDidShowSub.remove();
   }
 
-  renderBotChat = (chat, showButtons = false) => (
-    <View>
-      <View
-        style={[s.chatContainer, { marginBottom: showButtons ? 0 : 15 }]}
-      >
-        <Image
-          style={s.chatImage}
-          source={IMAGES.BOT_USER}
-        />
-        <View style={s.chatBotTextContainer}>
-          <Text style={s.chatBotText}>
-            {chat}
-          </Text>
+  renderBotChat = (chat, index, showButtons = false) => {
+    const { chatHistory } = this.state;
+    const totalMessages = chatHistory.length;
+    const showIntents = showButtons && (totalMessages === index + 1);
+    return (
+      <View>
+        <View
+          style={[s.chatContainer, { marginBottom: showButtons ? 0 : 15 }]}
+        >
+          <Image
+            style={s.chatImage}
+            source={IMAGES.BOT_USER}
+          />
+          <View style={s.chatBotTextContainer}>
+            <Text style={s.chatBotText}>
+              {chat}
+            </Text>
+          </View>
+          <Image
+            style={s.botBubbleImage}
+            source={IMAGES.BOTBUBBLE}
+          />
         </View>
-        <Image
-          style={s.botBubbleImage}
-          source={IMAGES.BOTBUBBLE}
-        />
+        {showIntents ? <View style={s.chatButtonContainer}>
+          <Button
+            style={s.chatButton}
+            textStyle={s.chatButtonText}
+            text="YES"
+            onPress={this.botButtonClick('YES')}
+          />
+          <Button
+            style={s.chatButton}
+            textStyle={s.chatButtonText}
+            text="NO"
+            onPress={this.botButtonClick('NO')}
+          />
+        </View> : null}
       </View>
-      {showButtons ? <View style={s.chatButtonContainer}>
-        <Button
-          style={s.chatButton}
-          textStyle={s.chatButtonText}
-          text="YES"
-          onPress={this.moveToCategoryPage}
-        />
-        <Button
-          style={s.chatButton}
-          textStyle={s.chatButtonText}
-          text="NO"
-        />
-      </View> : null}
-    </View>
-  );
+    );
+  }
 
 
   renderUserChat = chat => (
@@ -177,8 +239,8 @@ class ChatPage extends React.Component {
     </View>
   );
 
-  renderChat = (type, chat, showButtons = false) => (
-    type === 'bot' ? this.renderBotChat(chat, showButtons) : this.renderUserChat(chat)
+  renderChat = (type, chat, index, showButtons = false) => (
+    type === 'bot' ? this.renderBotChat(chat, index, showButtons) : this.renderUserChat(chat)
   );
 
   render() {
@@ -220,7 +282,7 @@ class ChatPage extends React.Component {
             {
               chatHistory.map((item, index) => (
                 <View key={index}>
-                  {this.renderChat(item.type, item.chat, item.showButtons)}
+                  {this.renderChat(item.type, item.chat, index, item.showButtons)}
                 </View>
               ))
             }
@@ -249,6 +311,11 @@ class ChatPage extends React.Component {
   }
 }
 
-const mapStateToProps = ({ chat: { channel } }) => ({ channel });
+const mapStateToProps =
+   ({
+     chat: { channel },
+     loginState: { authToken },
+     currentUser: { channel_url } }) =>
+     ({ channel, authToken, channel_url });
 
 export default connect(mapStateToProps)(ChatPage);

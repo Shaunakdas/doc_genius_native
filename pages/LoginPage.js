@@ -140,13 +140,26 @@ class LoginPage extends React.Component {
         setBotChannel(channel);
       }
       finish();
-      const resetAction = NavigationActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: 'AppPage' }),
-        ],
-      });
-      this.props.navigation.dispatch(resetAction);
+      if (user.role === STUDENT_ROLE) {
+        this.props.navigation.dispatch(
+          {
+            type: 'Navigation/NAVIGATE',
+            routeName: 'AppPage',
+            action: {
+              type: 'Navigation/NAVIGATE',
+              routeName: 'ChatPage',
+            },
+          },
+        );
+      } else {
+        const resetAction = NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'AppPage' }),
+          ],
+        });
+        this.props.navigation.dispatch(resetAction);
+      }
     }
   }
 
