@@ -54,6 +54,7 @@ class QuestionPage extends React.Component {
     }
   }
 
+
   onInputHeightChange = (event) => {
     let inputHeight = event.nativeEvent.contentSize.height;
     if (Platform.OS === 'ios') {
@@ -66,6 +67,11 @@ class QuestionPage extends React.Component {
   }
 
   onChangeText = reply => this.setState({ reply });
+
+  componentWillUnMount() {
+    this.keyboardDidHideSub.remove();
+    this.keyboardDidShowSub.remove();
+  }
 
   fetchQuestion = async () => {
     const { authToken } = this.props;

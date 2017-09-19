@@ -8,6 +8,7 @@ import PAGES from './pages';
 import COLORS, { alpha } from './common/colors';
 import { DISMISSED_FILTER } from './common/constants';
 import { Navigation, CategoryDrawer } from './components';
+import { disconnectFromSendbird } from './common/api';
 
 const getNavigator = () => {
   const ChatNavigator = StackNavigator({
@@ -150,6 +151,13 @@ class MainApp extends Component {
     }
   }
 
+  async componentWillUnMount() {
+    try {
+      await disconnectFromSendbird();
+    } catch (_) {
+      console.log(_); // eslint-disable-line no-console
+    }
+  }
   render() {
     const Navigator = this.navigator;
     return (

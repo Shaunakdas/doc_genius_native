@@ -1,5 +1,8 @@
-import { BASE_URL, STUDENT_ROLE, COUNSELOR_ROLE } from './constants';
+import SendBird from 'sendbird';
+import { BASE_URL, STUDENT_ROLE, COUNSELOR_ROLE, SENDBIRD_APP_ID } from './constants';
 import { createRandomSlug } from './helper';
+
+const sendbird = new SendBird({ appId: SENDBIRD_APP_ID });
 
 const headers = (authToken) => {
   const returnValue = {
@@ -169,7 +172,6 @@ export const createQuestionAPI = async (authToken, raw, category) => {
 
 export const createAnswerAPI = async (authToken, raw, question_id, reply_to_post_number = null) => {
   const url = `${BASE_URL}/answer`;
-  const title = `${raw} ${createRandomSlug()}`;
   const body = JSON.stringify({
     raw,
     question_id,
@@ -178,3 +180,64 @@ export const createAnswerAPI = async (authToken, raw, question_id, reply_to_post
   const response = await jsonFetch(url, { body, method: 'POST' }, authToken);
   return response;
 };
+
+export const sendMessageToBot = async (message, channel_url, authToken) => {
+  const url = 'http://18.221.40.110/chats/send_ai_message';
+  const body = JSON.stringify({
+    channel_url,
+    message,
+    message_type: 'MESG',
+  });
+  const response = await jsonFetch(url, { body, method: 'POST' }, authToken);
+  return response;
+};
+
+export const sendSendbirdMessage = async (channel, message) => new Promise((resolve, reject) => {
+  channel.sendUserMessage(message, '', '', (response, error) => {
+    if (error) {
+      reject(error);
+    }
+    resolve(response);
+  });
+});
+
+export const connectToSendbird = username => new Promise((resolve, reject) => {
+  sendbird.connect(username, (user, error) => {
+    if (error) {
+      reject(error);
+    } else {
+      resolve(user);
+    }
+  });
+});
+
+
+export const disconnectFromSendbird = () => new Promise((resolve) => {
+  sendbird.disconnect(() => {
+    resolve();
+  });
+});
+
+export const connectToChannel = channelUrl => new Promise((resolve, reject) => {
+  sendbird.GroupChannel.getChannel(channelUrl, (channel, error) => {
+    if (error) {
+      reject(error);
+    }
+    resolve(channel);
+  });
+});
+
+export const getMessages = listQuery => new Promise((resolve, reject) => {
+  listQuery.load(30, true, (messageList, error) => {
+    if (error) {
+      reject(error);
+    }
+    resolve(messageList.map(message => ({
+      type: message.sender.userId === 'schoolbot' ? 'bot' : 'user',
+      chat: message.message,
+      data: message.data,
+      createdAt: message.createdAt,
+    })).reverse());
+  });
+});
+

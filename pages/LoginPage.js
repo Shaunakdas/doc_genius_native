@@ -7,8 +7,9 @@ import { connect } from 'react-redux';
 import { commonStyle as cs, loginPageStyle as s, font } from '../common/styles';
 import { Button, IconButton, Input } from '../components';
 import IMAGES from '../common/images';
-import { loginAPI, userAPI, categoriesAPI } from '../common/api';
+import { loginAPI, userAPI, categoriesAPI, connectToSendbird, connectToChannel } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
+import { STUDENT_ROLE } from '../common/constants';
 import {
   startLogIn,
   loginError,
@@ -17,6 +18,7 @@ import {
   setLoggedInUser,
   setCategories,
   applyFilters,
+  setChannel,
 } from '../store/actions';
 
 const commonInputProps = {
@@ -114,7 +116,8 @@ class LoginPage extends React.Component {
 
   login = async () => {
     const { username, password } = this.state.values;
-    const { finish, error, setToken, setUser, setRelevantCategories } = this.props;
+    const { finish, error, setToken, setUser, setRelevantCategories, setBotChannel }
+      = this.props;
     const response = await loginAPI(username, password);
     if (response.success === false) {
       this.setState({
@@ -131,6 +134,11 @@ class LoginPage extends React.Component {
       setUser(user);
       const categories = await categoriesAPI(authToken);
       setRelevantCategories(categories);
+      if (user.role === STUDENT_ROLE) {
+        await connectToSendbird(user.sendbird_id);
+        const channel = await connectToChannel(user.channel_url);
+        setBotChannel(channel);
+      }
       finish();
       const resetAction = NavigationActions.reset({
         index: 0,
@@ -228,6 +236,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setCategories(categories.slice(0)));
     dispatch(applyFilters(categories.slice(0)));
   },
+  setBotChannel: channel => dispatch(setChannel(channel)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

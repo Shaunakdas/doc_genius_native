@@ -18,12 +18,13 @@ class AskQuestionPage extends React.Component {
     super(props);
     const { navigation } = props;
     const { params = {} } = navigation.state;
-    const { category = null } = params;
+    const { category = null, fromForum = false, question = '' } = params;
     this.state = {
       category,
-      question: '',
+      question,
       loading: false,
       error: '',
+      fromForum,
     };
   }
 

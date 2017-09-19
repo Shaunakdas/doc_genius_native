@@ -9,6 +9,11 @@ export const SET_LOGGED_IN_USER = 'SET_LOGGED_IN_USER';
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const APPLY_FILTERS = 'APPLY_FILTERS';
 export const DISMISSED_FILTER = 'DISMISSED_FILTER';
+export const SET_CHANNEL = 'SET_CHANNEL';
+export const SET_MESSAGES = 'SET_MESSAGES';
+export const ADD_MESSAGES = 'SET_MESSAGES';
 
 export const STUDENT_ROLE = 'Student';
 export const COUNSELOR_ROLE = 'Counselor';
+
+export const SENDBIRD_APP_ID = '9F467B70-99DA-4595-A2ED-241BA78C9442';

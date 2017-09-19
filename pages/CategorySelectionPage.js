@@ -28,9 +28,9 @@ class CategorySelectionPage extends React.Component {
   goToAskForum = category => () => {
     const { navigation } = this.props;
     const { params = {} } = navigation.state;
-    const { fromForum = false } = params;
+    const { fromForum = false, latestUserChat: question = '' } = params;
 
-    navigation.navigate(fromForum ? 'AskForumPage' : 'ChatAskForumPage', { category });
+    navigation.navigate(fromForum ? 'AskForumPage' : 'ChatAskForumPage', { category, question, fromForum });
   }
 
   render() {

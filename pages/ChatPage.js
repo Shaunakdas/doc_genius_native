@@ -1,16 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Text, View, ScrollView, Image, TextInput, Keyboard, Platform } from 'react-native';
 import { commonStyle as cs, chatPageStyle as s, fullHeight, fullWidth } from '../common/styles';
 import { Button, IconButton } from '../components';
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
+import { getMessages } from '../common/api';
 
 const defaultInputHeight = 19.5;
 
-export default class ChatPage extends React.Component {
+class ChatPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.any.isRequired,
+    channel: PropTypes.any.isRequired,
   }
 
   constructor(props) {
@@ -21,12 +24,21 @@ export default class ChatPage extends React.Component {
       keyboardHeight: 0,
       backedupInputHeight: undefined,
       chatInput: '',
+      chatLoading: true,
+      waitingForBot: false,
+      listQuery: null,
+      latestUserChat: '',
     };
   }
 
   componentWillMount() {
     this.keyboardDidShowSub = Keyboard.addListener(Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow', this.keyBoardDidShow);
     this.keyboardDidHideSub = Keyboard.addListener(Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide', this.keyBoardDidHide);
+  }
+
+  componentDidMount() {
+    const listQuery = this.props.channel.createPreviousMessageListQuery();
+    this.setState({ listQuery }, this.fetchMessages);
   }
 
   onInputHeightChange = (event) => {
@@ -41,12 +53,32 @@ export default class ChatPage extends React.Component {
   }
 
   onInputChange = (chatInput) => {
-    this.setState({ chatInput });
+    if (chatInput.length <= 200) { this.setState({ chatInput }); }
+  }
+
+  fetchMessages = () => {
+    this.setState({ chatLoading: true }, async () => {
+      const messages = await getMessages(this.state.listQuery);
+      const userMessages = messages.filter(m => m.type === 'user');
+      if (messages.length) {
+        this.setState({
+          chatHistory: [
+            ...messages,
+            ...this.state.chatHistory,
+          ],
+          chatLoading: false,
+          latestUserChat: userMessages.length ? userMessages[userMessages.length - 1].chat : '',
+        });
+      } else {
+        this.setState({ chatLoading: false });
+      }
+    });
   }
 
   moveToCategoryPage = () => {
     const { navigation } = this.props;
-    navigation.navigate('ChatCategorySelectionPage');
+    const { latestUserChat } = this.state;
+    navigation.navigate('ChatCategorySelectionPage', { latestUserChat });
   }
 
   keyBoardDidShow = (event) => {
@@ -64,36 +96,6 @@ export default class ChatPage extends React.Component {
     });
   }
 
-  generateRandomBotResponse = () => {
-    const autoReply = 'I can’t answer it. Would you like to post your question to the forum?';
-    const randomReply = 'I may know the answer for this';
-    const choice = Math.random();
-    if (choice < 0.5) {
-      const reply = {
-        type: 'bot',
-        chat: autoReply,
-        showButtons: true,
-      };
-      this.setState({
-        chatHistory: [
-          ...this.state.chatHistory,
-          reply,
-        ],
-      });
-    } else {
-      const reply = {
-        type: 'bot',
-        chat: randomReply,
-      };
-      this.setState({
-        chatHistory: [
-          ...this.state.chatHistory,
-          reply,
-        ],
-      });
-    }
-  }
-
   sendUserChat = () => {
     let { chatInput } = this.state;
     chatInput = chatInput.trim();
@@ -106,8 +108,9 @@ export default class ChatPage extends React.Component {
             chat: chatInput,
           },
         ],
+        latestUserChat: chatInput,
         chatInput: null,
-      }, this.generateRandomBotResponse);
+      });
     }
     Keyboard.dismiss();
     if (this.scrollView) this.scrollView.scrollToEnd();
@@ -245,3 +248,7 @@ export default class ChatPage extends React.Component {
     );
   }
 }
+
+const mapStateToProps = ({ chat: { channel } }) => ({ channel });
+
+export default connect(mapStateToProps)(ChatPage);

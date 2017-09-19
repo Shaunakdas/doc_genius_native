@@ -6,6 +6,7 @@ import {
   SET_LOGGED_IN_USER,
   SET_CATEGORIES,
   APPLY_FILTERS,
+  SET_CHANNEL,
 } from '../common/constants';
 
 export function startLogIn() {
@@ -59,5 +60,12 @@ export function applyFilters(filters) {
   return {
     type: APPLY_FILTERS,
     filters,
+  };
+}
+
+export function setChannel(channel) {
+  return {
+    type: SET_CHANNEL,
+    channel,
   };
 }
