@@ -235,10 +235,11 @@ class ProfilePage extends React.Component {
           }}
           >
             <Image
-              source={IMAGES.POST_BY}
+              source={currentUser.image}
               style={{
-                height: 30,
-                width: 30,
+                height: 55,
+                width: 55,
+                borderRadius: 27,
                 resizeMode: 'contain',
               }}
             />

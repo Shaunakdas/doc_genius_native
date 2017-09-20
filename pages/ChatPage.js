@@ -40,9 +40,11 @@ class ChatPage extends React.Component {
   }
 
   componentDidMount() {
-    const listQuery = this.props.channel.createPreviousMessageListQuery();
-    this.setState({ listQuery }, this.fetchMessages);
-    startRecievingMessages(this.onMessageReceived);
+    if (this.props.channel) {
+      const listQuery = this.props.channel.createPreviousMessageListQuery();
+      this.setState({ listQuery }, this.fetchMessages);
+      startRecievingMessages(this.onMessageReceived);
+    }
   }
 
   onMessageReceived = (channel, chat) => {
@@ -76,7 +78,7 @@ class ChatPage extends React.Component {
     if (chatInput.length <= 200) { this.setState({ chatInput }); }
   }
 
-  fetchMessages = () => {
+  fetchMessages = async () => {
     this.setState({ chatLoading: true }, async () => {
       const messages = await getMessages(this.state.listQuery);
       const userMessages = messages.filter(m => m.type === 'user');
@@ -90,6 +92,10 @@ class ChatPage extends React.Component {
           latestUserChat: userMessages.length ? userMessages[userMessages.length - 1].chat : '',
         }, this.adjustChatScroll);
       } else {
+        if (this.state.chatHistory.length === 0) {
+          const { channel_url, authToken } = this.props;
+          await sendMessageToBot('Who are you?', channel_url, authToken);
+        }
         this.setState({ chatLoading: false }, this.adjustChatScroll);
       }
     });
@@ -253,7 +259,7 @@ class ChatPage extends React.Component {
           </Text>
         </View>
         <Image
-          style={[s.chatImage, { borderRadius: 15 }]}
+          style={[s.chatImage, { borderRadius: 5 }]}
           source={this.props.currentUser.image}
         />
         <Image

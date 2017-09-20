@@ -48,46 +48,50 @@ class SplashPage extends React.Component {
         NavigationActions.navigate({ routeName: 'LandingPage' }),
       ],
     });
-    const isLoginSuccess = this.tryLogin();
+    const isLoginSuccess = await this.tryLogin();
     if (!isLoginSuccess) { this.props.navigation.dispatch(resetAction); }
   }
 
   tryLogin = async () => {
     const { finish, setToken, setUser, setRelevantCategories, setBotChannel } = this.props;
     const authToken = await getData('AUTH_TOKEN');
-    if (authToken) {
-      const user = await userAPI(authToken);
-      setToken(authToken);
-      setUser(user);
-      const categories = await categoriesAPI(authToken);
-      setRelevantCategories(categories);
-      if (user.role === STUDENT_ROLE) {
-        await connectToSendbird(user.sendbird_id);
-        const channel = await connectToChannel(user.channel_url);
-        setBotChannel(channel);
-      }
-      finish();
-      if (user.role === STUDENT_ROLE) {
-        this.props.navigation.dispatch(
-          {
-            type: 'Navigation/NAVIGATE',
-            routeName: 'AppPage',
-            action: {
+    try {
+      if (authToken) {
+        const user = await userAPI(authToken);
+        setToken(authToken);
+        setUser(user);
+        const categories = await categoriesAPI(authToken);
+        setRelevantCategories(categories);
+        if (user.role === STUDENT_ROLE) {
+          await connectToSendbird(user.sendbird_id);
+          const channel = await connectToChannel(user.channel_url);
+          setBotChannel(channel);
+        }
+        finish();
+        if (user.role === STUDENT_ROLE) {
+          this.props.navigation.dispatch(
+            {
               type: 'Navigation/NAVIGATE',
-              routeName: 'ChatPage',
+              routeName: 'AppPage',
+              action: {
+                type: 'Navigation/NAVIGATE',
+                routeName: 'ChatPage',
+              },
             },
-          },
-        );
-      } else {
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'AppPage' }),
-          ],
-        });
-        this.props.navigation.dispatch(resetAction);
+          );
+        } else {
+          const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'AppPage' }),
+            ],
+          });
+          this.props.navigation.dispatch(resetAction);
+        }
+        return true;
       }
-      return true;
+    } catch (error) {
+    // do nothing
     }
     return false;
   }

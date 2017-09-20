@@ -7,12 +7,17 @@ import { NavigationActions } from 'react-navigation';
 import { commonStyle as cs, signupPageStyle as s, font } from '../common/styles';
 import { Button, IconButton, Input } from '../components';
 import IMAGES from '../common/images';
-import { validateEmail, validGraduationYear } from '../common/helper';
+import { validateEmail, validGraduationYear, saveData } from '../common/helper';
 import COLORS, { alpha } from '../common/colors';
 import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
-import { studentSignUpApI, counselorSignUpApI } from '../common/api';
-import { setLoggedInUser } from '../store/actions';
-
+import { studentSignUpApI, counselorSignUpApI, userAPI, categoriesAPI } from '../common/api';
+import {
+  setAuthToken,
+  loggedIn,
+  setLoggedInUser,
+  setCategories,
+  applyFilters,
+} from '../store/actions';
 
 const commonInputProps = {
   style: cs.input,
@@ -193,7 +198,6 @@ class SignupPage extends React.Component {
         fullName,
         email,
         username,
-        graduationYear,
         password,
         counselorCode,
       });
@@ -204,8 +208,24 @@ class SignupPage extends React.Component {
         },
         signingUp: false });
       } else {
-        console.log(response);
-        this.setState({ signingUp: false });
+        const { setToken, setRelevantCategories } = this.props;
+        const authToken = response;
+        const user = await userAPI(authToken);
+        setToken(authToken);
+        saveData('AUTH_TOKEN', authToken);
+        setUser(user);
+        const categories = await categoriesAPI(authToken);
+        setRelevantCategories(categories);
+        this.setState({ signingUp: false }, () => {
+          this.props.navigation.dispatch({
+            type: 'Navigation/NAVIGATE',
+            routeName: 'AppPage',
+            action: {
+              type: 'Navigation/NAVIGATE',
+              routeName: 'ForumPage',
+            },
+          });
+        });
       }
     }
   }
@@ -367,7 +387,14 @@ class SignupPage extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
+  setToken: authToken => dispatch(setAuthToken(authToken)),
+  setLoggedIn: () => dispatch(loggedIn()),
   setUser: user => dispatch(setLoggedInUser(user)),
+  setRelevantCategories: (categories) => {
+    dispatch(setCategories(categories.slice(0)));
+    dispatch(applyFilters(categories.slice(0)));
+  },
 });
+
 
 export default connect(null, mapDispatchToProps)(SignupPage);

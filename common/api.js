@@ -100,31 +100,22 @@ export const studentSignUpApI = async ({ fullName, email, username, graduationYe
 };
 
 export const counselorSignUpApI = async (
-  { fullName, email, username, graduationYear, password, counselorCode }) => {
+  { fullName, email, username, password, counselorCode }) => {
   const body = JSON.stringify({
     name: fullName,
     email,
     username,
     user_fields: {
       role: COUNSELOR_ROLE,
-      graduation_year: graduationYear,
     },
     password,
     activation_token: counselorCode,
   });
   const response = await jsonFetch(`${BASE_URL}/user/sign_up`, { body, method: 'POST' });
-  if (response.success !== false) {
-    const { admin_user } = response;
-    const { id, username: username_r, email: email_r, user_fields, name } = admin_user;
-    return {
-      id,
-      username: username_r,
-      email: email_r,
-      ...user_fields,
-      name,
-    };
+  if (response.success !== false && response.auth_token) {
+    return response.auth_token;
   }
-  return { success: false, error: 'Invalid signup credentials. Please check Counselor Code, Username and Email are proper.' };
+  return { success: false, error: 'Invalid signup credentials. Please check Counselor Code and Email are proper.' };
 };
 
 export const categoriesAPI = async (authToken) => {
