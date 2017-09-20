@@ -38,6 +38,7 @@ export default {
   ANSWERS: require('../assets/img/answers.png'),
   REPLY: require('../assets/img/respond.png'),
   HEART: require('../assets/img/love_empty.png'),
+  HEART_FILL: require('../assets/img/love_fill.png'),
   USERBUBBLE: require('../assets/img/userbubble.png'),
   BOTBUBBLE: require('../assets/img/botbubble.png'),
   PROFILE_BG: require('../assets/img/profile_bg.png'),

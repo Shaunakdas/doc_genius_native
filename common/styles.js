@@ -438,8 +438,8 @@ export const questionPageStyle = StyleSheet.create({
   },
   sendButton: {
     marginLeft: 10,
-    marginTop: 4,
-    alignSelf: 'flex-start',
+    marginBottom: 4,
+    alignSelf: 'flex-end',
   },
   sendImage: {
     height: 20,

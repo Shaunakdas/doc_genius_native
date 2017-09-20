@@ -172,6 +172,24 @@ export const createAnswerAPI = async (authToken, raw, question_id, reply_to_post
   return response;
 };
 
+export const likePostAPI = async (authToken, id) => {
+  const url = `${BASE_URL}/answer/like`;
+  const body = JSON.stringify({
+    id,
+  });
+  const response = await jsonFetch(url, { body, method: 'POST' }, authToken);
+  return response;
+};
+
+export const unlikePostAPI = async (authToken, id) => {
+  const url = `${BASE_URL}/answer/unlike`;
+  const body = JSON.stringify({
+    id,
+  });
+  const response = await jsonFetch(url, { body, method: 'POST' }, authToken);
+  return response;
+};
+
 export const sendMessageToBot = async (message, channel_url, authToken) => {
   const url = 'http://18.221.40.110/chats/send_ai_message';
   const body = JSON.stringify({

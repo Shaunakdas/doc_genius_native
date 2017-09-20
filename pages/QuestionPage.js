@@ -8,7 +8,7 @@ import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, font, fullWidth, fullHeight, questionPageStyle as s } from '../common/styles';
 import { STUDENT_ROLE } from '../common/constants';
-import { questionAPI } from '../common/api';
+import { questionAPI, createAnswerAPI, unlikePostAPI, likePostAPI } from '../common/api';
 import { getCategoryById, getUserImage } from '../common/helper';
 import { IconButton } from '../components';
 
@@ -119,7 +119,53 @@ class QuestionPage extends React.Component {
   keyBoardDidHide = () => {
     this.setState({
       keyboardHeight: 0,
+      reply_to_post_number: null,
     });
+  }
+
+  focus = () => {
+    if (this.input) { this.input.focus(); }
+  }
+
+  replyTo = post => () => {
+    this.setState({
+      reply_to_post_number:
+        post.reply_to_post_number ? post.reply_to_post_number : post.post_number,
+    }, this.focus);
+  }
+
+  likeOrUnlikePost = post => async () => {
+    const { currentUserId, authToken } = this.props;
+    const { user_id, current_user_liked, id } = post;
+    if (user_id !== currentUserId) {
+      let response = null;
+      if (current_user_liked) {
+        response = await likePostAPI(authToken, id);
+      } else {
+        response = await unlikePostAPI(authToken, id);
+      }
+      if (response.success !== false) {
+        this.fetchQuestion();
+      }
+    }
+  }
+
+  submitReply = async () => {
+    const { reply, reply_to_post_number, question } = this.state;
+    const { authToken } = this.props;
+    this.setState({
+      reply: '',
+      reply_to_post_number: null,
+    });
+    Keyboard.dismiss();
+    const response =
+     await createAnswerAPI(authToken,
+        reply,
+        question.details_stream.details.id,
+        reply_to_post_number);
+    if (response.success !== false) {
+      await this.fetchQuestion();
+    }
   }
 
   renderUser = (user_id) => {
@@ -186,24 +232,31 @@ class QuestionPage extends React.Component {
         >
           {post.like_count}
         </Text>
-        <Image
-          source={IMAGES.HEART}
+        <IconButton
+          source={post.current_user_liked ? IMAGES.HEART_FILL : IMAGES.HEART}
           style={{
-            height: 16,
-            width: 16,
-            resizeMode: 'contain',
             marginRight: 12,
           }}
-        />
-        {!isQuestion ? <Image
-          source={IMAGES.REPLY}
-          style={{
+          imageStyle={{
             height: 16,
             width: 16,
             resizeMode: 'contain',
-            marginRight: 5,
           }}
-        /> : null}
+          onPress={this.likeOrUnlikePost(post)}
+        />
+        {!isQuestion ?
+          <IconButton
+            source={IMAGES.REPLY}
+            onPress={this.replyTo(post)}
+            style={{
+              marginRight: 5,
+            }}
+            imageStyle={{
+              height: 16,
+              width: 16,
+              resizeMode: 'contain',
+            }}
+          /> : null}
       </View>
     );
   };
@@ -431,11 +484,13 @@ renderQ = question => (
               underlineColorAndroid={COLORS.TRANSPARENT}
               value={this.state.reply}
               onChangeText={this.onChangeText}
+              ref={input => this.input = input}
             />
             <IconButton
               source={IMAGES.SEND}
               style={s.sendButton}
               imageStyle={s.sendImage}
+              onPress={this.submitReply}
             />
           </View>
         </View>
@@ -445,6 +500,7 @@ renderQ = question => (
 }
 
 const mapStateToProps
-  = ({ filters, loginState: { authToken }, categories }) => ({ filters, authToken, categories });
+  = ({ filters, loginState: { authToken }, categories, currentUser: { id: currentUserId } }) =>
+    ({ filters, authToken, categories, currentUserId });
 
 export default connect(mapStateToProps)(QuestionPage);
