@@ -72,11 +72,38 @@ class QuestionPage extends React.Component {
 
   onChangeText = reply => this.setState({ reply });
 
+  processQuestion = (question) => {
+    const details = question.details_stream.details;
+    const post_stream = details.post_stream;
+    const replies = {};
+    const new_stream = [];
+    const post_structure = {};
+    post_stream.forEach((post) => {
+      if (post.reply_to_post_number) {
+        post_structure[post.reply_to_post_number].push(post.post_number);
+      } else {
+        post_structure[post.post_number] = [];
+        new_stream.push(post);
+      }
+      replies[post.post_number] = post;
+    });
+    details.post_stream = new_stream;
+    details.replies = replies;
+    details.post_structure = post_structure;
+    return {
+      ...question,
+      details_stream: {
+        ...question.details_stream,
+        details,
+      },
+    };
+  };
+
   fetchQuestion = async () => {
     const { authToken } = this.props;
     const { id } = this.state;
     const question = await questionAPI(authToken, id) || {};
-    this.setState({ question, loading: false });
+    this.setState({ question: this.processQuestion(question), loading: false });
   }
 
   goBack = () => {
@@ -301,40 +328,50 @@ renderQ = question => (
     );
   };
 
-  renderAs = answers => (
-    <View
-      style={{
-        margin: 8,
-        backgroundColor: COLORS.WHITE,
-        borderRadius: 10,
-        padding: 6,
-        overflow: 'hidden',
-      }}
-    >
-      <Text
+  renderAs = (detail) => {
+    const replies = detail.replies;
+    const post_structure = detail.post_structure;
+    return (
+      <View
         style={{
-          position: 'absolute',
-          top: 24,
-          left: -4,
-          ...font(40),
-          color: alpha(COLORS.SECONDARY, 0.3),
+          margin: 8,
+          backgroundColor: COLORS.WHITE,
+          borderRadius: 10,
+          padding: 6,
+          overflow: 'hidden',
         }}
       >
+        <Text
+          style={{
+            position: 'absolute',
+            top: 24,
+            left: -4,
+            ...font(40),
+            color: alpha(COLORS.SECONDARY, 0.3),
+          }}
+        >
         A
-      </Text>
-      {answers.map(this.renderA)}
-    </View>
-  )
+        </Text>
+        {Object.keys(post_structure).slice(1).map((post_id) => {
+          const threads = post_structure[post_id];
+          return (<View key={post_id}>
+            {this.renderA(replies[post_id])}
+            {threads.map(thread => this.renderA(replies[thread]))}
+          </View>);
+        })}
+      </View>
+    );
+  }
 
   renderQA = (detail) => {
     const question = {
       ...detail,
       ...detail.post_stream[0],
     };
-    const answers = detail.post_stream.slice(1);
+    const showAnswers = detail.post_stream.length > 1;
     return (<View>
       {this.renderQ(question)}
-      {answers.length ? this.renderAs(answers) : null}
+      {showAnswers ? this.renderAs(detail) : null}
     </View>);
   }
 
