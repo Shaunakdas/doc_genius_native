@@ -247,7 +247,8 @@ export const getMessages = listQuery => new Promise((resolve, reject) => {
     if (error) {
       reject(error);
     }
-    resolve(messageList.map(message => ({
+    const messages = messageList || [];
+    resolve(messages.map(message => ({
       type: message.sender.userId === 'schoolbot' ? 'bot' : 'user',
       chat: message.message,
       data: message.data,

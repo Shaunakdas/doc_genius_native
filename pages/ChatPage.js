@@ -47,9 +47,14 @@ class ChatPage extends React.Component {
   componentDidMount() {
     if (this.props.channel) {
       const listQuery = this.props.channel.createPreviousMessageListQuery();
-      this.setState({ listQuery }, this.fetchMessages);
       startRecievingMessages(this.onMessageReceived);
+      this.setState({ listQuery }, this.fetchMessages);
     }
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidHideSub.remove();
+    this.keyboardDidShowSub.remove();
   }
 
   onMessageReceived = (channel, chat) => {
@@ -99,7 +104,9 @@ class ChatPage extends React.Component {
       } else {
         if (this.state.chatHistory.length === 0) {
           const { channel_url, authToken } = this.props;
-          await sendMessageToBot('Who are you?', channel_url, authToken);
+          setTimeout(async () => {
+            await sendMessageToBot('Who are you?', channel_url, authToken);            
+          }, 500);
         }
         this.setState({ chatLoading: false }, this.adjustChatScroll);
       }
@@ -204,11 +211,6 @@ class ChatPage extends React.Component {
     } else {
       this.adjustChatScroll();
     }
-  }
-
-  componentWillUnMount() {
-    this.keyboardDidHideSub.remove();
-    this.keyboardDidShowSub.remove();
   }
 
   renderBotChat = (chat, index, showButtons = false) => {

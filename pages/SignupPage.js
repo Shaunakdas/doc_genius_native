@@ -176,9 +176,10 @@ class SignupPage extends React.Component {
         password,
       });
       if (response.success === false) {
+        const overallError = response.message || response.error || 'Signup failed try again!';
         this.setState({ errors: {
           ...this.state.errors,
-          overall: response.message || response.error || 'Signup failed try again!',
+          overall: typeof overallError === 'string' ? overallError : 'Signup failed try again!',
         },
         signingUp: false });
       } else {
@@ -200,9 +201,10 @@ class SignupPage extends React.Component {
         counselorCode,
       });
       if (response.success === false) {
+        const error = response.error;
         this.setState({ errors: {
           ...this.state.errors,
-          overall: response.error,
+          overall: typeof error === 'string' ? error : 'Signup failed try again!',
         },
         signingUp: false });
       } else {
