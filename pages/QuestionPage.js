@@ -153,9 +153,9 @@ class QuestionPage extends React.Component {
     if (user_id !== currentUserId) {
       let response = null;
       if (current_user_liked) {
-        response = await likePostAPI(authToken, id);
-      } else {
         response = await unlikePostAPI(authToken, id);
+      } else {
+        response = await likePostAPI(authToken, id);
       }
       if (response.success !== false) {
         this.fetchQuestion();
