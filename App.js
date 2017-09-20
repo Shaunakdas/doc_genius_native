@@ -6,7 +6,7 @@ import moment from 'moment';
 import configureStore from './store/configureStore';
 import PAGES from './pages';
 import COLORS, { alpha } from './common/colors';
-import { DISMISSED_FILTER } from './common/constants';
+import { DISMISSED_FILTER, REFRESH_PROFILE } from './common/constants';
 import { Navigation, CategoryDrawer } from './components';
 import { disconnectFromSendbird } from './common/api';
 
@@ -151,6 +151,9 @@ class MainApp extends Component {
     const { routeName, params = {} } = action;
     if (routeName === 'DrawerClose' && !params.filtersApplied) {
       store.dispatch({ type: DISMISSED_FILTER });
+    }
+    if (routeName === 'ProfilePage') {
+      store.dispatch({ type: REFRESH_PROFILE });
     }
   }
 

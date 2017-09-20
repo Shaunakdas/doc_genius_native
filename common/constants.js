@@ -14,6 +14,7 @@ export const SET_MESSAGES = 'SET_MESSAGES';
 export const ADD_MESSAGES = 'ADD_MESSAGES';
 export const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS';
 export const ADD_NOTIFICATIONS = 'ADD_NOTIFICATIONS';
+export const REFRESH_PROFILE = 'REFRESH_PROFILE';
 
 export const STUDENT_ROLE = 'Student';
 export const COUNSELOR_ROLE = 'Counselor';

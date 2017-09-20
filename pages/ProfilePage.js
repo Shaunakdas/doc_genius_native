@@ -10,14 +10,15 @@ import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
 import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, profilePageStyle as s, font } from '../common/styles';
 import { IconButton, Button } from '../components';
-import { setNotifications } from '../store/actions';
-import { notificationsAPI } from '../common/api';
+import { setNotifications, setLoggedInUser } from '../store/actions';
+import { notificationsAPI, userAPI } from '../common/api';
 
 class ProfilePage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
     currentUser: PropTypes.any.isRequired,
     notifications: PropTypes.array.isRequired,
+    profileNumber: PropTypes.number.isRequired,
   }
 
   constructor(props) {
@@ -29,6 +30,19 @@ class ProfilePage extends React.Component {
   }
 
   async componentDidMount() {
+    await this.fetchNotifications();
+  }
+
+  async componentWillReceiveProps(nextProps) {
+    if (nextProps.profileNumber !== this.props.profileNumber) {
+      const { authToken, setUser } = this.props;
+      const user = await userAPI(authToken);
+      if (user.success !== false) { setUser(user); }
+      await this.fetchNotifications();
+    }
+  }
+
+  fetchNotifications = async () => {
     const { authToken } = this.props;
     const response = await notificationsAPI(authToken);
     if (response.success !== false) {
@@ -388,11 +402,17 @@ class ProfilePage extends React.Component {
   }
 }
 
-const mapStateToProps = ({ currentUser, profile: { notifications }, loginState: { authToken } }) =>
-  ({ currentUser, notifications, authToken });
+const mapStateToProps = ({
+  currentUser,
+  profile: { notifications },
+  loginState: { authToken },
+  appState: { profileNumber },
+}) =>
+  ({ currentUser, notifications, authToken, profileNumber });
 
 const mapDispatchToProps = dispatch => ({
   putNotifications: notifications => dispatch(setNotifications(notifications)),
+  setUser: user => dispatch(setLoggedInUser(user)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);

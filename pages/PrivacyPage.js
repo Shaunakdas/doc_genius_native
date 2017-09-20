@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, WebView } from 'react-native';
 import { PropTypes } from 'prop-types';
 
 import IMAGES from '../common/images';
@@ -25,17 +25,23 @@ export default class PrivacyPage extends React.Component {
 
   render() {
     return (
-      <View style={cs.header}>
-        <Text style={cs.headerText}> Privacy Policy </Text>
-        <Image
-          source={IMAGES.HEADER_BG}
-          style={cs.headerImage}
-        />
-        <IconButton
-          source={IMAGES.BACK}
-          onPress={this.goBack}
-          style={[cs.backButton, cs.headerBackButton]}
-          imageStyle={cs.backImage}
+      <View style={cs.container}>
+        <View style={cs.header}>
+          <Text style={cs.headerText}> Privacy Policy </Text>
+          <Image
+            source={IMAGES.HEADER_BG}
+            style={cs.headerImage}
+          />
+          <IconButton
+            source={IMAGES.BACK}
+            onPress={this.goBack}
+            style={[cs.backButton, cs.headerBackButton]}
+            imageStyle={cs.backImage}
+          />
+        </View>
+        <WebView
+          source={{ uri: 'https://connecpath.com/privacy' }}
+          startInLoadingState
         />
       </View>
     );
