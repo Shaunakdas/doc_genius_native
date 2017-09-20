@@ -190,6 +190,12 @@ export const unlikePostAPI = async (authToken, id) => {
   return response;
 };
 
+export const notificationsAPI = async (authToken) => {
+  const url = `${BASE_URL}/notifications`;
+  const response = await jsonFetch(url, { method: 'GET' }, authToken);
+  return response;
+};
+
 export const sendMessageToBot = async (message, channel_url, authToken) => {
   const url = 'http://18.221.40.110/chats/send_ai_message';
   const body = JSON.stringify({

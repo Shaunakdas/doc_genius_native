@@ -7,6 +7,8 @@ import {
   SET_CATEGORIES,
   APPLY_FILTERS,
   SET_CHANNEL,
+  SET_NOTIFICATIONS,
+  ADD_NOTIFICATIONS,
 } from '../common/constants';
 
 export function startLogIn() {
@@ -67,5 +69,19 @@ export function setChannel(channel) {
   return {
     type: SET_CHANNEL,
     channel,
+  };
+}
+
+export function setNotifications(notifications) {
+  return {
+    type: SET_NOTIFICATIONS,
+    notifications,
+  };
+}
+
+export function addNotifications(notifications) {
+  return {
+    type: ADD_NOTIFICATIONS,
+    notifications,
   };
 }

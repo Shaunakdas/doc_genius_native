@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, View, Image, ScrollView } from 'react-native';
 import { PropTypes } from 'prop-types';
-import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { commonStyle as cs, loginPageStyle as s, font } from '../common/styles';
@@ -19,8 +18,6 @@ import {
   applyFilters,
   setChannel,
 } from '../store/actions';
-
-import { STUDENT_ROLE } from '../common/constants';
 
 const commonInputProps = {
   style: cs.input,
@@ -131,32 +128,20 @@ class VerifyPage extends React.Component {
       setUser(user);
       const categories = await categoriesAPI(authToken);
       setRelevantCategories(categories);
-      if (user.role === STUDENT_ROLE) {
-        await connectToSendbird(user.sendbird_id);
-        const channel = await connectToChannel(user.channel_url);
-        setBotChannel(channel);
-      }
+      await connectToSendbird(user.sendbird_id);
+      const channel = await connectToChannel(user.channel_url);
+      setBotChannel(channel);
       finish();
-      if (user.role === STUDENT_ROLE) {
-        this.props.navigation.dispatch(
-          {
+      this.props.navigation.dispatch(
+        {
+          type: 'Navigation/NAVIGATE',
+          routeName: 'AppPage',
+          action: {
             type: 'Navigation/NAVIGATE',
-            routeName: 'AppPage',
-            action: {
-              type: 'Navigation/NAVIGATE',
-              routeName: 'ChatPage',
-            },
+            routeName: 'ChatPage',
           },
-        );
-      } else {
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'AppPage' }),
-          ],
-        });
-        this.props.navigation.dispatch(resetAction);
-      }
+        },
+      );
     }
   }
 

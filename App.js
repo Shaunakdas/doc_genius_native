@@ -68,6 +68,9 @@ const getNavigator = () => {
     NotificationsPage: {
       screen: PAGES.NotificationsPage,
     },
+    NotificationQuestionPage: {
+      screen: PAGES.QuestionPage,
+    },
   }, {
     headerMode: 'none',
   });

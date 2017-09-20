@@ -13,10 +13,15 @@ const defaultInputHeight = 19.5;
 class ChatPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.any.isRequired,
-    channel: PropTypes.any.isRequired,
+    channel: PropTypes.any,
     authToken: PropTypes.string.isRequired,
-    channel_url: PropTypes.string.isRequired,
+    channel_url: PropTypes.string,
     currentUser: PropTypes.any.isRequired,
+  }
+
+  static defaultProps = {
+    channel: null,
+    channel_url: null,
   }
 
   constructor(props) {

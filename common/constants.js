@@ -11,7 +11,9 @@ export const APPLY_FILTERS = 'APPLY_FILTERS';
 export const DISMISSED_FILTER = 'DISMISSED_FILTER';
 export const SET_CHANNEL = 'SET_CHANNEL';
 export const SET_MESSAGES = 'SET_MESSAGES';
-export const ADD_MESSAGES = 'SET_MESSAGES';
+export const ADD_MESSAGES = 'ADD_MESSAGES';
+export const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS';
+export const ADD_NOTIFICATIONS = 'ADD_NOTIFICATIONS';
 
 export const STUDENT_ROLE = 'Student';
 export const COUNSELOR_ROLE = 'Counselor';

@@ -215,7 +215,7 @@ class LoginPage extends React.Component {
             marginBottom: 20,
             ...font(10),
           }}
-          >{errors.overall}</Text> : null}
+          >{typeof errors.overall === 'string' ? errors.overall : "Couldn't login now. Try later"}</Text> : null}
           <Button
             text="Get Started"
             style={[cs.getStartedButton, s.button]}

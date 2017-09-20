@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, Image, ScrollView, View, KeyboardAvoidingView } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 
 import { commonStyle as cs, signupPageStyle as s, font } from '../common/styles';
 import { Button, IconButton, Input } from '../components';
@@ -185,13 +184,12 @@ class SignupPage extends React.Component {
       } else {
         setUser(response);
         this.setState({ signingUp: false });
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'VerifyPage' }),
-          ],
-        });
-        this.props.navigation.dispatch(resetAction);
+        this.props.navigation.dispatch(
+          {
+            type: 'Navigation/NAVIGATE',
+            routeName: 'VerifyPage',
+          },
+        );
       }
     } else if (role === COUNSELOR_ROLE) {
       const response = await counselorSignUpApI({

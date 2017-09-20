@@ -25,12 +25,12 @@ class QuestionPage extends React.Component {
     super(props);
     const { navigation } = props;
     const { params = {} } = navigation.state;
-    const { id, category_id } = params;
+    const { id, category_id = null } = params;
     this.state = {
       id,
       question: null,
       loading: true,
-      category: getCategoryById(props.categories, category_id),
+      category: category_id ? getCategoryById(props.categories, category_id) : null,
       inputHeight: defaultInputHeight,
       keyboardHeight: 0,
       backedupInputHeight: undefined,
@@ -45,6 +45,12 @@ class QuestionPage extends React.Component {
   }
 
   async componentDidMount() {
+    const { navigation } = this.props;
+    const { params = {} } = navigation.state;
+    const { focusReply = false } = params;
+    if (focusReply && this.input) {
+      this.input.focus();
+    }
     await this.fetchQuestion();
   }
 
@@ -103,9 +109,16 @@ class QuestionPage extends React.Component {
     const { authToken } = this.props;
     const { id } = this.state;
     const question = await questionAPI(authToken, id) || {};
-    this.setState({ question: this.processQuestion(question), loading: false });
+    if (question.success !== false) {
+      const processedQuestion = this.processQuestion(question);
+      let category = this.state.category;
+      if (category === null) {
+        const { category_id } = processedQuestion.details_stream.details;
+        category = getCategoryById(this.props.categories, category_id);
+      }
+      this.setState({ question: processedQuestion, loading: false, category });
+    }
   }
-
   goBack = () => {
     const { navigation } = this.props;
     navigation.goBack();
@@ -325,15 +338,15 @@ renderQ = question => (
     </View>
   </View>
 )
-  renderA = (answer, index) => {
+  renderA = (answer, showBorder) => {
     const isReply = !!answer.reply_to_post_number;
     return (
       <View
         style={{
-          borderTopWidth: index ? 1 : 0,
+          borderTopWidth: showBorder ? 1 : 0,
           borderColor: '#B1E0EC',
           paddingLeft: 15,
-          paddingTop: index ? 12 : 4,
+          paddingTop: showBorder ? 12 : 4,
           marginBottom: 4,
           marginTop: 4,
           paddingBottom: 4,
@@ -405,11 +418,11 @@ renderQ = question => (
         >
         A
         </Text>
-        {Object.keys(post_structure).slice(1).map((post_id) => {
+        {Object.keys(post_structure).slice(1).map((post_id, index) => {
           const threads = post_structure[post_id];
           return (<View key={post_id}>
-            {this.renderA(replies[post_id])}
-            {threads.map(thread => this.renderA(replies[thread]))}
+            {this.renderA(replies[post_id], index > 0)}
+            {threads.map(thread => this.renderA(replies[thread], true))}
           </View>);
         })}
       </View>
@@ -449,7 +462,7 @@ renderQ = question => (
             style={[cs.backButton, { top: 22 }]}
             imageStyle={cs.backImage}
           />
-          <Text style={cs.headerText}> {category.name} </Text>
+          <Text style={cs.headerText}> {category ? category.name : 'Loading ...'} </Text>
         </View>
         <View style={{ height: availableHeight }}>
           <ScrollView

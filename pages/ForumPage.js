@@ -72,9 +72,9 @@ class ForumPage extends React.Component {
   }
 
 
-  goToQuestion = question => () => {
+  goToQuestion = (question, focusReply = false) => () => {
     const { navigation } = this.props;
-    navigation.navigate('QuestionPage', { id: question.id, category_id: question.category_id });
+    navigation.navigate('QuestionPage', { id: question.id, category_id: question.category_id, focusReply });
   }
 
   renderUser = (user_id) => {
@@ -127,7 +127,7 @@ class ForumPage extends React.Component {
     </Text>
   )
 
-  renderButtons = (post) => {
+  renderButtons = (post, detail) => {
     const reply_count = post.posts_count ? post.posts_count - 1 : post.reply_count;
     const showAnswer = post.posts_count && post.posts_count > 1;
     return (
@@ -161,15 +161,30 @@ class ForumPage extends React.Component {
         >
           {reply_count}
         </Text>
-        <Image
-          source={showAnswer ? IMAGES.ANSWERS : IMAGES.REPLY}
-          style={{
-            height: 16,
-            width: 16,
-            resizeMode: 'contain',
-            marginRight: 5,
-          }}
-        />
+        {
+          showAnswer ?
+            (<Image
+              source={IMAGES.ANSWERS}
+              style={{
+                height: 16,
+                width: 16,
+                resizeMode: 'contain',
+                marginRight: 5,
+              }}
+            />) :
+            (<IconButton
+              source={IMAGES.REPLY}
+              style={{ marginRight: 5,
+              }}
+              imageStyle={{
+                height: 16,
+                width: 16,
+                resizeMode: 'contain',
+              }}
+              onPress={this.goToQuestion(detail, true)}
+            />
+            )
+        }
       </View>
     );
   };
@@ -204,7 +219,7 @@ class ForumPage extends React.Component {
     </View>
   );
 
-renderQ = question => (
+renderQ = (question, detail) => (
   <View style={{
     padding: 5,
     paddingRight: 8,
@@ -244,13 +259,13 @@ renderQ = question => (
       >
         {this.renderUser(question.user_id)}
         {this.renderTime(question.created_at)}
-        {this.renderButtons(question)}
+        {this.renderButtons(question, detail)}
       </View>
     </View>
   </View>
 )
 
-  renderA = answer => (
+  renderA = (answer, detail) => (
     <View
       style={{
         paddingTop: 8,
@@ -295,7 +310,7 @@ renderQ = question => (
         >
           {this.renderUser(answer.user_id)}
           {this.renderTime(answer.created_at)}
-          {this.renderButtons(answer)}
+          {this.renderButtons(answer, detail)}
         </View>
       </View>
     </View>
@@ -320,8 +335,8 @@ renderQ = question => (
       onPress={this.goToQuestion(detail)}
     >
       {this.renderCategoryLabel(getCategoryById(categories, question.category_id))}
-      {this.renderQ(question)}
-      {answer ? this.renderA(answer) : null}
+      {this.renderQ(question, detail)}
+      {answer ? this.renderA(answer, detail) : null}
     </TouchableOpacity>);
   }
 

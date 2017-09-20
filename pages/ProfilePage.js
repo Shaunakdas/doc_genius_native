@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, Image, ScrollView } from 'react-native';
+import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import IMAGES from '../common/images';
 import { removeData } from '../common/helper';
@@ -9,23 +10,69 @@ import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
 import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, profilePageStyle as s, font } from '../common/styles';
 import { IconButton, Button } from '../components';
+import { setNotifications } from '../store/actions';
+import { notificationsAPI } from '../common/api';
 
 class ProfilePage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
     currentUser: PropTypes.any.isRequired,
+    notifications: PropTypes.array.isRequired,
   }
 
   constructor(props) {
     super(props);
     this.state = {
       profile: null,
+      loadingNotifications: true,
     };
+  }
+
+  async componentDidMount() {
+    const { authToken } = this.props;
+    const response = await notificationsAPI(authToken);
+    if (response.success !== false) {
+      const { notifications, user_list: { field_stream: users } } = response;
+      const applicableNotifications =
+        notifications.filter(({ notification_type }) =>
+          [5, 9, 13].indexOf(notification_type) !== -1)
+          .map((notification) => {
+            const {
+              id,
+              notification_type: type,
+              read,
+              post_number,
+              topic_id,
+              created_at,
+            } = notification;
+            const username = notification.data.original_username;
+            const userFullName = users.filter(item => item.username === username)[0].name;
+            return {
+              id,
+              type,
+              read,
+              post_number,
+              topic_id,
+              created_at,
+              userFullName,
+            };
+          });
+      const { putNotifications } = this.props;
+      putNotifications(applicableNotifications);
+    }
+    this.setState({ loadingNotifications: false });
   }
 
   gotoPage = page => () => {
     const { navigation } = this.props;
     navigation.navigate(page);
+  }
+
+  gotoQuestionPage = (notification) => {
+    const { navigation } = this.props;
+    if (notification.topic_id) {
+      navigation.navigate('NotificationQuestionPage', { id: notification.topic_id });
+    }
   }
 
   logout = async () => {
@@ -37,6 +84,39 @@ class ProfilePage extends React.Component {
       },
     );
   }
+
+  goToNotification = notification => () => {
+    this.gotoQuestionPage(notification);
+  }
+
+  renderPageItem = (display, page) => (
+    <TouchableOpacity
+      onPress={this.gotoPage(page)}
+      key={page}
+    >
+      <View
+        style={{
+          marginVertical: 8,
+          borderBottomWidth: 1,
+          borderColor: COLORS.SECONDARY,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Text style={{ marginLeft: 15, ...font(13) }}> {display} </Text>
+        <Image
+          source={IMAGES.GOTO}
+          style={{
+            marginVertical: 5,
+            height: 20,
+            width: 20,
+            resizeMode: 'contain',
+          }}
+        />
+      </View>
+    </TouchableOpacity>
+  )
 
   renderAbout = () => (
     <View>
@@ -50,163 +130,104 @@ class ProfilePage extends React.Component {
       <View
         style={{ marginHorizontal: 8 }}
       >
-        <View style={{
-          marginVertical: 8,
-          borderBottomWidth: 1,
-          borderColor: COLORS.SECONDARY,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
+        {this.renderPageItem('Feedback', 'FeedbackPage')}
+        {this.renderPageItem('Terms & Conditions', 'TermsPage')}
+        {this.renderPageItem('Privacy Policy', 'PrivacyPage')}
+        <TouchableOpacity
+          onPress={this.logout}
         >
-          <Text style={{ marginLeft: 15, ...font(13) }}> Feedback </Text>
-          <IconButton
-            source={IMAGES.GOTO}
-            style={{ marginVertical: 5 }}
-            imageStyle={{
-              height: 20,
-              width: 20,
-              resizeMode: 'contain',
-            }}
-            onPress={this.gotoPage('FeedbackPage')}
-          />
-        </View>
-        <View style={{
-          marginVertical: 8,
-          borderBottomWidth: 1,
-          borderColor: COLORS.SECONDARY,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-        >
-          <Text style={{ marginLeft: 15, ...font(13) }}> Terms & Conditions </Text>
-          <IconButton
-            source={IMAGES.GOTO}
-            style={{ marginVertical: 5 }}
-            imageStyle={{
-              height: 20,
-              width: 20,
-              resizeMode: 'contain',
-            }}
-            onPress={this.gotoPage('TermsPage')}
-          />
-        </View>
-        <View style={{
-          marginVertical: 8,
-          borderBottomWidth: 1,
-          borderColor: COLORS.SECONDARY,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-        >
-          <Text style={{ marginLeft: 15, ...font(13) }}> PrivacyPolicy </Text>
-          <IconButton
-            source={IMAGES.GOTO}
-            style={{ marginVertical: 5 }}
-            imageStyle={{
-              height: 20,
-              width: 20,
-              resizeMode: 'contain',
-            }}
-            onPress={this.gotoPage('PrivacyPage')}
-          />
-        </View>
-        <View style={{
-          marginVertical: 8,
-          borderBottomWidth: 1,
-          borderColor: COLORS.SECONDARY,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-        >
-          <Text style={{ marginLeft: 15, ...font(13) }}> Logout </Text>
-          <IconButton
-            source={IMAGES.GOTO}
-            style={{ marginVertical: 5 }}
-            imageStyle={{
-              height: 20,
-              width: 20,
-              resizeMode: 'contain',
-            }}
-            onPress={this.logout}
-          />
-        </View>
+          <View style={{
+            marginVertical: 8,
+            borderBottomWidth: 1,
+            borderColor: COLORS.SECONDARY,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+          >
+            <Text style={{ marginLeft: 15, ...font(13) }}> Logout </Text>
+            <Image
+              source={IMAGES.GOTO}
+              style={{ marginVertical: 5,
+                height: 20,
+                width: 20,
+                resizeMode: 'contain',
+              }}
+            />
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   )
 
-  renderNotifications = () => (
-    <View>
-      <View style={{
-        backgroundColor: alpha(COLORS.PRIMARY, 0.3),
-        paddingLeft: 20,
-        paddingVertical: 6 }}
+  renderNotification = (notification) => {
+    const actions = {
+      5: 'liked your post',
+      9: 'replied to your post',
+      13: 'created a new question',
+    };
+    return (
+      <TouchableOpacity
+        onPress={this.goToNotification(notification)}
+        key={notification.id}
       >
-        <Text style={{ ...font(14) }}> Notifications </Text>
-      </View>
-      <View
-        style={{ marginHorizontal: 8 }}
-      >
-        <View style={{
-          marginVertical: 8,
-          borderBottomWidth: 1,
-          borderColor: COLORS.SECONDARY,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
+        <View
+          style={{
+            marginVertical: 8,
+            borderBottomWidth: 1,
+            borderColor: COLORS.SECONDARY,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
         >
           <View>
             <Text style={{ marginLeft: 15, ...font(13) }}>
-                Greg commentend on your question
+              {`${notification.userFullName} ${actions[notification.type]}`}
             </Text>
-            <Text style={{ marginLeft: 15, ...font(10), marginVertical: 3 }}> 2 hours ago </Text>
+            <Text style={{ marginLeft: 15, ...font(10), marginVertical: 3 }}>
+              {moment(notification.created_at).fromNow()}
+            </Text>
           </View>
-          <IconButton
+          <Image
             source={IMAGES.GOTO}
-            style={{ marginVertical: 5 }}
-            imageStyle={{
+            style={{ marginVertical: 5,
               height: 20,
               width: 20,
               resizeMode: 'contain',
             }}
           />
         </View>
+      </TouchableOpacity>
+    );
+  };
+
+  renderNotifications = () => {
+    const { notifications } = this.props;
+    const { loadingNotifications } = this.state;
+    return notifications.length && !loadingNotifications ? (
+      <View>
         <View style={{
-          marginVertical: 8,
-          borderBottomWidth: 1,
-          borderColor: COLORS.SECONDARY,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
+          backgroundColor: alpha(COLORS.PRIMARY, 0.3),
+          paddingLeft: 20,
+          paddingVertical: 6 }}
         >
-          <View>
-            <Text style={{ marginLeft: 15, ...font(13) }}> Aron liked your answer </Text>
-            <Text style={{ marginLeft: 15, ...font(10), marginVertical: 3 }}> 5 hours ago </Text>
-          </View>
-          <IconButton
-            source={IMAGES.GOTO}
-            style={{ marginVertical: 5 }}
-            imageStyle={{
-              height: 20,
-              width: 20,
-              resizeMode: 'contain',
-            }}
+          <Text style={{ ...font(14) }}> Notifications </Text>
+        </View>
+        <View
+          style={{ marginHorizontal: 8 }}
+        >
+          {notifications.slice(0, 3).map(this.renderNotification)}
+          <Button
+            text="See More ..."
+            textStyle={{ ...font(12), color: COLORS.SECONDARY }}
+            style={{ paddingVertical: 8, paddingLeft: 20 }}
+            onPress={this.gotoPage('NotificationsPage')}
           />
         </View>
-        <Button
-          text="See More ..."
-          textStyle={{ ...font(12), color: COLORS.SECONDARY }}
-          style={{ paddingVertical: 8, paddingLeft: 20 }}
-          onPress={this.gotoPage('NotificationsPage')}
-        />
       </View>
-    </View>
-  )
+    ) : null;
+  }
 
   render() {
     const { currentUser } = this.props;
@@ -367,5 +388,11 @@ class ProfilePage extends React.Component {
   }
 }
 
-const mapStateToProps = ({ currentUser }) => ({ currentUser });
-export default connect(mapStateToProps)(ProfilePage);
+const mapStateToProps = ({ currentUser, profile: { notifications }, loginState: { authToken } }) =>
+  ({ currentUser, notifications, authToken });
+
+const mapDispatchToProps = dispatch => ({
+  putNotifications: notifications => dispatch(setNotifications(notifications)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);
