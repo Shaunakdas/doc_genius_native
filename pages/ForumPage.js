@@ -1,5 +1,15 @@
 import React from 'react';
-import { Text, View, Image, TextInput, ScrollView, ActivityIndicator, Platform, TouchableOpacity } from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  TextInput,
+  ScrollView,
+  ActivityIndicator,
+  Platform,
+  TouchableOpacity,
+  RefreshControl,
+} from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -17,6 +27,7 @@ class ForumPage extends React.Component {
     navigation: PropTypes.object.isRequired,
     filters: PropTypes.array.isRequired,
     categories: PropTypes.array.isRequired,
+    forumNumber: PropTypes.number.isRequired,
   }
 
   constructor(props) {
@@ -24,6 +35,8 @@ class ForumPage extends React.Component {
     this.state = {
       searchTerm: '',
       questions: null,
+      refreshing: false,
+      loading: true,
     };
   }
 
@@ -32,8 +45,12 @@ class ForumPage extends React.Component {
   }
 
   async componentWillReceiveProps(nextProps) {
-    if (nextProps.filters.length !== this.props.filters.length) {
-      await this.fetchPosts(nextProps.filters);
+    const newValues = nextProps.filters.sort((a, b) => a.id > b.id).map(a => a.id).join();
+    const oldValues = this.props.filters.sort((a, b) => a.id > b.id).map(a => a.id).join();
+    if (oldValues !== newValues) {
+      await this.fetchPosts(nextProps.filters, true);
+    } else if (nextProps.forumNumber !== this.props.forumNumber) {
+      await this.fetchPosts();
     }
   }
 
@@ -47,19 +64,30 @@ class ForumPage extends React.Component {
     this.fetchPosts();
   }
 
+  onRefresh = () => {
+    if (!this.state.loading && !this.state.refreshing) {
+      this.setState({ refreshing: true });
+      this.fetchPosts();
+    }
+  }
+
   clearSearch = () => {
     this.setState({
       searchTerm: '',
     }, this.fetchPosts);
   }
 
-  fetchPosts = async (sentFilters = null) => {
+  fetchPosts = async (sentFilters = null, loading = false) => {
     const { authToken } = this.props;
     const filters = sentFilters || this.props.filters;
     const { searchTerm } = this.state;
-    this.setState({ loading: true });
+    if (loading) {
+      this.setState({ loading: true });
+    } else {
+      this.setState({ refreshing: true });
+    }
     const questions = await postsAPI(authToken, filters, searchTerm) || {};
-    this.setState({ questions, loading: false });
+    this.setState({ questions, loading: false, refreshing: false });
   }
 
   openDrawer = () => {
@@ -342,7 +370,7 @@ renderQ = (question, detail) => (
 
   render() {
     const { filters } = this.props;
-    const { loading, questions } = this.state;
+    const { loading, questions, refreshing } = this.state;
     const { details_stream } = questions || {};
     return (
       <View
@@ -439,6 +467,12 @@ renderQ = (question, detail) => (
         </View>
         <ScrollView
           style={{ flex: 1 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing && !loading}
+              onRefresh={this.onRefresh}
+            />
+          }
         >
           { loading ? (
             <View
@@ -475,6 +509,11 @@ renderQ = (question, detail) => (
 }
 
 const mapStateToProps
-  = ({ filters, loginState: { authToken }, categories }) => ({ filters, authToken, categories });
+  = ({
+    filters,
+    loginState: { authToken },
+    categories,
+    appState: { forumNumber },
+  }) => ({ filters, authToken, categories, forumNumber });
 
 export default connect(mapStateToProps)(ForumPage);

@@ -6,6 +6,7 @@ import { commonStyle as cs, chatPageStyle as s, fullHeight, fullWidth } from '..
 import { Button, IconButton } from '../components';
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
+import { setMessages, addMessages, setListQuery } from '../store/actions';
 import { getMessages, sendMessageToBot, sendSendbirdMessage, startRecievingMessages } from '../common/api';
 
 const defaultInputHeight = 19.5;
@@ -17,6 +18,11 @@ class ChatPage extends React.Component {
     authToken: PropTypes.string.isRequired,
     channel_url: PropTypes.string,
     currentUser: PropTypes.any.isRequired,
+    addChat: PropTypes.func.isRequired,
+    setChatHistory: PropTypes.func.isRequired,
+    chatHistory: PropTypes.array.isRequired,
+    setQuery: PropTypes.func.isRequired,
+    listQuery: PropTypes.any.isRequired,
   }
 
   static defaultProps = {
@@ -27,14 +33,12 @@ class ChatPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      chatHistory: [],
       inputHeight: defaultInputHeight,
       keyboardHeight: 0,
       backedupInputHeight: undefined,
       chatInput: '',
       chatLoading: true,
       waitingForBot: false,
-      listQuery: null,
       latestUserChat: '',
     };
   }
@@ -46,9 +50,13 @@ class ChatPage extends React.Component {
 
   componentDidMount() {
     if (this.props.channel) {
-      const listQuery = this.props.channel.createPreviousMessageListQuery();
+      let listQuery = this.props.listQuery;
+      if (!this.props.listQuery) {
+        listQuery = this.props.channel.createPreviousMessageListQuery();
+        this.props.setQuery(listQuery);
+      }
       startRecievingMessages(this.onMessageReceived);
-      this.setState({ listQuery }, this.fetchMessages);
+      this.fetchMessages(listQuery);
     }
   }
 
@@ -59,17 +67,11 @@ class ChatPage extends React.Component {
 
   onMessageReceived = (channel, chat) => {
     const { channelUrl, message } = chat;
-    const { channel_url } = this.props;
+    const { channel_url, addChat } = this.props;
     if (channelUrl !== channel_url || chat.data === '') {
-      this.setState({
-        chatHistory: [
-          ...this.state.chatHistory,
-          {
-            type: 'bot',
-            chat: message,
-          },
-        ],
-      }, this.adjustChatScroll());
+      addChat({ type: 'bot',
+        chat: message });
+      this.adjustChatScroll();
     }
   }
 
@@ -88,21 +90,19 @@ class ChatPage extends React.Component {
     if (chatInput.length <= 200) { this.setState({ chatInput }); }
   }
 
-  fetchMessages = async () => {
+  fetchMessages = async (listQuery) => {
+    const { chatHistory, setChatHistory } = this.props;
     this.setState({ chatLoading: true }, async () => {
-      const messages = await getMessages(this.state.listQuery);
+      const messages = await getMessages(listQuery || this.props.listQuery);
       const userMessages = messages.filter(m => m.type === 'user');
       if (messages.length) {
+        setChatHistory(messages);
         this.setState({
-          chatHistory: [
-            ...messages,
-            ...this.state.chatHistory,
-          ],
           chatLoading: false,
           latestUserChat: userMessages.length ? userMessages[userMessages.length - 1].chat : '',
         }, this.adjustChatScroll);
       } else {
-        if (this.state.chatHistory.length === 0) {
+        if (chatHistory.length === 0) {
           const { channel_url, authToken } = this.props;
           setTimeout(async () => {
             await sendMessageToBot('Who are you?', channel_url, authToken);
@@ -141,23 +141,23 @@ class ChatPage extends React.Component {
 
   adjustChatScroll = () => {
     if (this.scrollView) {
-      setTimeout(() => this.scrollView.scrollToEnd({ animated: false }), 200);
+      setTimeout(() => this.scrollView.scrollToEnd({ animated: false }), 500);
     }
   }
 
   sendUserChat = () => {
     let { chatInput } = this.state;
+    const { addChat } = this.props;
     chatInput = chatInput.trim();
     if (chatInput.length) {
       Keyboard.dismiss();
+      addChat(
+        {
+          type: 'user',
+          chat: chatInput,
+        },
+      );
       this.setState({
-        chatHistory: [
-          ...this.state.chatHistory,
-          {
-            type: 'user',
-            chat: chatInput,
-          },
-        ],
         latestUserChat: chatInput,
         chatInput: null,
       }, this.adjustChatScroll);
@@ -177,35 +177,32 @@ class ChatPage extends React.Component {
   addChatBotReply = (botResponse) => {
     if (botResponse) {
       let showButtons = false;
+      const { addChat } = this.props;
       try {
         const data = JSON.parse(botResponse.data);
         showButtons = (data.result.action === 'input.unknown');
       } catch (error) {
         console.log(error); // eslint-disable-line no-console
       }
-      this.setState({
-        chatHistory: [
-          ...this.state.chatHistory,
-          {
-            type: 'bot',
-            chat: botResponse.message,
-            showButtons,
-          },
-        ],
-      }, this.adjustChatScroll());
+      addChat(
+        {
+          type: 'bot',
+          chat: botResponse.message,
+          showButtons,
+        },
+      );
+      this.adjustChatScroll();
     }
   }
 
   botButtonClick = type => () => {
-    const { chatHistory } = this.state;
+    const { chatHistory, setChatHistory } = this.props;
     const lastReply = chatHistory[chatHistory.length - 1];
     const messages = chatHistory.slice(0, chatHistory.length - 1);
-    this.setState({
-      chatHistory: [
-        ...messages,
-        { ...lastReply, showButtons: false },
-      ],
-    });
+    setChatHistory([
+      ...messages,
+      { ...lastReply, showButtons: false },
+    ]);
     if (type === 'YES') {
       this.moveToCategoryPage();
     } else {
@@ -214,7 +211,7 @@ class ChatPage extends React.Component {
   }
 
   renderBotChat = (chat, index, showButtons = false) => {
-    const { chatHistory } = this.state;
+    const { chatHistory } = this.props;
     const totalMessages = chatHistory.length;
     const showIntents = showButtons && (totalMessages === index + 1);
     return (
@@ -282,7 +279,8 @@ class ChatPage extends React.Component {
   );
 
   render() {
-    const { inputHeight, keyboardHeight = 0, chatInput, chatHistory } = this.state;
+    const { inputHeight, keyboardHeight = 0, chatInput } = this.state;
+    const { chatHistory } = this.props;
     const extraHeight = keyboardHeight ? 90 : 150;
     const availableHeight = fullHeight - inputHeight - keyboardHeight - extraHeight;
     return (
@@ -351,9 +349,19 @@ class ChatPage extends React.Component {
 
 const mapStateToProps =
    ({
-     chat: { channel },
+     chat: { channel, messages: chatHistory, listQuery },
      loginState: { authToken },
      currentUser }) =>
-     ({ channel, authToken, channel_url: currentUser.channel_url, currentUser });
+     ({ channel,
+       authToken,
+       channel_url: currentUser.channel_url,
+       currentUser,
+       chatHistory,
+       listQuery });
 
-export default connect(mapStateToProps)(ChatPage);
+const mapDispatchToProps = dispatch => ({
+  setChatHistory: messages => dispatch(setMessages(messages)),
+  addChat: message => dispatch(addMessages([message])),
+  setQuery: listQuery => dispatch(setListQuery(listQuery)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(ChatPage);

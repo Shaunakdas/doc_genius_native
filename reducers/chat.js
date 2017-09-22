@@ -1,9 +1,14 @@
 import {
   SET_CHANNEL,
+  SET_MESSAGES,
+  ADD_MESSAGES,
+  SET_LIST_QUERY,
 } from '../common/constants';
 
 const initialState = {
   channel: null,
+  messages: [],
+  listQuery: null,
 };
 
 const appState = (state = initialState, action) => {
@@ -12,6 +17,25 @@ const appState = (state = initialState, action) => {
       return {
         ...state,
         channel: action.channel,
+        listQuery: null,
+      };
+    case SET_LIST_QUERY:
+      return {
+        ...state,
+        listQuery: action.listQuery,
+      };
+    case SET_MESSAGES:
+      return {
+        ...state,
+        messages: action.messages,
+      };
+    case ADD_MESSAGES:
+      return {
+        ...state,
+        messages: [
+          ...state.messages,
+          ...action.messages,
+        ],
       };
     default:
       return state;

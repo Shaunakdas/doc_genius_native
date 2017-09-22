@@ -2,12 +2,14 @@ import React from 'react';
 import { Text, View, Image, TextInput, Keyboard } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 import { IconButton, Button } from '../components';
 import IMAGES from '../common/images';
 import COLORS from '../common/colors';
 import { createQuestionAPI } from '../common/api';
 import { commonStyle as cs, askQuestionPageStyle as s, font } from '../common/styles';
+import { refreshForum } from '../store/actions';
 
 class AskQuestionPage extends React.Component {
   static propTypes = {
@@ -41,16 +43,13 @@ class AskQuestionPage extends React.Component {
 
   moveToForum = () => {
     Keyboard.dismiss();
-    this.props.navigation.dispatch(
-      {
-        type: 'Navigation/NAVIGATE',
-        routeName: 'AppPage',
-        action: {
-          type: 'Navigation/NAVIGATE',
-          routeName: 'ForumPage',
-        },
-      },
-    );
+    const { navigation } = this.props;
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'AppPage',
+      params: {},
+      action: NavigationActions.navigate({ routeName: 'ForumPage' }),
+    });
+    navigation.dispatch(navigateAction);
   }
 
   postQuestion = async () => {
@@ -60,17 +59,18 @@ class AskQuestionPage extends React.Component {
   }
   createQuestion = async () => {
     const { question, category } = this.state;
-    const { authToken } = this.props;
+    const { authToken, setForumToRefresh } = this.props;
     const response = await createQuestionAPI(authToken, question, category.id);
     if (response.success === false) {
       this.setState({ error: 'Unable to post this question. Try again later', loading: false });
     } else {
+      setForumToRefresh();
       this.setState({ loading: false }, this.moveToForum);
     }
   }
 
   render() {
-    const { category, question } = this.state;
+    const { category, question, fromForum } = this.state;
     return (
       <View style={[cs.container, s.container]}>
         <View style={cs.header}>
@@ -80,13 +80,13 @@ class AskQuestionPage extends React.Component {
           />
           <Text style={cs.headerText}> Ask the Forum ({category.name}) </Text>
         </View>
-        <View style={s.hintView}>
+        {fromForum ? <View style={s.hintView}>
           <Text
             style={s.hintText}
           >
             Have you tried asking Chatbot? It may be able to answer back faster!
           </Text>
-        </View>
+        </View> : null}
         <View
           style={s.questionContainer}
         >
@@ -139,5 +139,8 @@ class AskQuestionPage extends React.Component {
 }
 
 const mapStateToProps = ({ loginState: { authToken } }) => ({ authToken });
+const mapDispatchToProps = dispatch => ({
+  setForumToRefresh: () => dispatch(refreshForum()),
+});
 
-export default connect(mapStateToProps)(AskQuestionPage);
+export default connect(mapStateToProps, mapDispatchToProps)(AskQuestionPage);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -97,9 +97,12 @@ class NotificationsPage extends React.Component {
             imageStyle={cs.backImage}
           />
         </View>
-        <View style={{ paddingHorizontal: 8 }}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ paddingHorizontal: 8 }}
+        >
           {notifications.map(this.renderNotification)}
-        </View>
+        </ScrollView>
       </View>
     );
   }

@@ -60,7 +60,8 @@ class ProfilePage extends React.Component {
               created_at,
             } = notification;
             const username = notification.data.original_username;
-            const userFullName = users.filter(item => item.username === username)[0].name;
+            const selection = users.filter(item => item.username === username);
+            const userFullName = selection.length ? selection[0].name : username;
             return {
               id,
               type,

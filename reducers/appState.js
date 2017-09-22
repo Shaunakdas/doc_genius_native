@@ -1,6 +1,7 @@
 import {
   BASE_URL,
   DISMISSED_FILTER,
+  REFRESH_FORUM,
   REFRESH_PROFILE,
 } from '../common/constants';
 
@@ -8,6 +9,7 @@ const initialState = {
   baseUrl: BASE_URL,
   filterNumber: 0,
   profileNumber: 0,
+  forumNumber: 0,
 };
 
 const appState = (state = initialState, action) => {
@@ -17,6 +19,12 @@ const appState = (state = initialState, action) => {
         ...state,
         filterNumber: state.filterNumber + 1,
       };
+    case REFRESH_FORUM: {
+      return {
+        ...state,
+        forumNumber: state.forumNumber + 1,
+      };
+    }
     case REFRESH_PROFILE:
       return {
         ...state,

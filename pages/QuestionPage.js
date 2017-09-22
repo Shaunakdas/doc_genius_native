@@ -316,7 +316,6 @@ renderQ = question => (
           {this.renderButtons(question)}
         </View>
         <Text
-          numberOfLines={2}
           style={{
             ...font(13),
             marginBottom: 8,
@@ -371,7 +370,6 @@ renderQ = question => (
             {this.renderButtons(answer)}
           </View>
           <Text
-            numberOfLines={2}
             style={{
               ...font(13),
               marginBottom: 8,
