@@ -4,7 +4,6 @@ import {
   View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 
 import { commonStyle as s } from '../common/styles';
 import COLORS from '../common/colors';
@@ -23,16 +22,7 @@ class Navigation extends Component {
     const { navigation } = this.props;
     const currentRouteName = getCurrentRouteName(navigation.state);
     if (page !== currentRouteName) {
-      if (page === 'ChatPage') {
-        const navigateAction = NavigationActions.navigate({
-          routeName: 'AppPage',
-          params: {},
-          action: NavigationActions.navigate({ routeName: 'ChatPage' }),
-        });
-        navigation.dispatch(navigateAction);
-      } else {
-        navigation.navigate(page);
-      }
+      navigation.navigate(page);
     }
   }
 

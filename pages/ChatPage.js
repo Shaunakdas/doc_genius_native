@@ -22,12 +22,13 @@ class ChatPage extends React.Component {
     setChatHistory: PropTypes.func.isRequired,
     chatHistory: PropTypes.array.isRequired,
     setQuery: PropTypes.func.isRequired,
-    listQuery: PropTypes.any.isRequired,
+    listQuery: PropTypes.any,
   }
 
   static defaultProps = {
     channel: null,
     channel_url: null,
+    listQuery: null,
   }
 
   constructor(props) {

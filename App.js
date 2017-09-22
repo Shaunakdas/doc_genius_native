@@ -23,6 +23,7 @@ const getNavigator = () => {
     },
   }, {
     headerMode: 'none',
+    initialRouteName: 'ChatPage',
   });
 
   const ForumNavigator = DrawerNavigator({

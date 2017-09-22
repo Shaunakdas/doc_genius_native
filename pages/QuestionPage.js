@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView, ActivityIndicator, Platform, Keyboard, TextInput } from 'react-native';
+import { Text, View, Image, ScrollView, ActivityIndicator, Platform, Keyboard, TextInput, RefreshControl } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -36,6 +36,7 @@ class QuestionPage extends React.Component {
       backedupInputHeight: undefined,
       reply_to_post_number: null,
       reply: '',
+      refreshing: false,
     };
   }
 
@@ -63,6 +64,11 @@ class QuestionPage extends React.Component {
   componentWillUnmount() {
     this.keyboardDidHideSub.remove();
     this.keyboardDidShowSub.remove();
+  }
+
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.fetchQuestion();
   }
 
   onInputHeightChange = (event) => {
@@ -116,9 +122,10 @@ class QuestionPage extends React.Component {
         const { category_id } = processedQuestion.details_stream.details;
         category = getCategoryById(this.props.categories, category_id);
       }
-      this.setState({ question: processedQuestion, loading: false, category });
+      this.setState({ question: processedQuestion, loading: false, category, refreshing: false });
     }
   }
+
   goBack = () => {
     const { navigation } = this.props;
     navigation.goBack();
@@ -440,7 +447,7 @@ renderQ = question => (
   }
 
   render() {
-    const { inputHeight, keyboardHeight = 0 } = this.state;
+    const { inputHeight, keyboardHeight = 0, refreshing } = this.state;
     const extraHeight = inputHeight === defaultInputHeight ? 85 : 78;
     const availableHeight = fullHeight - inputHeight - keyboardHeight - extraHeight;
     const { loading, question, category } = this.state;
@@ -465,6 +472,12 @@ renderQ = question => (
         <View style={{ height: availableHeight }}>
           <ScrollView
             style={{ flex: 1 }}
+            refreshControl={
+              <RefreshControl
+                onRefresh={this.onRefresh}
+                refreshing={refreshing}
+              />
+            }
           >
             { loading ? (
               <View
