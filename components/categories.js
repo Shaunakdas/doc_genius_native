@@ -14,17 +14,8 @@ import { PropTypes } from 'prop-types';
 import IMAGES from '../common/images';
 import COLORS from '../common/colors';
 import { commonStyle as cs } from '../common/styles';
-
-const imageMap = new Map([
-  ['SAT/ACT/AP', 'SAT'],
-  ['Course Selection', 'COURSE'],
-  ['College/Career', 'COLLEGE'],
-  ['Essay', 'ESSAY'],
-  ['Recommendation Letters', 'RECOMMENDATION'],
-  ['Applications', 'APPLICATION'],
-  ['Financial Aid', 'FINANCIAL'],
-  ['Others', 'OTHER'],
-]);
+import { getCategory } from '../common/helper';
+import { categoryImageMap as imageMap, categoryOrder } from '../common/constants';
 
 export default class Categories extends Component {
   static propTypes = {
@@ -37,10 +28,12 @@ export default class Categories extends Component {
     actAsFilters: false,
   }
 
-  renderCategory = (category, image) => {
+  renderCategory = (categoryName, image) => {
     const TouchableWrapper = Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
     const { actAsFilters } = this.props;
     const scale = actAsFilters ? 0.8 : 1;
+    const { categories } = this.props;
+    const category = getCategory(categories, categoryName);
     return (
       <TouchableWrapper
         onPress={this.props.selectCategory(category)}
@@ -117,7 +110,6 @@ export default class Categories extends Component {
   }
 
   render() {
-    const { categories } = this.props;
     return (
       <ScrollView
         style={cs.scroll}
@@ -131,32 +123,32 @@ export default class Categories extends Component {
             flexDirection: 'row',
           }}
         >
-          {this.renderCategory(categories[0], imageMap.get(categories[0].name))}
-          {this.renderCategory(categories[1], imageMap.get(categories[1].name))}
+          {this.renderCategory(categoryOrder[0], imageMap.get(categoryOrder[0]))}
+          {this.renderCategory(categoryOrder[1], imageMap.get(categoryOrder[1]))}
         </View>
         <View
           style={{
             flexDirection: 'row',
           }}
         >
-          {this.renderCategory(categories[2], imageMap.get(categories[2].name))}
-          {this.renderCategory(categories[3], imageMap.get(categories[3].name))}
+          {this.renderCategory(categoryOrder[2], imageMap.get(categoryOrder[2]))}
+          {this.renderCategory(categoryOrder[3], imageMap.get(categoryOrder[3]))}
         </View>
         <View
           style={{
             flexDirection: 'row',
           }}
         >
-          {this.renderCategory(categories[4], imageMap.get(categories[4].name))}
-          {this.renderCategory(categories[5], imageMap.get(categories[5].name))}
+          {this.renderCategory(categoryOrder[4], imageMap.get(categoryOrder[4]))}
+          {this.renderCategory(categoryOrder[5], imageMap.get(categoryOrder[5]))}
         </View>
         <View
           style={{
             flexDirection: 'row',
           }}
         >
-          {this.renderCategory(categories[6], imageMap.get(categories[6].name))}
-          {this.renderCategory(categories[7], imageMap.get(categories[7].name))}
+          {this.renderCategory(categoryOrder[6], imageMap.get(categoryOrder[6]))}
+          {this.renderCategory(categoryOrder[7], imageMap.get(categoryOrder[7]))}
         </View>
       </ScrollView>);
   }

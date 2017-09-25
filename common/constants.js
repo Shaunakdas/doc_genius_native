@@ -22,3 +22,25 @@ export const STUDENT_ROLE = 'Student';
 export const COUNSELOR_ROLE = 'Counselor';
 
 export const SENDBIRD_APP_ID = '9F467B70-99DA-4595-A2ED-241BA78C9442';
+
+export const categoryImageMap = new Map([
+  ['SAT / ACT / AP', 'SAT'],
+  ['Course Selection', 'COURSE'],
+  ['College / Career', 'COLLEGE'],
+  ['Essay', 'ESSAY'],
+  ['Recommendation Letters', 'RECOMMENDATION'],
+  ['Applications', 'APPLICATION'],
+  ['Financial Aid', 'FINANCIAL'],
+  ['Others', 'OTHER'],
+]);
+
+export const categoryOrder = [
+  'SAT / ACT / AP',
+  'Course Selection',
+  'College / Career',
+  'Essay',
+  'Recommendation Letters',
+  'Applications',
+  'Financial Aid',
+  'Others',
+];

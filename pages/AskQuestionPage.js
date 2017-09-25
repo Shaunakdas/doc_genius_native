@@ -47,7 +47,11 @@ class AskQuestionPage extends React.Component {
     const navigateAction = NavigationActions.navigate({
       routeName: 'AppPage',
       params: {},
-      action: NavigationActions.navigate({ routeName: 'ForumPage' }),
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'ForumPage' }),
+        NavigationActions.navigate({ routeName: 'ChatPage' }),
+      ],
     });
     navigation.dispatch(navigateAction);
   }
@@ -57,9 +61,10 @@ class AskQuestionPage extends React.Component {
       loading: true,
     }, this.createQuestion);
   }
+
   createQuestion = async () => {
     const { question, category } = this.state;
-    const { authToken, setForumToRefresh } = this.props;
+    const { setForumToRefresh, authToken } = this.props;
     const response = await createQuestionAPI(authToken, question, category.id);
     if (response.success === false) {
       this.setState({ error: 'Unable to post this question. Try again later', loading: false });

@@ -1,6 +1,5 @@
 import SendBird from 'sendbird';
 import { BASE_URL, STUDENT_ROLE, COUNSELOR_ROLE, SENDBIRD_APP_ID } from './constants';
-import { createRandomSlug } from './helper';
 
 const sendbird = new SendBird({ appId: SENDBIRD_APP_ID });
 
@@ -151,9 +150,8 @@ export const questionAPI = async (authToken, id) => {
 
 export const createQuestionAPI = async (authToken, raw, category) => {
   const url = `${BASE_URL}/question`;
-  const title = `${raw} ${createRandomSlug()}`;
   const body = JSON.stringify({
-    title,
+    title: raw,
     raw,
     category,
   });
