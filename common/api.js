@@ -139,9 +139,10 @@ export const postsAPI = async (authToken, filters, searchTerm) => {
   return response;
 };
 
-export const questionAPI = async (authToken, id) => {
+export const questionAPI = async (authToken, id, page = 1) => {
   const queryString = buildQuery({
     id,
+    page,
   });
   const url = `${BASE_URL}/question?${queryString}`;
   const response = await jsonFetch(url, { method: 'GET' }, authToken);
