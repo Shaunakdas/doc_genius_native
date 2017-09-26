@@ -2,6 +2,7 @@ import LandingPage from './LandingPage';
 import SelectionPage from './SelectionPage';
 import SignupPage from './SignupPage';
 import LoginPage from './LoginPage';
+import ForgotPasswordPage from './ForgotPasswordPage';
 import ChatPage from './ChatPage';
 import ForumPage from './ForumPage';
 import ProfilePage from './ProfilePage';
@@ -34,4 +35,5 @@ export default {
   AskQuestionPage,
   VerifyPage,
   QuestionPage,
+  ForgotPasswordPage,
 };

@@ -56,6 +56,19 @@ export const activateAPI = async (username, activation_token) => {
   return (response.success !== false) ? { authToken: response.auth_token } : response;
 };
 
+export const forgotPasswordAPI = async (login) => {
+  const body = JSON.stringify({ login });
+  const response = await jsonFetch(`${BASE_URL}/passwords/forgot`, { body, method: 'POST' });
+  return response;
+};
+
+export const changePasswordAPI = async (login, password, activation_token) => {
+  const body = JSON.stringify({ login, password, activation_token });
+  const response = await jsonFetch(`${BASE_URL}/passwords/update`, { body, method: 'POST' });
+  return response;
+};
+
+
 export const userAPI = async (authToken) => {
   const response = await jsonFetch(`${BASE_URL}/user`, { method: 'GET' }, authToken);
   if (response.success !== false) {

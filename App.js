@@ -116,6 +116,9 @@ const getNavigator = () => {
     VerifyPage: {
       screen: PAGES.VerifyPage,
     },
+    ForgotPasswordPage: {
+      screen: PAGES.ForgotPasswordPage,
+    },
   }, {
     headerMode: 'none',
   });

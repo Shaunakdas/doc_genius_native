@@ -258,7 +258,15 @@ export const loginPageStyle = StyleSheet.create({
     width: 55,
   },
   button: {
-    marginTop: fullHeight - 510,
+    marginTop: fullHeight - 540,
+  },
+  forgotPasswordButton: {
+    marginTop: 15,
+  },
+  forgotPasswordButtonText: {
+    ...font(14),
+    textAlign: 'center',
+    color: COLORS.WHITE,
   },
 });
 

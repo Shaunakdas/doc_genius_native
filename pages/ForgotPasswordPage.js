@@ -1,23 +1,13 @@
 import React from 'react';
 import { Text, View, Image, ScrollView } from 'react-native';
 import { PropTypes } from 'prop-types';
-import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { commonStyle as cs, loginPageStyle as s, font } from '../common/styles';
-import { Button, IconButton, Input } from '../components';
+import { Button, Input, IconButton } from '../components';
 import IMAGES from '../common/images';
-import { saveData } from '../common/helper';
-import {
-  loginAPI,
-  userAPI,
-  categoriesAPI,
-  connectToSendbird,
-  connectToChannel,
-  forgotPasswordAPI,
-} from '../common/api';
+import { activateAPI, userAPI, categoriesAPI, connectToChannel, connectToSendbird } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
-import { STUDENT_ROLE } from '../common/constants';
 import {
   startLogIn,
   loginError,
@@ -39,32 +29,35 @@ const commonInputProps = {
   autoCapitalize: 'none',
 };
 
-class LoginPage extends React.Component {
+class ForgotPasswordPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
-    loggingIn: PropTypes.bool.isRequired,
     start: PropTypes.func.isRequired,
     finish: PropTypes.func.isRequired,
     error: PropTypes.func.isRequired,
     setToken: PropTypes.func.isRequired,
     setUser: PropTypes.func.isRequired,
-    setRelevantCategories: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props); this.inputs = {};
+    const { navigation } = props;
+    const { params = {} } = navigation.state;
+    const { username = '' } = params;
     this.state = {
-      resetting: false,
-      forgotState: false,
       values: {
-        username: '',
+        username,
+        token: '',
         password: '',
+        confirmPassword: '',
       },
       errors: {
-        username: '',
+        token: '',
         password: '',
+        confirmPassword: '',
         overall: '',
       },
+      loading: false,
     };
   }
 
@@ -82,67 +75,32 @@ class LoginPage extends React.Component {
   }
 
   onSubmit = nextFieldName => () => {
-    if (nextFieldName && this.inputs[nextFieldName]) { this.inputs[nextFieldName].focus(); }
+    if (nextFieldName) { this.inputs[nextFieldName].focus(); }
   }
 
   getStarted = () => {
-    const { forgotState } = this.state;
-    if (forgotState) {
-      this.setState({
-        errors: {
-          username: '',
-          password: '',
-          overall: '',
-        },
-      });
-      const { username } = this.state.values;
-      if (username) {
-        const { navigation } = this.props;
-        navigation.navigate('ForgotPasswordPage', { username });
-      } else {
-        this.setState({
-          errors: {
-            username: 'Please enter username',
-          },
-        });
-      }
-    } else {
-      const { start } = this.props;
-      start();
-      this.setState({
-        errors: {
-          username: '',
-          password: '',
-          overall: '',
-        },
-      }, this.validate);
-    }
+    const { start } = this.props;
+    start();
+    this.setState({
+      errors: {
+        password: '',
+        overall: '',
+      },
+    }, this.validate);
   }
 
   goBack = () => {
-    const { forgotState } = this.state;
-    if (forgotState) {
-      this.setState({ forgotState: false,
-        errors: {
-          username: '',
-          password: '',
-          overall: '',
-        } });
-    } else {
-      const { navigation } = this.props;
-      navigation.goBack();
-    }
+    const { navigation } = this.props;
+    navigation.goBack();
   }
 
   validate = () => {
     const { error } = this.props;
     const {
-      username,
       password,
     } = this.state.values;
     const errors = {
-      username: username ? '' : 'Username is required',
-      password: password ? '' : 'Password is required',
+      password: password ? '' : 'Activation token is required',
     };
     this.setState({
       errors,
@@ -155,25 +113,23 @@ class LoginPage extends React.Component {
     this.inputs[fieldName] = input;
   }
 
-  forgotPassword = async () => {
-    this.setState({ forgotState: true,
-      errors: {
-        username: '',
-        password: '',
-        overall: '',
-      } });
-  }
 
   login = async () => {
-    const { username, password } = this.state.values;
-    const { finish, error, setToken, setUser, setRelevantCategories, setBotChannel }
-      = this.props;
-    const response = await loginAPI(username, password);
+    const { password } = this.state.values;
+    const {
+      finish,
+      error,
+      setToken,
+      setUser,
+      username,
+      setRelevantCategories,
+      setBotChannel } = this.props;
+    const response = await activateAPI(username, password);
     if (response.success === false) {
       this.setState({
         errors: {
           ...this.state.errors,
-          overall: response.error,
+          overall: 'Invalid token',
         },
       });
       error();
@@ -181,46 +137,33 @@ class LoginPage extends React.Component {
       const { authToken } = response;
       const user = await userAPI(authToken);
       setToken(authToken);
-      await saveData('AUTH_TOKEN', authToken);
       setUser(user);
       const categories = await categoriesAPI(authToken);
       setRelevantCategories(categories);
-      if (user.role === STUDENT_ROLE) {
-        await connectToSendbird(user.sendbird_id);
-        const channel = await connectToChannel(user.channel_url);
-        setBotChannel(channel);
-      }
+      await connectToSendbird(user.sendbird_id);
+      const channel = await connectToChannel(user.channel_url);
+      setBotChannel(channel);
       finish();
-      if (user.role === STUDENT_ROLE) {
-        this.props.navigation.dispatch(
-          {
+      this.props.navigation.dispatch(
+        {
+          type: 'Navigation/NAVIGATE',
+          routeName: 'AppPage',
+          action: {
             type: 'Navigation/NAVIGATE',
-            routeName: 'AppPage',
-            action: {
-              type: 'Navigation/NAVIGATE',
-              routeName: 'ChatPage',
-            },
+            routeName: 'ChatPage',
           },
-        );
-      } else {
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'AppPage' }),
-          ],
-        });
-        this.props.navigation.dispatch(resetAction);
-      }
+        },
+      );
     }
   }
 
   render() {
     const {
-      username,
       password,
+      confirmPassword,
+      token,
     } = this.state.values;
-    const { errors, resetting, forgotState } = this.state;
-    const { loggingIn } = this.props;
+    const { errors, loading } = this.state;
     return (
       <View style={[cs.container, s.container]}>
         <Image
@@ -232,25 +175,24 @@ class LoginPage extends React.Component {
           style={cs.scroll}
           contentContainerStyle={cs.scrollContent}
         >
-          <Text style={[s.mainText, forgotState ? { fontSize: 12 } : null]}>
-            {forgotState ? 'Enter username to reset password.' : 'Log In'}
-          </Text>
+          <Text style={s.mainText}>Change Password</Text>
           <Input
             inputProps={{
               ...commonInputProps,
-              placeholder: 'Username',
+              placeholder: 'Activation Token',
+              secureTextEntry: true,
             }}
             wrapperStyle={cs.inputWrapper}
-            error={errors.username}
-            value={username}
-            ref={this.addInput('username')}
-            onChange={this.onValueChange('username')}
-            onSubmit={this.onSubmit(forgotState ? 'password' : '')}
+            error={errors.token}
+            value={token}
+            ref={this.addInput('token')}
+            onChange={this.onValueChange('token')}
+            onSubmit={this.onSubmit('password')}
           />
-          {!forgotState ? <Input
+          <Input
             inputProps={{
               ...commonInputProps,
-              placeholder: 'Password',
+              placeholder: 'New Password',
               secureTextEntry: true,
             }}
             wrapperStyle={cs.inputWrapper}
@@ -258,29 +200,34 @@ class LoginPage extends React.Component {
             value={password}
             ref={this.addInput('password')}
             onChange={this.onValueChange('password')}
+            onSubmit={this.onSubmit('confirmPassword')}
+          />
+          <Input
+            inputProps={{
+              ...commonInputProps,
+              placeholder: 'Re-type password',
+              secureTextEntry: true,
+            }}
+            wrapperStyle={cs.inputWrapper}
+            error={errors.confirmPassword}
+            value={confirmPassword}
+            ref={this.addInput('confirmPassword')}
+            onChange={this.onValueChange('confirmPassword')}
             onSubmit={this.onSubmit('')}
-          /> : null}
-          {!forgotState ? <Button
-            text="Forgot Password?"
-            style={s.forgotPasswordButton}
-            textStyle={s.forgotPasswordButtonText}
-            loadingColor={COLORS.WHITE}
-            onPress={this.forgotPassword}
-            isLoading={resetting}
-          /> : null }
+          />
           {errors.overall ? <Text style={{
             color: alpha(COLORS.RED, 0.7),
             marginTop: 3,
             marginBottom: 20,
             ...font(10),
           }}
-          >{typeof errors.overall === 'string' ? errors.overall : "Couldn't login now. Try later"}</Text> : null}
+          >{errors.overall}</Text> : null}
           <Button
-            text={forgotState ? 'Reset Password' : 'Get Started'}
+            text="Get Started"
             style={[cs.getStartedButton, s.button]}
             textStyle={[cs.getStartedButtonText]}
             onPress={this.getStarted}
-            isLoading={loggingIn}
+            isLoading={loading}
             loadingColor={COLORS.PRIMARY}
           />
         </ScrollView>
@@ -295,11 +242,6 @@ class LoginPage extends React.Component {
   }
 }
 
-const mapStateToProps = ({ loginState }) => {
-  const { loggingIn } = loginState;
-  return { loggingIn };
-};
-
 const mapDispatchToProps = dispatch => ({
   setToken: authToken => dispatch(setAuthToken(authToken)),
   start: () => dispatch(startLogIn()),
@@ -313,4 +255,4 @@ const mapDispatchToProps = dispatch => ({
   setBotChannel: channel => dispatch(setChannel(channel)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(null, mapDispatchToProps)(ForgotPasswordPage);
