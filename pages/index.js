@@ -16,6 +16,7 @@ import CategorySelectionPage from './CategorySelectionPage';
 import AskQuestionPage from './AskQuestionPage';
 import VerifyPage from './VerifyPage';
 import QuestionPage from './QuestionPage';
+import WebPage from './WebPage';
 
 export default {
   LandingPage,
@@ -36,4 +37,5 @@ export default {
   VerifyPage,
   QuestionPage,
   ForgotPasswordPage,
+  WebPage,
 };

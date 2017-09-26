@@ -364,13 +364,13 @@ export const chatPageStyle = StyleSheet.create({
     marginRight: 5,
   },
   chatBotText: {
-    ...font(17),
+    ...font(14),
     backgroundColor: COLORS.TRANSPARENT,
     color: COLORS.WHITE,
     width: fullWidth - 120,
   },
   chatUserText: {
-    ...font(17),
+    ...font(14),
     backgroundColor: COLORS.TRANSPARENT,
     width: fullWidth - 120,
   },

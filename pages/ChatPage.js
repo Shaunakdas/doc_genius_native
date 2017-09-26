@@ -1,9 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Text, View, ScrollView, Image, TextInput, Keyboard, Platform, TouchableOpacity } from 'react-native';
+import { Text,
+  View,
+  ScrollView,
+  Image,
+  TextInput,
+  Keyboard,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 import { commonStyle as cs, chatPageStyle as s, fullHeight, fullWidth } from '../common/styles';
-import { Button, IconButton } from '../components';
+import { Button, IconButton, HighlightText } from '../components';
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
 import { setMessages, addMessages, setListQuery, setChatSession } from '../store/actions';
@@ -102,12 +110,31 @@ class ChatPage extends React.Component {
     if (chatInput.length <= 200) { this.setState({ chatInput }); }
   }
 
+  handleOpeningUrl = async (url) => {
+    if (url) {
+      this.props.navigation.navigate('ChatWebPage', { url });
+    }
+  }
+
   fetchMessages = async (listQuery) => {
-    const { chatHistory, setChatHistory } = this.props;
+    const { chatHistory, setChatHistory, setSession } = this.props;
     this.setState({ chatLoading: true }, async () => {
       const messages = await getMessages(listQuery || this.props.listQuery);
       const userMessages = messages.filter(m => m.type === 'user');
+      const botMessages = messages.filter(m => m.type === 'bot');
       if (messages.length) {
+        if (botMessages.length) {
+          const lastBotMessage = botMessages[botMessages.length - 1];
+          try {
+            const data = lastBotMessage.data;
+            if (data) {
+              const parsedData = JSON.parse(data);
+              setSession(parsedData.sessionId);
+            }
+          } catch (_) {
+            console.log(_); // eslint-disable-line no-console
+          }
+        }
         setChatHistory(messages);
         this.setState({
           chatLoading: false,
@@ -239,9 +266,11 @@ class ChatPage extends React.Component {
             source={IMAGES.BOT_USER}
           />
           <View style={s.chatBotTextContainer}>
-            <Text style={s.chatBotText}>
-              {chat}
-            </Text>
+            <HighlightText
+              style={s.chatBotText}
+              text={chat}
+              onPress={this.handleOpeningUrl}
+            />
           </View>
           <Image
             style={s.botBubbleImage}

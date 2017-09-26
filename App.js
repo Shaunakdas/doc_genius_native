@@ -21,6 +21,9 @@ const getNavigator = () => {
     ChatAskForumPage: {
       screen: PAGES.AskQuestionPage,
     },
+    ChatWebPage: {
+      screen: PAGES.WebPage,
+    },
   }, {
     headerMode: 'none',
     initialRouteName: 'ChatPage',
