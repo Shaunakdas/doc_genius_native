@@ -13,6 +13,7 @@ import {
   SET_MESSAGES,
   ADD_MESSAGES,
   SET_LIST_QUERY,
+  SET_CHAT_SESSION,
 } from '../common/constants';
 
 export function startLogIn() {
@@ -114,5 +115,12 @@ export function setListQuery(listQuery) {
   return {
     type: SET_LIST_QUERY,
     listQuery,
+  };
+}
+
+export function setChatSession(sessionId) {
+  return {
+    type: SET_CHAT_SESSION,
+    sessionId,
   };
 }

@@ -208,12 +208,13 @@ export const notificationsAPI = async (authToken) => {
   return response;
 };
 
-export const sendMessageToBot = async (message, channel_url, authToken) => {
+export const sendMessageToBot = async (message, channel_url, session_id, authToken) => {
   const url = 'http://18.221.40.110/chats/send_ai_message';
   const body = JSON.stringify({
     channel_url,
     message,
     message_type: 'MESG',
+    session_id,
   });
   const response = await jsonFetch(url, { body, method: 'POST' }, authToken);
   return response;

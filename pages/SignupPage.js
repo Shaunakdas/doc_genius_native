@@ -138,7 +138,7 @@ class SignupPage extends React.Component {
     }
 
     if (password && password.length < 10) {
-      errors.password = 'Must be atleast 10 characters';
+      errors.password = 'Must be at least 10 characters';
     }
 
     if (password && confirmPassword && password !== confirmPassword) {

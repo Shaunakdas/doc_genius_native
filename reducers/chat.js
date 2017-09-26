@@ -3,12 +3,14 @@ import {
   SET_MESSAGES,
   ADD_MESSAGES,
   SET_LIST_QUERY,
+  SET_CHAT_SESSION,
 } from '../common/constants';
 
 const initialState = {
   channel: null,
   messages: [],
   listQuery: null,
+  sessionId: null,
 };
 
 const appState = (state = initialState, action) => {
@@ -18,6 +20,11 @@ const appState = (state = initialState, action) => {
         ...state,
         channel: action.channel,
         listQuery: null,
+      };
+    case SET_CHAT_SESSION:
+      return {
+        ...state,
+        sessionId: action.sessionId,
       };
     case SET_LIST_QUERY:
       return {

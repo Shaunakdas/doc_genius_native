@@ -6,7 +6,7 @@ import { commonStyle as cs, chatPageStyle as s, fullHeight, fullWidth } from '..
 import { Button, IconButton } from '../components';
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
-import { setMessages, addMessages, setListQuery } from '../store/actions';
+import { setMessages, addMessages, setListQuery, setChatSession } from '../store/actions';
 import { getMessages, sendMessageToBot, sendSendbirdMessage, startRecievingMessages } from '../common/api';
 
 const defaultInputHeight = 19.5;
@@ -20,12 +20,15 @@ class ChatPage extends React.Component {
     currentUser: PropTypes.any.isRequired,
     addChat: PropTypes.func.isRequired,
     setChatHistory: PropTypes.func.isRequired,
+    setSession: PropTypes.func.isRequired,
     chatHistory: PropTypes.array.isRequired,
     setQuery: PropTypes.func.isRequired,
     listQuery: PropTypes.any,
+    sessionId: PropTypes.string,
   }
 
   static defaultProps = {
+    sessionId: null,
     channel: null,
     channel_url: null,
     listQuery: null,
@@ -68,11 +71,19 @@ class ChatPage extends React.Component {
 
   onMessageReceived = (channel, chat) => {
     const { channelUrl, message } = chat;
-    const { channel_url, addChat } = this.props;
+    const { channel_url, addChat, setSession } = this.props;
     if (channelUrl !== channel_url || chat.data === '') {
       addChat({ type: 'bot',
         chat: message });
       this.adjustChatScroll();
+      if (chat.data) {
+        try {
+          const parsedData = JSON.parse(chat.data);
+          setSession(parsedData.sessionId);
+        } catch (_) {
+          console.log(_); // eslint-disable-line no-console
+        }
+      }
     }
   }
 
@@ -104,9 +115,9 @@ class ChatPage extends React.Component {
         }, this.adjustChatScroll);
       } else {
         if (chatHistory.length === 0) {
-          const { channel_url, authToken } = this.props;
+          const { channel_url, authToken, sessionId } = this.props;
           setTimeout(async () => {
-            await sendMessageToBot('Who are you?', channel_url, authToken);
+            await sendMessageToBot('Who are you?', channel_url, sessionId, authToken);
           }, 500);
         }
         this.setState({ chatLoading: false }, this.adjustChatScroll);
@@ -169,18 +180,21 @@ class ChatPage extends React.Component {
   }
 
   sendUserMessage = async (message) => {
-    const { channel, channel_url, authToken } = this.props;
+    const { channel, channel_url, authToken, sessionId } = this.props;
     await sendSendbirdMessage(channel, message);
-    const response = await sendMessageToBot(message, channel_url, authToken);
+    const response = await sendMessageToBot(message, channel_url, sessionId, authToken);
     this.setState({ waitingForBot: false }, () => this.addChatBotReply(response));
   }
 
   addChatBotReply = (botResponse) => {
     if (botResponse) {
       let showButtons = false;
-      const { addChat } = this.props;
+      const { addChat, setSession } = this.props;
       try {
         const data = JSON.parse(botResponse.data);
+        if (data && data.sessionId) {
+          setSession(data.sessionId);
+        }
         showButtons = (data.result.action === 'input.unknown');
       } catch (error) {
         console.log(error); // eslint-disable-line no-console
@@ -350,19 +364,22 @@ class ChatPage extends React.Component {
 
 const mapStateToProps =
    ({
-     chat: { channel, messages: chatHistory, listQuery },
+     chat: { channel, messages: chatHistory, listQuery, sessionId },
      loginState: { authToken },
-     currentUser }) =>
-     ({ channel,
-       authToken,
-       channel_url: currentUser.channel_url,
-       currentUser,
-       chatHistory,
-       listQuery });
+     currentUser }) => ({ channel,
+     authToken,
+     channel_url: currentUser.channel_url,
+     currentUser,
+     chatHistory,
+     listQuery,
+     sessionId,
+   });
+
 
 const mapDispatchToProps = dispatch => ({
   setChatHistory: messages => dispatch(setMessages(messages)),
   addChat: message => dispatch(addMessages([message])),
   setQuery: listQuery => dispatch(setListQuery(listQuery)),
+  setSession: sessionId => dispatch(setChatSession(sessionId)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ChatPage);
