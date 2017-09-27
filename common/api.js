@@ -235,7 +235,7 @@ export const markNotificationsAsReadAPI = async (authToken, id = null) => {
 
 
 export const sendMessageToBot = async (message, channel_url, session_id, authToken) => {
-  const url = 'http://18.221.40.110/chats/send_ai_message';
+  const url = `${BASE_URL}/chats/send_ai_message`;
   const body = JSON.stringify({
     channel_url,
     message,

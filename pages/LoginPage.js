@@ -180,6 +180,16 @@ class LoginPage extends React.Component {
     } else {
       const { authToken } = response;
       const user = await userAPI(authToken);
+      if (!user.channel_url || !user.sendbird_id) {
+        this.setState({
+          errors: {
+            ...this.state.errors,
+            overall: 'Login credentials are not valid!',
+          },
+        });
+        error();
+        return;
+      }
       setToken(authToken);
       await saveData('AUTH_TOKEN', authToken);
       setUser(user);

@@ -327,7 +327,7 @@ class ProfilePage extends React.Component {
               backgroundColor: COLORS.TRANSPARENT,
             }}
           >
-            Indiez
+            {currentUser.school_name}
           </Text>
         </View>
         <ScrollView
@@ -408,7 +408,6 @@ class ProfilePage extends React.Component {
             width: 20,
             resizeMode: 'contain',
           }}
-          onPress={this.gotoPage('ProfileEditPage')}
         />
       </View>
     );
