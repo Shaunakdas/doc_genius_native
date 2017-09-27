@@ -105,7 +105,7 @@ class ForumPage extends React.Component {
     navigation.navigate('QuestionPage', { id: question.id, category_id: question.category_id, focusReply });
   }
 
-  renderUser = (user_id) => {
+  renderUser = (user_id, time) => {
     const user = this.state.questions.user_stream[user_id];
     const image = getUserImage(user);
     let [ display, ...ignore ] = user.name.split(' '); // eslint-disable-line
@@ -118,7 +118,7 @@ class ForumPage extends React.Component {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          width: (fullWidth / 2) - 35,
+          width: fullWidth - 160,
           paddingRight: 5 }}
       >
         <Image
@@ -138,6 +138,15 @@ class ForumPage extends React.Component {
           numberOfLines={1}
         >
           {display}
+        </Text>
+        <Text style={{
+          flex: 1,
+          marginLeft: 8,
+          ...font(10),
+          color: COLORS.SECONDARY,
+        }}
+        >
+          {moment(time).fromNow()}
         </Text>
       </View>
     );
@@ -159,12 +168,11 @@ class ForumPage extends React.Component {
     const reply_count = post.posts_count ? post.posts_count - 1 : post.reply_count;
     const showAnswer = post.posts_count && post.posts_count > 1;
     return (
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+      <View style={{ flexDirection: 'row' }}>
         <Text
           style={{
             ...font(9),
             marginRight: 3,
-            marginLeft: 10,
             color: COLORS.SECONDARY,
           }}
         >
@@ -235,11 +243,15 @@ class ForumPage extends React.Component {
         elevation: 2,
       }}
       >
-        <Text style={{
-          ...font(12),
-          color: COLORS.WHITE,
-          backgroundColor: COLORS.TRANSPARENT,
-        }}
+        <Text
+          style={{
+            ...font(12),
+            color: COLORS.WHITE,
+            backgroundColor: COLORS.TRANSPARENT,
+            width: 120,
+            textAlign: 'center',
+          }}
+          numberOfLines={1}
         >
           {category.name}
         </Text>
@@ -285,8 +297,7 @@ renderQ = (question, detail) => (
           alignItems: 'center',
         }}
       >
-        {this.renderUser(question.user_id)}
-        {this.renderTime(question.created_at)}
+        {this.renderUser(question.user_id, question.created_at)}
         {this.renderButtons(question, detail)}
       </View>
     </View>
@@ -336,8 +347,7 @@ renderQ = (question, detail) => (
             alignItems: 'center',
           }}
         >
-          {this.renderUser(answer.user_id)}
-          {this.renderTime(answer.created_at)}
+          {this.renderUser(answer.user_id, answer.created_at)}
           {this.renderButtons(answer, detail)}
         </View>
       </View>

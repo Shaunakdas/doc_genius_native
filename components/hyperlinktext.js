@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Hyperlink from 'react-native-hyperlink';
 
 const HighlightText = ({ style, onPress, text }) =>
-  (<Hyperlink linkStyle={{ color: '#2980b9' }} onPress={onPress}>
+  (<Hyperlink linkStyle={{ color: 'yellow' }} onPress={onPress}>
     <Text style={style}>
       {text}
     </Text>
