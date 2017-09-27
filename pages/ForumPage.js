@@ -108,6 +108,7 @@ class ForumPage extends React.Component {
   renderUser = (user_id, time) => {
     const user = this.state.questions.user_stream[user_id];
     const image = getUserImage(user);
+    const isChatBot = user.username === 'cherylbot';
     let [ display, ...ignore ] = user.name.split(' '); // eslint-disable-line
     if (user.user_fields.role === STUDENT_ROLE) {
       const grade = Math.min(12 - (user.user_fields.graduation_year - 2017), 12);
@@ -137,7 +138,7 @@ class ForumPage extends React.Component {
           }}
           numberOfLines={1}
         >
-          {display}
+          {isChatBot ? 'Cheryl (Bot)' : display}
         </Text>
         <Text style={{
           flex: 1,

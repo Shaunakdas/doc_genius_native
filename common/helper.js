@@ -39,6 +39,9 @@ export const getCategoryById = (categories, id) => {
 export const createRandomSlug = () => Math.random().toString(36).substr(2);
 
 export const getUserImage = (user, size = 30, resolution = 3) => {
+  if (user.username === 'cherylbot') {
+    return IMAGES.BOT_USER;
+  }
   let avatar_url = user.avatar_url;
   if (user.user_fields) {
     avatar_url = user.user_fields.avatar_url;
