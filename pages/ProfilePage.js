@@ -10,7 +10,7 @@ import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
 import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, profilePageStyle as s, font } from '../common/styles';
 import { IconButton, Button } from '../components';
-import { setNotifications, setLoggedInUser, markNotificationRead } from '../store/actions';
+import { setNotifications, setLoggedInUser, markNotificationRead, resetChat } from '../store/actions';
 import { notificationsAPI, userAPI, markNotificationsAsReadAPI } from '../common/api';
 
 class ProfilePage extends React.Component {
@@ -96,7 +96,9 @@ class ProfilePage extends React.Component {
   }
 
   logout = async () => {
+    const { reset } = this.props;
     await removeData('AUTH_TOKEN');
+    reset();
     this.props.navigation.dispatch(
       {
         type: 'Navigation/NAVIGATE',
@@ -426,6 +428,7 @@ const mapDispatchToProps = dispatch => ({
   putNotifications: notifications => dispatch(setNotifications(notifications)),
   setUser: user => dispatch(setLoggedInUser(user)),
   markRead: notification => dispatch(markNotificationRead(notification)),
+  reset: () => dispatch(resetChat()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);

@@ -9,7 +9,7 @@ import IMAGES from '../common/images';
 import { validateEmail, validGraduationYear, saveData } from '../common/helper';
 import COLORS, { alpha } from '../common/colors';
 import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
-import { studentSignUpApI, counselorSignUpApI, userAPI, categoriesAPI } from '../common/api';
+import { loginAPI, studentSignUpApI, counselorSignUpApI, userAPI, categoriesAPI } from '../common/api';
 import {
   setAuthToken,
   loggedIn,
@@ -191,6 +191,10 @@ class SignupPage extends React.Component {
           {
             type: 'Navigation/NAVIGATE',
             routeName: 'VerifyPage',
+            params: {
+              username,
+              password,
+            },
           },
         );
       }
@@ -212,7 +216,8 @@ class SignupPage extends React.Component {
         signingUp: false });
       } else {
         const { setToken, setRelevantCategories } = this.props;
-        const authToken = response;
+        const loginResponse = await loginAPI(username, password);
+        const { authToken } = loginResponse;
         const user = await userAPI(authToken);
         setToken(authToken);
         saveData('AUTH_TOKEN', authToken);

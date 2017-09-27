@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { commonStyle as cs, loginPageStyle as s, font } from '../common/styles';
 import { Button, Input } from '../components';
 import IMAGES from '../common/images';
-import { activateAPI, userAPI, categoriesAPI, connectToChannel, connectToSendbird } from '../common/api';
+import { loginAPI, activateAPI, userAPI, categoriesAPI, connectToChannel, connectToSendbird } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
 import {
   startLogIn,
@@ -43,9 +43,13 @@ class VerifyPage extends React.Component {
 
   constructor(props) {
     super(props); this.inputs = {};
+    const { navigation } = props;
+    const { params = {} } = navigation.state;
+    const { password } = params;
     this.state = {
       values: {
         password: '',
+        rootPassword: password,
       },
       errors: {
         password: '',
@@ -103,7 +107,7 @@ class VerifyPage extends React.Component {
 
 
   login = async () => {
-    const { password } = this.state.values;
+    const { password, rootPassword } = this.state.values;
     const {
       finish,
       error,
@@ -122,7 +126,7 @@ class VerifyPage extends React.Component {
       });
       error();
     } else {
-      const { authToken } = response;
+      const { authToken } = await loginAPI(username, rootPassword);
       const user = await userAPI(authToken);
       setToken(authToken);
       setUser(user);
@@ -167,7 +171,6 @@ class VerifyPage extends React.Component {
             inputProps={{
               ...commonInputProps,
               placeholder: 'Activation Token',
-              secureTextEntry: true,
             }}
             wrapperStyle={cs.inputWrapper}
             error={errors.password}

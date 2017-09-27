@@ -4,6 +4,7 @@ import {
   ADD_MESSAGES,
   SET_LIST_QUERY,
   SET_CHAT_SESSION,
+  RESET_CHAT,
 } from '../common/constants';
 
 const initialState = {
@@ -15,6 +16,8 @@ const initialState = {
 
 const appState = (state = initialState, action) => {
   switch (action.type) {
+    case RESET_CHAT:
+      return initialState;
     case SET_CHANNEL:
       return {
         ...state,

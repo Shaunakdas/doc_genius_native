@@ -85,7 +85,7 @@ class LoginPage extends React.Component {
     if (nextFieldName && this.inputs[nextFieldName]) { this.inputs[nextFieldName].focus(); }
   }
 
-  getStarted = () => {
+  getStarted = async () => {
     const { forgotState } = this.state;
     if (forgotState) {
       this.setState({
@@ -98,6 +98,15 @@ class LoginPage extends React.Component {
       const { username } = this.state.values;
       if (username) {
         const { navigation } = this.props;
+        const response = await forgotPasswordAPI(username);
+        if (response.success === false) {
+          this.setState({
+            errors: {
+              overall: 'User not found',
+            },
+          });
+          return;
+        }
         navigation.navigate('ForgotPasswordPage', { username });
       } else {
         this.setState({

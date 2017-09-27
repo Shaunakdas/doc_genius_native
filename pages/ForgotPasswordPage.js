@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { commonStyle as cs, loginPageStyle as s, font } from '../common/styles';
 import { Button, Input, IconButton } from '../components';
 import IMAGES from '../common/images';
-import { activateAPI, userAPI, categoriesAPI, connectToChannel, connectToSendbird } from '../common/api';
+import { loginAPI, userAPI, categoriesAPI, connectToChannel, connectToSendbird, changePasswordAPI } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
 import {
   startLogIn,
@@ -37,6 +37,7 @@ class ForgotPasswordPage extends React.Component {
     error: PropTypes.func.isRequired,
     setToken: PropTypes.func.isRequired,
     setUser: PropTypes.func.isRequired,
+    loggingIn: PropTypes.bool.isRequired,
   }
 
   constructor(props) {
@@ -98,10 +99,21 @@ class ForgotPasswordPage extends React.Component {
     const { error } = this.props;
     const {
       password,
+      token,
+      confirmPassword,
     } = this.state.values;
     const errors = {
-      password: password ? '' : 'Activation token is required',
+      password: password ? '' : 'Password is required',
+      token: token ? '' : 'Activation token is required',
+      confirmPassword: confirmPassword ? '' : 'Please re-type password',
     };
+    if (password.length < 10) {
+      errors.password = 'Should be atleast 10 characters';
+    }
+    if (password && confirmPassword && confirmPassword !== password) {
+      errors.confirmPassword = 'Passwords should match';
+    }
+
     this.setState({
       errors,
     }, () => {
@@ -115,26 +127,26 @@ class ForgotPasswordPage extends React.Component {
 
 
   login = async () => {
-    const { password } = this.state.values;
+    const { password, username, token } = this.state.values;
     const {
       finish,
       error,
       setToken,
       setUser,
-      username,
       setRelevantCategories,
       setBotChannel } = this.props;
-    const response = await activateAPI(username, password);
+    const response = await changePasswordAPI(username, password, token);
     if (response.success === false) {
       this.setState({
         errors: {
           ...this.state.errors,
-          overall: 'Invalid token',
+          overall: 'Invalid token \n or \n Provided same Password as existing',
         },
       });
       error();
     } else {
-      const { authToken } = response;
+      const loginResponse = await loginAPI(username, password);
+      const { authToken } = loginResponse;
       const user = await userAPI(authToken);
       setToken(authToken);
       setUser(user);
@@ -163,7 +175,8 @@ class ForgotPasswordPage extends React.Component {
       confirmPassword,
       token,
     } = this.state.values;
-    const { errors, loading } = this.state;
+    const { errors } = this.state;
+    const { loggingIn } = this.props;
     return (
       <View style={[cs.container, s.container]}>
         <Image
@@ -180,7 +193,6 @@ class ForgotPasswordPage extends React.Component {
             inputProps={{
               ...commonInputProps,
               placeholder: 'Activation Token',
-              secureTextEntry: true,
             }}
             wrapperStyle={cs.inputWrapper}
             error={errors.token}
@@ -227,7 +239,7 @@ class ForgotPasswordPage extends React.Component {
             style={[cs.getStartedButton, s.button]}
             textStyle={[cs.getStartedButtonText]}
             onPress={this.getStarted}
-            isLoading={loading}
+            isLoading={loggingIn}
             loadingColor={COLORS.PRIMARY}
           />
         </ScrollView>
@@ -241,6 +253,10 @@ class ForgotPasswordPage extends React.Component {
     );
   }
 }
+const mapStateToProps = ({ loginState }) => {
+  const { loggingIn } = loginState;
+  return { loggingIn };
+};
 
 const mapDispatchToProps = dispatch => ({
   setToken: authToken => dispatch(setAuthToken(authToken)),
@@ -255,4 +271,4 @@ const mapDispatchToProps = dispatch => ({
   setBotChannel: channel => dispatch(setChannel(channel)),
 });
 
-export default connect(null, mapDispatchToProps)(ForgotPasswordPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPasswordPage);

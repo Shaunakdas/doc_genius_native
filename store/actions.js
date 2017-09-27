@@ -16,6 +16,7 @@ import {
   SET_CHAT_SESSION,
   MARK_READ_ALL_NOTIFICATIONS,
   MARK_READ_NOTIFICATION,
+  RESET_CHAT,
 } from '../common/constants';
 
 export function startLogIn() {
@@ -137,5 +138,12 @@ export function setChatSession(sessionId) {
   return {
     type: SET_CHAT_SESSION,
     sessionId,
+  };
+}
+
+
+export function resetChat() {
+  return {
+    type: RESET_CHAT,
   };
 }

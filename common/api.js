@@ -37,7 +37,9 @@ const jsonFetch = async (url, options = {}, authToken = '') => {
       headers: headers(authToken),
     });
     const jsonResponse = await response.json();
-    if (response.status >= 400 || jsonResponse.error) { throw jsonResponse.error || jsonResponse; }
+    if (response.status >= 400 || jsonResponse.error || jsonResponse.errors) {
+      throw jsonResponse.error || jsonResponse || jsonResponse.errors;
+    }
     return jsonResponse;
   } catch (error) {
     return buildError(error);
@@ -98,7 +100,7 @@ export const userAPI = async (authToken) => {
 };
 
 export const studentSignUpApI =
- async ({ fullName, email, username, graduationYear, password, school_code }) => {
+ async ({ fullName, email, username, graduationYear, password, schoolCode: school_code }) => {
    const body = JSON.stringify({
      name: fullName,
      email,
@@ -126,7 +128,7 @@ export const studentSignUpApI =
  };
 
 export const counselorSignUpApI = async (
-  { fullName, email, username, password, counselorCode, school_code }) => {
+  { fullName, email, username, password, counselorCode, schoolCode: school_code }) => {
   const body = JSON.stringify({
     name: fullName,
     email,
