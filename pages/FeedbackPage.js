@@ -1,10 +1,12 @@
 import React from 'react';
 import { Text, View, Image, TextInput } from 'react-native';
 import { PropTypes } from 'prop-types';
+import { connect } from 'react-redux';
 
 import { IconButton, Button } from '../components';
 import IMAGES from '../common/images';
 import COLORS from '../common/colors';
+import { feedbackAPI } from '../common/api';
 import { commonStyle as cs, askQuestionPageStyle as s } from '../common/styles';
 
 class FeedbackPage extends React.Component {
@@ -16,11 +18,12 @@ class FeedbackPage extends React.Component {
     super(props);
     this.state = {
       feedback: '',
+      loading: false,
     };
   }
 
   onInputChange = (feedback) => {
-    if (feedback.length <= 200) {
+    if (feedback.length <= 600) {
       this.setState({ feedback, error: '' });
     }
   }
@@ -30,6 +33,20 @@ class FeedbackPage extends React.Component {
     navigation.goBack();
   }
 
+  sendFeedback = async () => {
+    const { feedback } = this.state;
+    const { currentUser } = this.props;
+    if (feedback.trim().length) {
+      this.setState({ loading: true });
+      const response = await feedbackAPI(currentUser.email, feedback);
+      if (response.success === false) {
+        this.setState({ feedback: '', error: 'Unable to send feedback', loading: false });
+      } else {
+        this.setState({ feedback: '', error: '', loading: false });
+        this.goBack();
+      }
+    }
+  }
 
   render() {
     const { feedback } = this.state;
@@ -60,20 +77,20 @@ class FeedbackPage extends React.Component {
             style={s.textInputContainer}
           >
             <TextInput
-              style={s.textInput}
+              style={[s.textInput, { height: 150 }]}
               multiline
               underlineColorAndroid={COLORS.TRANSPARENT}
               onChangeText={this.onInputChange}
               value={feedback}
               autoFocus
             />
-            <Text style={s.countLine}> {feedback.length}/200</Text>
           </View>
           <Button
             style={s.askButton}
             textStyle={s.askButtonText}
             text="Send"
-            onPress={this.goBack}
+            onPress={this.sendFeedback}
+            isLoading={this.state.loading}
           />
         </View>
       </View>
@@ -81,5 +98,6 @@ class FeedbackPage extends React.Component {
   }
 }
 
+const mapStateToProps = ({ currentUser }) => ({ currentUser });
 
-export default FeedbackPage;
+export default connect(mapStateToProps)(FeedbackPage);

@@ -31,7 +31,12 @@ export default class WebPage extends React.Component {
     return (
       <View style={cs.container}>
         <View style={cs.header}>
-          <Text style={cs.headerText}> Browser </Text>
+          <Text
+            style={cs.headerText}
+            numberOfLines={1}
+          >
+            Web View
+          </Text>
           <Image
             source={IMAGES.HEADER_BG}
             style={cs.headerImage}

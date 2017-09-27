@@ -173,7 +173,7 @@ class LoginPage extends React.Component {
       this.setState({
         errors: {
           ...this.state.errors,
-          overall: response.error,
+          overall: 'Login credentials are not valid!',
         },
       });
       error();

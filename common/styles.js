@@ -523,6 +523,7 @@ export const askQuestionPageStyle = StyleSheet.create({
   textInput: {
     height: 100,
     ...font(14),
+    textAlignVertical: 'top',
   },
   askButton: {
     borderRadius: 10,

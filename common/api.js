@@ -1,5 +1,5 @@
 import SendBird from 'sendbird';
-import { BASE_URL, STUDENT_ROLE, COUNSELOR_ROLE, SENDBIRD_APP_ID } from './constants';
+import { BASE_URL, STUDENT_ROLE, COUNSELOR_ROLE, SENDBIRD_APP_ID, ADMIN_BASE_URL } from './constants';
 
 const sendbird = new SendBird({ appId: SENDBIRD_APP_ID });
 
@@ -46,7 +46,7 @@ const jsonFetch = async (url, options = {}, authToken = '') => {
 
 export const loginAPI = async (login, password) => {
   const body = JSON.stringify({ login, password });
-  const response = await jsonFetch(`${BASE_URL}/user/login`, { body, method: 'POST' });
+  const response = await jsonFetch(`${ADMIN_BASE_URL}/user/login`, { body, method: 'POST' });
   return (response.success !== false) ? { authToken: response.auth_token } : response;
 };
 
@@ -61,6 +61,17 @@ export const forgotPasswordAPI = async (login) => {
   const response = await jsonFetch(`${BASE_URL}/passwords/forgot`, { body, method: 'POST' });
   return response;
 };
+
+export const feedbackAPI = async (from, message) => {
+  const body = JSON.stringify({
+    email: 'feedback@connecpath.com',
+    title: `Feedback from <${from}>`,
+    message,
+  });
+  const response = await jsonFetch(`${BASE_URL}/feedback`, { body, method: 'POST' });
+  return response;
+};
+
 
 export const changePasswordAPI = async (login, password, activation_token) => {
   const body = JSON.stringify({ login, password, activation_token });

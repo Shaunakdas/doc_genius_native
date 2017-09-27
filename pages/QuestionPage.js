@@ -449,7 +449,8 @@ renderQ = question => (
   render() {
     const { inputHeight, keyboardHeight = 0, refreshing } = this.state;
     const extraHeight = inputHeight === defaultInputHeight ? 85 : 78;
-    const availableHeight = fullHeight - inputHeight - keyboardHeight - extraHeight;
+    const androidHeight = Platform.OS === 'ios' ? 0 : 8;
+    const availableHeight = fullHeight - inputHeight - keyboardHeight - extraHeight - androidHeight;
     const { loading, question, category } = this.state;
     const { details_stream } = question || {};
     return (
