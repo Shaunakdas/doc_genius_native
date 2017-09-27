@@ -11,7 +11,7 @@ import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, profilePageStyle as s, font } from '../common/styles';
 import { IconButton, Button } from '../components';
 import { setNotifications, setLoggedInUser } from '../store/actions';
-import { notificationsAPI, userAPI } from '../common/api';
+import { notificationsAPI, userAPI, markNotificationsAsReadAPI } from '../common/api';
 
 class ProfilePage extends React.Component {
   static propTypes = {
@@ -83,9 +83,12 @@ class ProfilePage extends React.Component {
     navigation.navigate(page);
   }
 
-  gotoQuestionPage = (notification) => {
-    const { navigation } = this.props;
+  gotoQuestionPage = async (notification) => {
+    const { navigation, authToken } = this.props;
     if (notification.topic_id) {
+      if (!notification.read) {
+        await markNotificationsAsReadAPI(authToken, notification.id);
+      }
       navigation.navigate('NotificationQuestionPage', { id: notification.topic_id });
     }
   }
@@ -196,7 +199,15 @@ class ProfilePage extends React.Component {
             alignItems: 'center',
           }}
         >
-          <View>
+          {!notification.read ?
+            <View
+              style={{ backgroundColor: COLORS.PRIMARY,
+                height: 5,
+                width: 5,
+                borderRadius: 5,
+                marginRight: 3 }}
+            /> : null}
+          <View style={{ flex: 1 }}>
             <Text style={{ marginLeft: 15, ...font(13) }}>
               {`${notification.userFullName} ${actions[notification.type]}`}
             </Text>

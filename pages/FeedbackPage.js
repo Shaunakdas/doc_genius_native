@@ -91,6 +91,7 @@ class FeedbackPage extends React.Component {
             text="Send"
             onPress={this.sendFeedback}
             isLoading={this.state.loading}
+            loadingColor={COLORS.WHITE}
           />
         </View>
       </View>

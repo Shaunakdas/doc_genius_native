@@ -80,18 +80,21 @@ class ChatPage extends React.Component {
   onMessageReceived = (channel, chat) => {
     const { channelUrl, message } = chat;
     const { channel_url, addChat, setSession } = this.props;
+    let fulfillmentMessage = message;
     if (channelUrl !== channel_url || chat.data === '') {
-      addChat({ type: 'bot',
-        chat: message });
       this.adjustChatScroll();
       if (chat.data) {
         try {
           const parsedData = JSON.parse(chat.data);
           setSession(parsedData.sessionId);
+          if (parsedData.result.fulfillment.messages.length) {
+            fulfillmentMessage = parsedData.result.fulfillment.messages[0].speech;
+          }
         } catch (_) {
           console.log(_); // eslint-disable-line no-console
         }
       }
+      addChat({ type: 'bot', chat: fulfillmentMessage });
     }
   }
 
@@ -119,20 +122,30 @@ class ChatPage extends React.Component {
   fetchMessages = async (listQuery) => {
     const { chatHistory, setChatHistory, setSession } = this.props;
     this.setState({ chatLoading: true }, async () => {
-      const messages = await getMessages(listQuery || this.props.listQuery);
+      const unParsedMessages = await getMessages(listQuery || this.props.listQuery);
+      const messages = unParsedMessages.map((originalMessage) => {
+        const message = { ...originalMessage };
+        try {
+          if (message.data) {
+            const parsedData = JSON.parse(message.data);
+            if (parsedData.result.fulfillment.messages.length) {
+              const fulfillmentMessage = parsedData.result.fulfillment.messages[0].speech;
+              message.chat = fulfillmentMessage || message.chat;
+            }
+          }
+        } catch (_) {
+          console.log(_); // eslint-disable-line no-console
+        }
+        return message;
+      });
       const userMessages = messages.filter(m => m.type === 'user');
       const botMessages = messages.filter(m => m.type === 'bot');
       if (messages.length) {
         if (botMessages.length) {
           const lastBotMessage = botMessages[botMessages.length - 1];
-          try {
-            const data = lastBotMessage.data;
-            if (data) {
-              const parsedData = JSON.parse(data);
-              setSession(parsedData.sessionId);
-            }
-          } catch (_) {
-            console.log(_); // eslint-disable-line no-console
+          const data = lastBotMessage.data;
+          if (data && data.sessionId) {
+            setSession(data.sessionId);
           }
         }
         setChatHistory(messages);
@@ -213,15 +226,22 @@ class ChatPage extends React.Component {
     this.setState({ waitingForBot: false }, () => this.addChatBotReply(response));
   }
 
-  addChatBotReply = (botResponse) => {
+  addChatBotReply = (message) => {
+    const botResponse = { ...message };
     if (botResponse) {
       let showButtons = false;
       const { addChat, setSession } = this.props;
       try {
+        let fulfillmentMessage = botResponse.message;
         const data = JSON.parse(botResponse.data);
         if (data && data.sessionId) {
           setSession(data.sessionId);
+          botResponse.data = data;
+          if (data.result.fulfillment.messages.length) {
+            fulfillmentMessage = data.result.fulfillment.messages[0].speech;
+          }
         }
+        botResponse.message = fulfillmentMessage;
         showButtons = (data.result.action === 'input.unknown');
       } catch (error) {
         console.log(error); // eslint-disable-line no-console

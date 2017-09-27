@@ -165,6 +165,7 @@ class SignupPage extends React.Component {
       password,
       graduationYear,
       counselorCode,
+      schoolCode,
     } = this.state.values;
 
     if (role === STUDENT_ROLE) {
@@ -174,6 +175,7 @@ class SignupPage extends React.Component {
         username,
         graduationYear,
         password,
+        schoolCode,
       });
       if (response.success === false) {
         const overallError = response.message || response.error || 'Signup failed try again!';
@@ -199,6 +201,7 @@ class SignupPage extends React.Component {
         username,
         password,
         counselorCode,
+        schoolCode,
       });
       if (response.success === false) {
         const error = response.error;

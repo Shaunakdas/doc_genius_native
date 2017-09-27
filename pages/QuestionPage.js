@@ -193,7 +193,7 @@ class QuestionPage extends React.Component {
     const image = getUserImage(user);
     let [ display, ...ignore ] = user.name.split(' '); // eslint-disable-line
     if (user.user_fields.role === STUDENT_ROLE) {
-      const grade = 12 - (user.user_fields.graduation_year - 2017);
+      const grade = Math.min(12 - (user.user_fields.graduation_year - 2017), 12);
       display = `${display} (${grade}th)`;
     }
     return (

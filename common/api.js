@@ -53,13 +53,13 @@ export const loginAPI = async (login, password) => {
 
 export const activateAPI = async (username, activation_token) => {
   const body = JSON.stringify({ username, activation_token });
-  const response = await jsonFetch(`${BASE_URL}/user/activate`, { body, method: 'POST' });
+  const response = await jsonFetch(`${ADMIN_BASE_URL}/user/activate`, { body, method: 'POST' });
   return (response.success !== false) ? { authToken: response.auth_token } : response;
 };
 
 export const forgotPasswordAPI = async (login) => {
   const body = JSON.stringify({ login });
-  const response = await jsonFetch(`${BASE_URL}/passwords/forgot`, { body, method: 'POST' });
+  const response = await jsonFetch(`${ADMIN_BASE_URL}/passwords/forgot`, { body, method: 'POST' });
   return response;
 };
 
@@ -76,7 +76,7 @@ export const feedbackAPI = async (from, message) => {
 
 export const changePasswordAPI = async (login, password, activation_token) => {
   const body = JSON.stringify({ login, password, activation_token });
-  const response = await jsonFetch(`${BASE_URL}/passwords/update`, { body, method: 'POST' });
+  const response = await jsonFetch(`${ADMIN_BASE_URL}/passwords/update`, { body, method: 'POST' });
   return response;
 };
 
@@ -97,34 +97,36 @@ export const userAPI = async (authToken) => {
   return response;
 };
 
-export const studentSignUpApI = async ({ fullName, email, username, graduationYear, password }) => {
-  const body = JSON.stringify({
-    name: fullName,
-    email,
-    username,
-    user_fields: {
-      role: STUDENT_ROLE,
-      graduation_year: graduationYear,
-    },
-    password,
-  });
-  const response = await jsonFetch(`${BASE_URL}/user/sign_up`, { body, method: 'POST' });
-  if (response.success !== false) {
-    const { admin_user } = response;
-    const { id, username: username_r, email: email_r, user_fields, name } = admin_user;
-    return {
-      id,
-      username: username_r,
-      email: email_r,
-      ...user_fields,
-      name,
-    };
-  }
-  return response;
-};
+export const studentSignUpApI =
+ async ({ fullName, email, username, graduationYear, password, school_code }) => {
+   const body = JSON.stringify({
+     name: fullName,
+     email,
+     username,
+     user_fields: {
+       role: STUDENT_ROLE,
+       graduation_year: graduationYear,
+     },
+     password,
+     school_code,
+   });
+   const response = await jsonFetch(`${ADMIN_BASE_URL}/user/sign_up`, { body, method: 'POST' });
+   if (response.success !== false) {
+     const { admin_user } = response;
+     const { id, username: username_r, email: email_r, user_fields, name } = admin_user;
+     return {
+       id,
+       username: username_r,
+       email: email_r,
+       ...user_fields,
+       name,
+     };
+   }
+   return response;
+ };
 
 export const counselorSignUpApI = async (
-  { fullName, email, username, password, counselorCode }) => {
+  { fullName, email, username, password, counselorCode, school_code }) => {
   const body = JSON.stringify({
     name: fullName,
     email,
@@ -134,8 +136,9 @@ export const counselorSignUpApI = async (
     },
     password,
     activation_token: counselorCode,
+    school_code,
   });
-  const response = await jsonFetch(`${BASE_URL}/user/sign_up`, { body, method: 'POST' });
+  const response = await jsonFetch(`${ADMIN_BASE_URL}/user/sign_up`, { body, method: 'POST' });
   if (response.success !== false && response.auth_token) {
     return response.auth_token;
   }
@@ -153,11 +156,12 @@ export const categoriesAPI = async (authToken) => {
   return response;
 };
 
-export const postsAPI = async (authToken, filters, searchTerm) => {
+export const postsAPI = async (authToken, filters, searchTerm, page = 1) => {
   const filterIds = filters.map(filter => filter.id);
   const queryString = buildQuery({
     query: searchTerm,
     id: filterIds,
+    page,
   });
   const url = `${BASE_URL}/questions?${queryString}`;
   const response = await jsonFetch(url, { method: 'GET' }, authToken);
@@ -219,6 +223,16 @@ export const notificationsAPI = async (authToken) => {
   const response = await jsonFetch(url, { method: 'GET' }, authToken);
   return response;
 };
+
+export const markNotificationsAsReadAPI = async (authToken, id) => {
+  const url = `${BASE_URL}/notifications/mark_read`;
+  const body = JSON.stringify({
+    id,
+  });
+  const response = await jsonFetch(url, { body, method: 'POST' }, authToken);
+  return response;
+};
+
 
 export const sendMessageToBot = async (message, channel_url, session_id, authToken) => {
   const url = 'http://18.221.40.110/chats/send_ai_message';

@@ -125,6 +125,7 @@ class AskQuestionPage extends React.Component {
             text="Post to Forum"
             onPress={this.postQuestion}
             isLoading={this.state.loading}
+            loadingColor={COLORS.WHITE}
           />
           {this.state.error ? <Text
             style={{
