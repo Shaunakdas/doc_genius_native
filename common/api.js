@@ -37,7 +37,7 @@ const jsonFetch = async (url, options = {}, authToken = '') => {
       headers: headers(authToken),
     });
     const jsonResponse = await response.json();
-    if (response.status >= 400) { throw jsonResponse.error || jsonResponse; }
+    if (response.status >= 400 || jsonResponse.error) { throw jsonResponse.error || jsonResponse; }
     return jsonResponse;
   } catch (error) {
     return buildError(error);
@@ -47,7 +47,8 @@ const jsonFetch = async (url, options = {}, authToken = '') => {
 export const loginAPI = async (login, password) => {
   const body = JSON.stringify({ login, password });
   const response = await jsonFetch(`${ADMIN_BASE_URL}/user/login`, { body, method: 'POST' });
-  return (response.success !== false) ? { authToken: response.auth_token } : response;
+  return (response.success !== false) ?
+    { authToken: response.auth_token } : response;
 };
 
 export const activateAPI = async (username, activation_token) => {

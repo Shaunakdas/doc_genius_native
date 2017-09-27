@@ -171,12 +171,12 @@ class ForumPage extends React.Component {
           {post.like_count}
         </Text>
         <Image
-          source={IMAGES.HEART}
+          source={post.current_user_liked ? IMAGES.HEART_FILL : IMAGES.HEART}
           style={{
+            marginRight: 12,
             height: 16,
             width: 16,
             resizeMode: 'contain',
-            marginRight: 5,
           }}
         />
         <Text
