@@ -10,7 +10,7 @@ import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
 import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, profilePageStyle as s, font } from '../common/styles';
 import { IconButton, Button } from '../components';
-import { setNotifications, setLoggedInUser } from '../store/actions';
+import { setNotifications, setLoggedInUser, markNotificationRead } from '../store/actions';
 import { notificationsAPI, userAPI, markNotificationsAsReadAPI } from '../common/api';
 
 class ProfilePage extends React.Component {
@@ -59,7 +59,8 @@ class ProfilePage extends React.Component {
               topic_id,
               created_at,
             } = notification;
-            const username = notification.data.original_username;
+            const username = notification.data.original_username
+              || notification.data.display_username;
             const selection = users.filter(item => item.username === username);
             const userFullName = selection.length ? selection[0].name : username;
             return {
@@ -84,10 +85,11 @@ class ProfilePage extends React.Component {
   }
 
   gotoQuestionPage = async (notification) => {
-    const { navigation, authToken } = this.props;
+    const { navigation, authToken, markRead } = this.props;
     if (notification.topic_id) {
       if (!notification.read) {
         await markNotificationsAsReadAPI(authToken, notification.id);
+        markRead(notification);
       }
       navigation.navigate('NotificationQuestionPage', { id: notification.topic_id });
     }
@@ -199,14 +201,13 @@ class ProfilePage extends React.Component {
             alignItems: 'center',
           }}
         >
-          {!notification.read ?
-            <View
-              style={{ backgroundColor: COLORS.PRIMARY,
-                height: 5,
-                width: 5,
-                borderRadius: 5,
-                marginRight: 3 }}
-            /> : null}
+          <View
+            style={{ backgroundColor: notification.read ? COLORS.TRANSPARENT : COLORS.PRIMARY,
+              height: 5,
+              width: 5,
+              borderRadius: 5,
+              marginRight: 3 }}
+          />
           <View style={{ flex: 1 }}>
             <Text style={{ marginLeft: 15, ...font(13) }}>
               {`${notification.userFullName} ${actions[notification.type]}`}
@@ -425,6 +426,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = dispatch => ({
   putNotifications: notifications => dispatch(setNotifications(notifications)),
   setUser: user => dispatch(setLoggedInUser(user)),
+  markRead: notification => dispatch(markNotificationRead(notification)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);

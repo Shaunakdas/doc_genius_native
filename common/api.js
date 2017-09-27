@@ -224,12 +224,12 @@ export const notificationsAPI = async (authToken) => {
   return response;
 };
 
-export const markNotificationsAsReadAPI = async (authToken, id) => {
+export const markNotificationsAsReadAPI = async (authToken, id = null) => {
   const url = `${BASE_URL}/notifications/mark_read`;
-  const body = JSON.stringify({
+  const body = JSON.stringify(id ? {
     id,
-  });
-  const response = await jsonFetch(url, { body, method: 'POST' }, authToken);
+  } : {});
+  const response = await jsonFetch(url, { body, method: 'PUT' }, authToken);
   return response;
 };
 

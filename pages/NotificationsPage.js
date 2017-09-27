@@ -8,7 +8,7 @@ import IMAGES from '../common/images';
 import COLORS from '../common/colors';
 import { IconButton } from '../components';
 import { commonStyle as cs, font } from '../common/styles';
-import { setNotifications } from '../store/actions';
+import { setNotifications, markAllNotificationRead, markNotificationRead } from '../store/actions';
 import { notificationsAPI, markNotificationsAsReadAPI } from '../common/api';
 
 class NotificationsPage extends React.Component {
@@ -26,9 +26,12 @@ class NotificationsPage extends React.Component {
   }
 
   onRefresh = async () => {
+    const { authToken, markAllRead } = this.props;
     this.setState({
       refreshing: true,
     });
+    await markNotificationsAsReadAPI(authToken);
+    markAllRead();
     await this.fetchNotifications();
     this.setState({
       refreshing: false,
@@ -41,10 +44,11 @@ class NotificationsPage extends React.Component {
   }
 
   gotoQuestionPage = async (notification) => {
-    const { navigation, authToken } = this.props;
+    const { navigation, authToken, markRead } = this.props;
     if (notification.topic_id) {
       if (!notification.read) {
         await markNotificationsAsReadAPI(authToken, notification.id);
+        markRead(notification);
       }
       navigation.navigate('NotificationQuestionPage', { id: notification.topic_id });
     }
@@ -68,7 +72,8 @@ class NotificationsPage extends React.Component {
               topic_id,
               created_at,
             } = notification;
-            const username = notification.data.original_username;
+            const username = notification.data.original_username
+              || notification.data.display_username;
             const selection = users.filter(item => item.username === username);
             const userFullName = selection.length ? selection[0].name : username;
             return {
@@ -112,14 +117,13 @@ class NotificationsPage extends React.Component {
             alignItems: 'center',
           }}
         >
-          {!notification.read ?
-            <View
-              style={{ backgroundColor: COLORS.PRIMARY,
-                height: 5,
-                width: 5,
-                borderRadius: 5,
-                marginRight: 3 }}
-            /> : null}
+          <View
+            style={{ backgroundColor: notification.read ? COLORS.TRANSPARENT : COLORS.PRIMARY,
+              height: 5,
+              width: 5,
+              borderRadius: 5,
+              marginRight: 3 }}
+          />
           <View style={{ flex: 1 }}>
             <Text style={{ marginLeft: 15, ...font(13) }}>
               {`${notification.userFullName} ${actions[notification.type]}`}
@@ -185,6 +189,8 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = dispatch => ({
   putNotifications: notifications => dispatch(setNotifications(notifications)),
+  markRead: notification => dispatch(markNotificationRead(notification)),
+  markAllRead: () => dispatch(markAllNotificationRead()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationsPage);

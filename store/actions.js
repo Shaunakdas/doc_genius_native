@@ -14,6 +14,8 @@ import {
   ADD_MESSAGES,
   SET_LIST_QUERY,
   SET_CHAT_SESSION,
+  MARK_READ_ALL_NOTIFICATIONS,
+  MARK_READ_NOTIFICATION,
 } from '../common/constants';
 
 export function startLogIn() {
@@ -81,6 +83,19 @@ export function setNotifications(notifications) {
   return {
     type: SET_NOTIFICATIONS,
     notifications,
+  };
+}
+
+export function markNotificationRead(notification) {
+  return {
+    type: MARK_READ_NOTIFICATION,
+    notification,
+  };
+}
+
+export function markAllNotificationRead() {
+  return {
+    type: MARK_READ_ALL_NOTIFICATIONS,
   };
 }
 
