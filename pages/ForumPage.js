@@ -226,7 +226,7 @@ class ForumPage extends React.Component {
     );
   };
 
-  renderCategoryLabel = category => (
+  renderCategoryLabel = category => (category && category.name ?
     <View style={{
       flexDirection: 'row',
       justifyContent: 'flex-end',
@@ -258,7 +258,7 @@ class ForumPage extends React.Component {
         </Text>
       </View>
     </View>
-  );
+    : null);
 
 renderQ = (question, detail) => (
   <View style={{

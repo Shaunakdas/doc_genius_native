@@ -58,7 +58,7 @@ class NotificationsPage extends React.Component {
   fetchNotifications = async () => {
     const { authToken } = this.props;
     const response = await notificationsAPI(authToken);
-    if (response.success !== false) {
+    if (response.success !== false && response.user_list && response.user_list.field_stream) {
       const { notifications, user_list: { field_stream: users } } = response;
       const applicableNotifications =
         notifications.filter(({ notification_type }) =>

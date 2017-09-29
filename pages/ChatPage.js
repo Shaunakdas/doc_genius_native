@@ -9,12 +9,13 @@ import { Text,
   Keyboard,
   Platform,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import { commonStyle as cs, chatPageStyle as s, fullHeight, fullWidth } from '../common/styles';
 import { Button, IconButton, HighlightText } from '../components';
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
-import { setMessages, addMessages, setListQuery, setChatSession } from '../store/actions';
+import { setMessages, addMessages, setListQuery, setChatSession, prependMessages } from '../store/actions';
 import { getMessages, sendMessageToBot, sendSendbirdMessage, startRecievingMessages } from '../common/api';
 
 const defaultInputHeight = 19.5;
@@ -52,6 +53,7 @@ class ChatPage extends React.Component {
       chatLoading: true,
       waitingForBot: false,
       latestUserChat: '',
+      refreshing: false,
     };
   }
 
@@ -113,10 +115,47 @@ class ChatPage extends React.Component {
     if (chatInput.length <= 200) { this.setState({ chatInput }); }
   }
 
+  onRefresh = () => {
+    const { listQuery } = this.props;
+    if (listQuery && listQuery.hasMore) {
+      this.setState({ refreshing: true });
+      this.fetchPreviousMessages();
+    }
+  }
+
   handleOpeningUrl = async (url) => {
     if (url) {
       this.props.navigation.navigate('ChatWebPage', { url });
     }
+  }
+
+  fetchPreviousMessages = async (listQueryParam) => {
+    const listQuery = listQueryParam || this.props.listQuery;
+    if (listQuery && listQuery.hasMore) {
+      const { prependChats } = this.props;
+      const unParsedMessages = await getMessages(listQuery);
+      const messages = unParsedMessages.map((originalMessage) => {
+        const message = { ...originalMessage };
+        try {
+          if (message.data) {
+            const parsedData = JSON.parse(message.data);
+            if (parsedData.result.fulfillment.messages.length) {
+              const fulfillmentMessage = parsedData.result.fulfillment.messages[0].speech;
+              message.chat = fulfillmentMessage || message.chat;
+            }
+          }
+        } catch (_) {
+          console.log(_); // eslint-disable-line no-console
+        }
+        return message;
+      });
+      if (messages.length) {
+        prependChats(messages);
+      }
+    }
+    this.setState({
+      refreshing: false,
+    });
   }
 
   fetchMessages = async (listQuery) => {
@@ -153,14 +192,13 @@ class ChatPage extends React.Component {
           chatLoading: false,
           latestUserChat: userMessages.length ? userMessages[userMessages.length - 1].chat : '',
         }, this.adjustChatScroll);
-      } else {
-        if (chatHistory.length === 0) {
-          const { channel_url, authToken, sessionId } = this.props;
-          setTimeout(async () => {
-            await sendMessageToBot('Who are you?', channel_url, sessionId, authToken);
-          }, 500);
-        }
-        this.setState({ chatLoading: false }, this.adjustChatScroll);
+      } else if (chatHistory.length === 0) {
+        const { channel_url, authToken, sessionId } = this.props;
+        setTimeout(async () => {
+          const response = await sendMessageToBot('Who are you?', channel_url, sessionId, authToken);
+          this.addChatBotReply(response);
+          this.setState({ chatLoading: false });
+        }, 500);
       }
     });
   }
@@ -343,7 +381,7 @@ class ChatPage extends React.Component {
   );
 
   render() {
-    const { inputHeight, keyboardHeight = 0, chatInput } = this.state;
+    const { inputHeight, keyboardHeight = 0, chatInput, refreshing } = this.state;
     const { chatHistory } = this.props;
     const extraHeight = keyboardHeight ? 90 : 150;
     const availableHeight = fullHeight - inputHeight - keyboardHeight - extraHeight;
@@ -367,6 +405,12 @@ class ChatPage extends React.Component {
             style={[cs.scroll, s.chatScroll, { backgroundColor: alpha(COLORS.PRIMARY, 0.3) }]}
             contentContainerStyle={{ backgroundColor: COLORS.WHITE, minHeight: availableHeight }}
             ref={(scrollView) => { this.scrollView = scrollView; }}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={this.onRefresh}
+              />
+            }
           >
             <View style={s.hintView}>
               <Text
@@ -428,6 +472,7 @@ const mapStateToProps =
 const mapDispatchToProps = dispatch => ({
   setChatHistory: messages => dispatch(setMessages(messages)),
   addChat: message => dispatch(addMessages([message])),
+  prependChats: messages => dispatch(prependMessages(messages)),
   setQuery: listQuery => dispatch(setListQuery(listQuery)),
   setSession: sessionId => dispatch(setChatSession(sessionId)),
 });

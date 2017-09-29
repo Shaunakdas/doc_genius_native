@@ -5,6 +5,7 @@ import {
   SET_LIST_QUERY,
   SET_CHAT_SESSION,
   RESET_CHAT,
+  PREPEND_MESSAGES,
 } from '../common/constants';
 
 const initialState = {
@@ -38,6 +39,14 @@ const appState = (state = initialState, action) => {
       return {
         ...state,
         messages: action.messages,
+      };
+    case PREPEND_MESSAGES:
+      return {
+        ...state,
+        messages: [
+          ...action.messages,
+          ...state.messages,
+        ],
       };
     case ADD_MESSAGES:
       return {

@@ -17,6 +17,7 @@ import {
   MARK_READ_ALL_NOTIFICATIONS,
   MARK_READ_NOTIFICATION,
   RESET_CHAT,
+  PREPEND_MESSAGES,
 } from '../common/constants';
 
 export function startLogIn() {
@@ -145,5 +146,13 @@ export function setChatSession(sessionId) {
 export function resetChat() {
   return {
     type: RESET_CHAT,
+  };
+}
+
+
+export function prependMessages(messages) {
+  return {
+    type: PREPEND_MESSAGES,
+    messages,
   };
 }

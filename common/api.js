@@ -284,7 +284,7 @@ export const connectToChannel = channelUrl => new Promise((resolve, reject) => {
 });
 
 export const getMessages = listQuery => new Promise((resolve, reject) => {
-  listQuery.load(30, true, (messageList, error) => {
+  listQuery.load(10, true, (messageList, error) => {
     if (error) {
       reject(error);
     }
