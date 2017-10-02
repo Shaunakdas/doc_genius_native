@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import Modal from 'react-native-modal';
 
 import IMAGES from '../common/images';
 import { Button, IconButton, Input } from '../components';
@@ -34,6 +35,7 @@ class ProfileEditPage extends React.Component {
     const { currentUser: user } = props;
     this.inputs = {};
     this.state = {
+      isModalVisible: false,
       values: {
         fullName: user.name,
         graduationYear: user.graduation_year,
@@ -129,9 +131,14 @@ class ProfileEditPage extends React.Component {
     this.inputs[fieldName] = input;
   }
 
+  showModal = () => this.setState({ isModalVisible: true })
+
+  hideModal = () => this.setState({ isModalVisible: false })
+
   render() {
     const { errors, values, updating } = this.state;
     const { fullName, graduationYear, role, school, schoolCode, username, email } = values;
+    const { currentUser } = this.props;
     return (
       <View
         style={[cs.container, { backgroundColor: COLORS.PRIMARY }]}
@@ -150,6 +157,35 @@ class ProfileEditPage extends React.Component {
           style={cs.scroll}
           contentContainerStyle={cs.scrollContent}
         >
+
+          <View style={{
+            elevation: 2,
+            shadowColor: COLORS.BLACK,
+            shadowOffset: { width: 1, height: 2 },
+            shadowOpacity: 0.25,
+            shadowRadius: 2,
+            backgroundColor: COLORS.WHITE,
+            height: 70,
+            width: 70,
+            borderRadius: 35,
+            marginVertical: 20,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          >
+            <TouchableOpacity onPress={this.showModal}>
+              <Image
+                source={currentUser.image}
+                style={{
+                  height: 70,
+                  width: 70,
+                  borderRadius: 35,
+                  resizeMode: 'contain',
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+
           <Input
             inputProps={{
               ...commonInputProps,
@@ -238,6 +274,58 @@ class ProfileEditPage extends React.Component {
             loadingColor={COLORS.PRIMARY}
           />
         </ScrollView>
+        <Modal
+          isVisible={this.state.isModalVisible}
+          onBackdropPress={this.hideModal}
+        >
+          <View
+            style={{
+              backgroundColor: COLORS.ALMOST_WHITE,
+              borderRadius: 15,
+              marginHorizontal: 40,
+              paddingVertical: 10,
+            }}
+          >
+            <Button
+              text="Pick an Image from Camera Roll"
+              style={{
+                borderBottomWidth: 1,
+                borderColor: COLORS.SECONDARY,
+                padding: 5,
+              }}
+              textStyle={{
+                ...font(16),
+                textAlign: 'center',
+                color: COLORS.PRIMARY,
+              }}
+            />
+            <Button
+              text="Take a Photo"
+              style={{
+                borderBottomWidth: 1,
+                borderColor: COLORS.SECONDARY,
+                padding: 5,
+              }}
+              textStyle={{
+                ...font(16),
+                textAlign: 'center',
+                color: COLORS.PRIMARY,
+              }}
+            />
+            <Button
+              text="Close"
+              style={{
+                padding: 5,
+              }}
+              textStyle={{
+                ...font(16),
+                textAlign: 'center',
+                color: COLORS.PRIMARY,
+              }}
+              onPress={this.hideModal}
+            />
+          </View>
+        </Modal>
       </View>
     );
   }
