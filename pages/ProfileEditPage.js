@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { Text, View, ScrollView, Image, TouchableOpacity, ActivityIndicator, Platform } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
+import { ImagePicker } from 'expo';
 
 import IMAGES from '../common/images';
 import { Button, IconButton, Input } from '../components';
@@ -36,6 +37,8 @@ class ProfileEditPage extends React.Component {
     this.inputs = {};
     this.state = {
       isModalVisible: false,
+      image: user.image,
+      uploading: false,
       values: {
         fullName: user.name,
         graduationYear: user.graduation_year,
@@ -135,10 +138,47 @@ class ProfileEditPage extends React.Component {
 
   hideModal = () => this.setState({ isModalVisible: false })
 
+  takePhoto = async () => {
+    const pickerResult = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0,
+    });
+
+    await this.handleImagePicked(pickerResult);
+  };
+
+  pickImage = async () => {
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0,
+    });
+    await this.handleImagePicked(pickerResult);
+  };
+
+  handleImagePicked = async (pickerResult) => {
+    this.setState({ uploading: true, isModalVisible: false });
+    try {
+      if (!pickerResult.cancelled) {
+        const { image } = this.state;
+        this.setState({
+          image: {
+            ...image,
+            uri: pickerResult.uri,
+          },
+        });
+      }
+    } catch (e) {
+      //
+    } finally {
+      this.setState({ uploading: false });
+    }
+  };
+
   render() {
-    const { errors, values, updating } = this.state;
+    const { errors, values, updating, image } = this.state;
     const { fullName, graduationYear, role, school, schoolCode, username, email } = values;
-    const { currentUser } = this.props;
     return (
       <View
         style={[cs.container, { backgroundColor: COLORS.PRIMARY }]}
@@ -175,7 +215,7 @@ class ProfileEditPage extends React.Component {
           >
             <TouchableOpacity onPress={this.showModal}>
               <Image
-                source={currentUser.image}
+                source={image}
                 style={{
                   height: 70,
                   width: 70,
@@ -287,17 +327,19 @@ class ProfileEditPage extends React.Component {
             }}
           >
             <Button
-              text="Pick an Image from Camera Roll"
+              text="Pick an Image"
               style={{
                 borderBottomWidth: 1,
                 borderColor: COLORS.SECONDARY,
                 padding: 5,
+                paddingHorizontal: 20,
               }}
               textStyle={{
                 ...font(16),
                 textAlign: 'center',
                 color: COLORS.PRIMARY,
               }}
+              onPress={this.pickImage}
             />
             <Button
               text="Take a Photo"
@@ -305,17 +347,20 @@ class ProfileEditPage extends React.Component {
                 borderBottomWidth: 1,
                 borderColor: COLORS.SECONDARY,
                 padding: 5,
+                paddingHorizontal: 20,
               }}
               textStyle={{
                 ...font(16),
                 textAlign: 'center',
                 color: COLORS.PRIMARY,
               }}
+              onPress={this.takePhoto}
             />
             <Button
               text="Close"
               style={{
                 padding: 5,
+                paddingHorizontal: 20,
               }}
               textStyle={{
                 ...font(16),
@@ -324,6 +369,18 @@ class ProfileEditPage extends React.Component {
               }}
               onPress={this.hideModal}
             />
+          </View>
+        </Modal>
+        <Modal
+          isVisible={this.state.uploading}
+        >
+          <View
+            style={{
+              padding: 15,
+              borderRadius: 10,
+            }}
+          >
+            <ActivityIndicator size={Platform.OS === 'ios' ? 0 : 14} color={COLORS.PRIMARY} />
           </View>
         </Modal>
       </View>
