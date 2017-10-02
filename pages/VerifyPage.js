@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { commonStyle as cs, loginPageStyle as s, font } from '../common/styles';
 import { Button, Input } from '../components';
 import IMAGES from '../common/images';
-import { loginAPI, activateAPI, userAPI, categoriesAPI, connectToChannel, connectToSendbird } from '../common/api';
+import { activateAPI, userAPI, categoriesAPI, connectToChannel, connectToSendbird } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
 import {
   startLogIn,
@@ -107,7 +107,7 @@ class VerifyPage extends React.Component {
 
 
   login = async () => {
-    const { password, rootPassword } = this.state.values;
+    const { password } = this.state.values;
     const {
       finish,
       error,
@@ -126,7 +126,7 @@ class VerifyPage extends React.Component {
       });
       error();
     } else {
-      const { authToken } = await loginAPI(username, rootPassword);
+      const { auth_token: authToken } = response;
       const user = await userAPI(authToken);
       setToken(authToken);
       setUser(user);

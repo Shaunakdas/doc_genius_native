@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { commonStyle as cs, loginPageStyle as s, font } from '../common/styles';
 import { Button, Input, IconButton } from '../components';
 import IMAGES from '../common/images';
-import { loginAPI, userAPI, categoriesAPI, connectToChannel, connectToSendbird, changePasswordAPI } from '../common/api';
+import { userAPI, categoriesAPI, connectToChannel, connectToSendbird, changePasswordAPI } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
 import {
   startLogIn,
@@ -145,8 +145,7 @@ class ForgotPasswordPage extends React.Component {
       });
       error();
     } else {
-      const loginResponse = await loginAPI(username, password);
-      const { authToken } = loginResponse;
+      const { auth_token: authToken } = response;
       const user = await userAPI(authToken);
       setToken(authToken);
       setUser(user);
@@ -231,7 +230,7 @@ class ForgotPasswordPage extends React.Component {
             color: alpha(COLORS.RED, 0.7),
             marginTop: 3,
             marginBottom: 20,
-            ...font(10),
+            ...font(11),
           }}
           >{errors.overall}</Text> : null}
           <Button

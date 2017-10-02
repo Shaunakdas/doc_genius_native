@@ -17,7 +17,6 @@ const defaultInputHeight = 19.5;
 class QuestionPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
-    filters: PropTypes.array.isRequired,
     categories: PropTypes.array.isRequired,
   }
 
@@ -55,12 +54,6 @@ class QuestionPage extends React.Component {
     await this.fetchQuestion();
   }
 
-  async componentWillReceiveProps(nextProps) {
-    if (nextProps.filters.length !== this.props.filters.length) {
-      await this.fetchQuestion(nextProps.filters);
-    }
-  }
-
   componentWillUnmount() {
     this.keyboardDidHideSub.remove();
     this.keyboardDidShowSub.remove();
@@ -83,6 +76,12 @@ class QuestionPage extends React.Component {
   }
 
   onChangeText = reply => this.setState({ reply });
+
+  adjustScroll = () => {
+    if (this.scrollView) {
+      setTimeout(() => this.scrollView.scrollToEnd({ animated: false }), 500);
+    }
+  }
 
   processQuestion = (question) => {
     const details = question.details_stream.details;
@@ -114,7 +113,7 @@ class QuestionPage extends React.Component {
   fetchQuestion = async () => {
     const { authToken } = this.props;
     const { id } = this.state;
-    const question = await questionAPI(authToken, id) || {};
+    const question = await questionAPI(authToken, id, 1, 50) || {};
     if (question.success !== false) {
       const processedQuestion = this.processQuestion(question);
       let category = this.state.category;
@@ -137,9 +136,10 @@ class QuestionPage extends React.Component {
   }
 
   keyBoardDidHide = () => {
+    const { reply, reply_to_post_number } = this.state;
     this.setState({
       keyboardHeight: 0,
-      reply_to_post_number: null,
+      reply_to_post_number: reply.length ? reply_to_post_number : null,
     });
   }
 
@@ -154,9 +154,47 @@ class QuestionPage extends React.Component {
     }, this.focus);
   }
 
+  toggleLikeOnPost = postId => (post) => {
+    if (post.id === postId) {
+      return {
+        ...post,
+        current_user_liked: !post.current_user_liked,
+        like_count: post.like_count + (post.current_user_liked ? -1 : 1),
+      };
+    }
+    return post;
+  }
+
+  toggleLikeOnStream = (postId, postNumber) => {
+    const { question } = this.state;
+    const details = question.details_stream.details;
+    const replies = details.replies;
+    const post_stream = details.post_stream;
+    const newQuestion = {
+      ...question,
+      details_stream: {
+        ...question.details_stream,
+        details: {
+          ...details,
+          post_stream: post_stream.map(this.toggleLikeOnPost(postId)),
+          replies: {
+            ...replies,
+            [postNumber]: {
+              ...replies[postNumber],
+              current_user_liked: !replies[postNumber].current_user_liked,
+              like_count: replies[postNumber].like_count +
+              (replies[postNumber].current_user_liked ? -1 : 1),
+            },
+          },
+        },
+      },
+    };
+    this.setState({ question: newQuestion });
+  }
+
   likeOrUnlikePost = post => async () => {
     const { currentUserId, authToken } = this.props;
-    const { user_id, current_user_liked, id } = post;
+    const { user_id, current_user_liked, id, post_number } = post;
     if (user_id !== currentUserId) {
       let response = null;
       if (current_user_liked) {
@@ -165,14 +203,57 @@ class QuestionPage extends React.Component {
         response = await likePostAPI(authToken, id);
       }
       if (response.success !== false) {
-        this.fetchQuestion();
+        this.toggleLikeOnStream(id, post_number);
       }
     }
   }
 
+  addPostToStream = (user, post) => {
+    const { question } = this.state;
+    const user_stream = question.user_stream;
+    const details = question.details_stream.details;
+    const replies = details.replies;
+    const post_stream = details.post_stream;
+    const post_structure = details.post_structure;
+    const newQuestion = {
+      ...question,
+      user_stream: {
+        ...user_stream,
+        [user.id]: user,
+      },
+      details_stream: {
+        ...question.details_stream,
+        details: {
+          ...details,
+          post_stream: !post.reply_to_post_number ? [...post_stream, post] : post_stream,
+          replies: {
+            ...replies,
+            [post.post_number]: post,
+          },
+          post_structure: !post.reply_to_post_number ? {
+            ...post_structure,
+            [post.post_number]: [],
+          } : {
+            ...post_structure,
+            [post.reply_to_post_number]: [
+              ...post_structure[post.reply_to_post_number],
+              post.post_number,
+            ],
+          },
+        },
+      },
+    };
+    this.setState({ question: newQuestion }, () => {
+      if (!post.reply_to_post_number) {
+        this.adjustScroll();
+      }
+    });
+  }
+
+
   submitReply = async () => {
     const { reply, reply_to_post_number, question } = this.state;
-    const { authToken } = this.props;
+    const { authToken, currentUser } = this.props;
     this.setState({
       reply: '',
       reply_to_post_number: null,
@@ -184,7 +265,22 @@ class QuestionPage extends React.Component {
         question.details_stream.details.id,
         reply_to_post_number);
     if (response.success !== false) {
-      await this.fetchQuestion();
+      const post = {
+        created_at: response.created_at,
+        post_number: response.post_number,
+        raw: response.cooked.replace(/(<([^>]+)>)/ig, ''),
+        id: response.id,
+        reply_to_post_number,
+        reply_count: 0,
+        like_count: 0,
+        user_id: currentUser.id,
+        current_user_liked: false,
+      };
+      const user = {
+        ...currentUser,
+        user_fields: currentUser,
+      };
+      this.addPostToStream(user, post);
     }
   }
 
@@ -244,9 +340,8 @@ class QuestionPage extends React.Component {
       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
         <Text
           style={{
-            ...font(9),
-            marginRight: 3,
-            marginLeft: 10,
+            ...font(11),
+            marginRight: 0,
             color: COLORS.SECONDARY,
           }}
         >
@@ -256,6 +351,8 @@ class QuestionPage extends React.Component {
           source={post.current_user_liked ? IMAGES.HEART_FILL : IMAGES.HEART}
           style={{
             marginRight: 12,
+            padding: 10,
+            paddingLeft: 5,
           }}
           imageStyle={{
             height: 16,
@@ -270,6 +367,7 @@ class QuestionPage extends React.Component {
             onPress={this.replyTo(post)}
             style={{
               marginRight: 5,
+              padding: 10,
             }}
             imageStyle={{
               height: 16,
@@ -281,69 +379,69 @@ class QuestionPage extends React.Component {
     );
   };
 
-renderQ = question => (
-  <View
-    style={{
-      margin: 8,
-      backgroundColor: COLORS.WHITE,
-      borderRadius: 10,
-      padding: 6,
-      overflow: 'hidden',
-    }}
-  >
-    <View style={{
-      padding: 5,
-      paddingRight: 8,
-    }}
+  renderQ = question => (
+    <View
+      style={{
+        margin: 8,
+        backgroundColor: COLORS.WHITE,
+        borderRadius: 10,
+        padding: 6,
+        overflow: 'hidden',
+      }}
     >
-      <Text
-        style={{
-          position: 'absolute',
-          top: 14,
-          left: -14,
-          ...font(40),
-          color: alpha(COLORS.SECONDARY, 0.3),
-        }}
-      >
-        Q
-      </Text>
       <View style={{
-        paddingLeft: 15,
-        paddingBottom: 4,
+        padding: 5,
+        paddingRight: 8,
       }}
       >
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          {this.renderUser(question.user_id)}
-          {this.renderButtons(question)}
-        </View>
         <Text
           style={{
-            ...font(13),
-            marginBottom: 8,
-            marginTop: 12,
+            position: 'absolute',
+            top: 14,
+            left: -14,
+            ...font(40),
+            color: alpha(COLORS.SECONDARY, 0.3),
           }}
         >
-          {question.raw}
+          Q
         </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
+        <View style={{
+          paddingLeft: 15,
+          paddingBottom: 4,
+        }}
         >
-          {this.renderTime(question.created_at)}
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            {this.renderUser(question.user_id)}
+            {this.renderButtons(question)}
+          </View>
+          <Text
+            style={{
+              ...font(13),
+              marginBottom: 8,
+              marginTop: 2,
+            }}
+          >
+            {question.raw}
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            {this.renderTime(question.created_at)}
+          </View>
         </View>
       </View>
     </View>
-  </View>
-)
+  )
   renderA = (answer, showBorder) => {
     const isReply = !!answer.reply_to_post_number;
     return (
@@ -353,9 +451,9 @@ renderQ = question => (
           borderColor: '#B1E0EC',
           paddingLeft: 15,
           paddingTop: showBorder ? 12 : 4,
-          marginBottom: 4,
-          marginTop: 4,
-          paddingBottom: 4,
+          marginBottom: 1,
+          marginTop: 1,
+          paddingBottom: 2,
         }}
         key={answer.id}
       >
@@ -379,8 +477,8 @@ renderQ = question => (
           <Text
             style={{
               ...font(13),
-              marginBottom: 8,
-              marginTop: 12,
+              marginBottom: 2,
+              marginTop: 2,
             }}
           >
             {answer.raw}
@@ -479,6 +577,7 @@ renderQ = question => (
                 refreshing={refreshing}
               />
             }
+            ref={scrollView => this.scrollView = scrollView}
           >
             { loading ? (
               <View
@@ -525,7 +624,7 @@ renderQ = question => (
 }
 
 const mapStateToProps
-  = ({ filters, loginState: { authToken }, categories, currentUser: { id: currentUserId } }) =>
-    ({ filters, authToken, categories, currentUserId });
+  = ({ loginState: { authToken }, categories, currentUser }) =>
+    ({ authToken, categories, currentUserId: currentUser.id, currentUser });
 
 export default connect(mapStateToProps)(QuestionPage);

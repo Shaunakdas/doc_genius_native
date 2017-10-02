@@ -51,7 +51,7 @@ export default class Input extends Component {
               color: alpha(COLORS.RED, 0.7),
               marginTop: 3,
               marginBottom: 20,
-              ...font(10),
+              ...font(11),
             }}
           >
             {error}

@@ -143,7 +143,7 @@ class ForumPage extends React.Component {
         <Text style={{
           flex: 1,
           marginLeft: 8,
-          ...font(10),
+          ...font(11),
           color: COLORS.SECONDARY,
         }}
         >
@@ -157,7 +157,7 @@ class ForumPage extends React.Component {
     <Text style={{
       flex: 1,
       marginRight: 8,
-      ...font(10),
+      ...font(11),
       color: COLORS.SECONDARY,
     }}
     >
@@ -172,7 +172,7 @@ class ForumPage extends React.Component {
       <View style={{ flexDirection: 'row' }}>
         <Text
           style={{
-            ...font(9),
+            ...font(11),
             marginRight: 3,
             color: COLORS.SECONDARY,
           }}
@@ -190,7 +190,7 @@ class ForumPage extends React.Component {
         />
         <Text
           style={{
-            ...font(9),
+            ...font(11),
             marginRight: 3,
             marginLeft: 10,
             color: COLORS.SECONDARY,

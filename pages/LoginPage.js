@@ -187,7 +187,7 @@ class LoginPage extends React.Component {
       });
       error();
     } else {
-      const { authToken } = response;
+      const { auth_token: authToken } = response;
       const user = await userAPI(authToken);
       if (!user.channel_url || !user.sendbird_id) {
         this.setState({
@@ -211,16 +211,20 @@ class LoginPage extends React.Component {
       }
       finish();
       if (user.role === STUDENT_ROLE) {
-        this.props.navigation.dispatch(
-          {
-            type: 'Navigation/NAVIGATE',
-            routeName: 'AppPage',
-            action: {
-              type: 'Navigation/NAVIGATE',
-              routeName: 'ChatPage',
-            },
-          },
-        );
+        const resetAction = NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({
+              routeName: 'AppPage',
+              index: 0,
+              actions: [
+                { routeName: 'ChatPage' },
+                { routeName: 'ForumPage' },
+              ],
+            }),
+          ],
+        });
+        this.props.navigation.dispatch(resetAction);
       } else {
         const resetAction = NavigationActions.reset({
           index: 0,

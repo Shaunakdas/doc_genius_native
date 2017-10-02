@@ -49,14 +49,13 @@ const jsonFetch = async (url, options = {}, authToken = '') => {
 export const loginAPI = async (login, password) => {
   const body = JSON.stringify({ login, password });
   const response = await jsonFetch(`${ADMIN_BASE_URL}/user/login`, { body, method: 'POST' });
-  return (response.success !== false) ?
-    { authToken: response.auth_token } : response;
+  return response;
 };
 
 export const activateAPI = async (username, activation_token) => {
   const body = JSON.stringify({ username, activation_token });
   const response = await jsonFetch(`${ADMIN_BASE_URL}/user/activate`, { body, method: 'POST' });
-  return (response.success !== false) ? { authToken: response.auth_token } : response;
+  return response;
 };
 
 export const forgotPasswordAPI = async (login) => {
@@ -65,10 +64,11 @@ export const forgotPasswordAPI = async (login) => {
   return response;
 };
 
-export const feedbackAPI = async (from, message) => {
+export const feedbackAPI = async (from, message, cc) => {
   const body = JSON.stringify({
     email: 'feedback@connecpath.com',
     title: `Feedback from <${from}>`,
+    cc,
     message,
   });
   const response = await jsonFetch(`${BASE_URL}/feedback`, { body, method: 'POST' });
@@ -170,10 +170,11 @@ export const postsAPI = async (authToken, filters, searchTerm, page = 1) => {
   return response;
 };
 
-export const questionAPI = async (authToken, id, page = 1) => {
+export const questionAPI = async (authToken, id, page = 1, limit = 50) => {
   const queryString = buildQuery({
     id,
     page,
+    limit,
   });
   const url = `${BASE_URL}/question?${queryString}`;
   const response = await jsonFetch(url, { method: 'GET' }, authToken);
