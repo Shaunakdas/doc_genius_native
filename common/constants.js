@@ -25,6 +25,8 @@ export const RESET_CHAT = 'RESET_CHAT';
 export const PREPEND_MESSAGES = 'PREPEND_MESSAGES';
 export const SET_ROOT_NAVIGATION = 'SET_ROOT_NAVIGATION';
 
+export const NON_VERIFIED_LOGIN = "You can't log in yet. We sent an activation email to you. Please follow the instructions in the email to activate your account.";
+
 
 export const STUDENT_ROLE = 'Student';
 export const COUNSELOR_ROLE = 'Counselor';

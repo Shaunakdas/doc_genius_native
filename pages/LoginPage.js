@@ -8,6 +8,7 @@ import { commonStyle as cs, loginPageStyle as s, font } from '../common/styles';
 import { Button, IconButton, Input } from '../components';
 import IMAGES from '../common/images';
 import { saveData } from '../common/helper';
+import { NON_VERIFIED_LOGIN } from '../common/constants';
 import {
   loginAPI,
   forgotPasswordAPI,
@@ -17,6 +18,7 @@ import {
   startLogIn,
   loginError,
   loggedIn,
+  setLoggedInUser,
 } from '../store/actions';
 
 const commonInputProps = {
@@ -162,16 +164,27 @@ class LoginPage extends React.Component {
 
   login = async () => {
     const { username, password } = this.state.values;
-    const { finish, error }
+    const { finish, error, setUser }
       = this.props;
     const response = await loginAPI(username, password);
     if (response.success === false) {
-      this.setState({
-        errors: {
-          ...this.state.errors,
-          overall: 'Login credentials are not valid!',
-        },
-      });
+      if (response.error === NON_VERIFIED_LOGIN) {
+        setUser({ username });
+        this.setState({ signingUp: false });
+        this.props.navigation.dispatch(
+          {
+            type: 'Navigation/NAVIGATE',
+            routeName: 'VerifyPage',
+          },
+        );
+      } else {
+        this.setState({
+          errors: {
+            ...this.state.errors,
+            overall: 'Login credentials are not valid!',
+          },
+        });
+      }
       error();
     } else {
       const { auth_token: authToken } = response;
@@ -276,6 +289,7 @@ const mapStateToProps = ({ loginState }) => {
 const mapDispatchToProps = dispatch => ({
   start: () => dispatch(startLogIn()),
   finish: () => dispatch(loggedIn()),
+  setUser: user => dispatch(setLoggedInUser(user)),
   error: () => dispatch(loginError()),
 });
 
