@@ -100,7 +100,7 @@ class AskQuestionPage extends React.Component {
           >
             <Text style={s.label}>Your Question:</Text>
             <IconButton
-              style={{ margin: 0 }}
+              style={{ margin: 0, padding: 15 }}
               imageStyle={{ height: 12, width: 12 }}
               source={IMAGES.CLOSE}
               onPress={this.goBack}

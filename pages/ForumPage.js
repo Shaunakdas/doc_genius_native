@@ -397,8 +397,9 @@ renderQ = (question, detail) => (
             source={IMAGES.EDIT}
             style={{
               position: 'absolute',
-              right: 50,
-              top: 36,
+              right: 45,
+              top: 26,
+              padding: 10,
             }}
             imageStyle={{
               height: 22,
@@ -411,8 +412,9 @@ renderQ = (question, detail) => (
             source={IMAGES.FILTER}
             style={{
               position: 'absolute',
-              right: 10,
-              top: 40,
+              right: 0,
+              top: 30,
+              padding: 10,
             }}
             imageStyle={{
               height: 18,

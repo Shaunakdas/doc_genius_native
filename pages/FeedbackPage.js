@@ -67,7 +67,7 @@ class FeedbackPage extends React.Component {
           >
             <Text style={s.label}>We value your voice!</Text>
             <IconButton
-              style={{ margin: 0 }}
+              style={{ margin: 0, padding: 15 }}
               imageStyle={{ height: 12, width: 12 }}
               source={IMAGES.CLOSE}
               onPress={this.goBack}

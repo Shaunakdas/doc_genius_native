@@ -492,6 +492,7 @@ export const askQuestionPageStyle = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 5,
+    paddingTop: 0,
     backgroundColor: COLORS.WHITE,
     width: fullWidth - 16,
     alignSelf: 'center',
@@ -511,6 +512,7 @@ export const askQuestionPageStyle = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     marginVertical: 5,
+    marginTop: 0,
     padding: 5,
   },
   countLine: {
