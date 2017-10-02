@@ -38,7 +38,7 @@ class FeedbackPage extends React.Component {
     const { currentUser } = this.props;
     if (feedback.trim().length) {
       this.setState({ loading: true });
-      const response = await feedbackAPI(currentUser.email, feedback);
+      const response = await feedbackAPI(currentUser.name, feedback, currentUser.email);
       if (response.success === false) {
         this.setState({ feedback: '', error: 'Unable to send feedback', loading: false });
       } else {

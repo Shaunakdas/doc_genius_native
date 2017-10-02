@@ -99,6 +99,20 @@ export const userAPI = async (authToken) => {
   return response;
 };
 
+export const editUserAPI = async (authToken, fullName, graduation_year, role) => {
+  const url = `${BASE_URL}/user`;
+  const body = JSON.stringify({
+    name: fullName,
+    user_fields: {
+      role,
+      graduation_year,
+    },
+  });
+  const response = await jsonFetch(url, { body, method: 'PUT' }, authToken);
+  return response;
+};
+
+
 export const studentSignUpApI =
  async ({ fullName, email, username, graduationYear, password, schoolCode: school_code }) => {
    const body = JSON.stringify({

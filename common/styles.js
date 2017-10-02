@@ -240,6 +240,21 @@ export const signupPageStyle = StyleSheet.create({
   },
 });
 
+export const editPageStyle = StyleSheet.create({
+  header: {
+    paddingTop: 36,
+    paddingBottom: 13,
+    alignItems: 'center',
+    backgroundColor: COLORS.PRIMARY,
+  },
+  headerText: {
+    ...font(15),
+    textAlign: 'center',
+    color: COLORS.WHITE,
+    backgroundColor: COLORS.TRANSPARENT,
+  },
+});
+
 export const loginPageStyle = StyleSheet.create({
   container: {
     backgroundColor: COLORS.PRIMARY,

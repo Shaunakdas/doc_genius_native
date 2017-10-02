@@ -1,8 +1,24 @@
 {
   "expo": {
-    "sdkVersion": "21.0.0",
-    "privacy": "unlisted",
-    "slug": "da39a3ee",
-    "orientation": "portrait"
+   "name": "Connecpath",
+   "icon": "./assets/img/logo.png",
+   "version": "1.0.0",
+   "slug": "connecpath-forum",
+   "sdkVersion": "21.0.0",
+   "privacy": "unlisted",   
+   "ios": {
+     "bundleIdentifier": "com.connecpath.forum",
+     "buildNumber": "1"
+   },
+   "android": {
+     "package": "com.connecpath.forum",
+     "versionCode": 1
+   },
+   "orientation" : "portrait",
+   "loading":{
+    "icon": "./assets/img/logo_small.png",    
+    "backgroundColor":"#019AC1",
+    "hideExponentText": true
+   }
   }
 }

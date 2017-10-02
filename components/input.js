@@ -14,13 +14,17 @@ export default class Input extends Component {
     wrapperStyle: PropTypes.any,
     error: PropTypes.string,
     value: PropTypes.any.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
+    onSubmit: PropTypes.func,
+    showLabel: PropTypes.bool,
   }
 
   static defaultProps = {
     wrapperStyle: null,
     error: '',
+    onSubmit: () => {},
+    onChange: () => {},
+    showLabel: false,
   }
 
   focus = () => {
@@ -32,14 +36,25 @@ export default class Input extends Component {
       borderColor: alpha(COLORS.RED, 0.7),
       marginBottom: 0,
     };
-    const { error, value, onChange, onSubmit } = this.props;
+    const { error, value, onChange, onSubmit, inputProps, showLabel } = this.props;
     return (
-      <View>
+      <View style={{ opacity: inputProps.editable === false ? 0.5 : 1 }}>
+        { showLabel ?
+          <Text
+            style={{
+              ...font(10),
+              color: COLORS.WHITE,
+            }}
+          >
+            {inputProps.placeholder}
+          </Text>
+          : null
+        }
         <View style={[this.props.wrapperStyle, error ? errorStyle : null]}>
           <TextInput
             ref={input => this.input = input} // eslint-disable-line no-return-assign
             underlineColorAndroid={COLORS.TRANSPARENT}
-            {...this.props.inputProps}
+            {...inputProps}
             value={value}
             onChangeText={onChange}
             onSubmitEditing={onSubmit}

@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import IMAGES from './images';
 
-const SCHOOL_BASE = 'http://connecpath.tk';
+const SCHOOL_BASE = 'connecpath.tk';
 
 export const capitalCase = value => (value && value.length ? `${value[0].toUpperCase()}${value.slice(1)}` : '');
 
@@ -22,7 +22,7 @@ export const validGraduationYear = (year) => {
   const numericValue = +year;
   return (!isNaN(numericValue) &&
           (numericValue >= 2017) &&
-          (numericValue <= 2023) &&
+          (numericValue <= 2026) &&
           (year.length === 4));
 };
 
@@ -42,12 +42,13 @@ export const getUserImage = (user, size = 30, resolution = 3) => {
   if (user.username === 'cherylbot') {
     return IMAGES.BOT_USER;
   }
+  const prefix = !user.school_code || user.school_code === 'indiez' ? '' : user.school_code;
   let avatar_url = user.avatar_url;
   if (user.user_fields) {
     avatar_url = user.user_fields.avatar_url;
   }
   if (avatar_url) {
-    return { uri: `${SCHOOL_BASE}${avatar_url.replace('{size}', size * resolution)}`, height: size, width: size };
+    return { uri: `http://${prefix}${SCHOOL_BASE}${avatar_url.replace('{size}', size * resolution)}`, height: size, width: size };
   }
   return IMAGES.NORMAL_USER;
 };

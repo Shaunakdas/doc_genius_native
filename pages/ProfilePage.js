@@ -410,6 +410,7 @@ class ProfilePage extends React.Component {
             width: 20,
             resizeMode: 'contain',
           }}
+          onPress={this.gotoPage('ProfileEditPage')}
         />
       </View>
     );
