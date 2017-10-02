@@ -10,23 +10,13 @@ import IMAGES from '../common/images';
 import { saveData } from '../common/helper';
 import {
   loginAPI,
-  userAPI,
-  categoriesAPI,
-  connectToSendbird,
-  connectToChannel,
   forgotPasswordAPI,
 } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
-import { STUDENT_ROLE } from '../common/constants';
 import {
   startLogIn,
   loginError,
-  setAuthToken,
   loggedIn,
-  setLoggedInUser,
-  setCategories,
-  applyFilters,
-  setChannel,
 } from '../store/actions';
 
 const commonInputProps = {
@@ -46,9 +36,6 @@ class LoginPage extends React.Component {
     start: PropTypes.func.isRequired,
     finish: PropTypes.func.isRequired,
     error: PropTypes.func.isRequired,
-    setToken: PropTypes.func.isRequired,
-    setUser: PropTypes.func.isRequired,
-    setRelevantCategories: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -175,7 +162,7 @@ class LoginPage extends React.Component {
 
   login = async () => {
     const { username, password } = this.state.values;
-    const { finish, error, setToken, setUser, setRelevantCategories, setBotChannel }
+    const { finish, error }
       = this.props;
     const response = await loginAPI(username, password);
     if (response.success === false) {
@@ -188,52 +175,15 @@ class LoginPage extends React.Component {
       error();
     } else {
       const { auth_token: authToken } = response;
-      const user = await userAPI(authToken);
-      if (!user.channel_url || !user.sendbird_id) {
-        this.setState({
-          errors: {
-            ...this.state.errors,
-            overall: 'Login credentials are not valid!',
-          },
-        });
-        error();
-        return;
-      }
-      setToken(authToken);
       await saveData('AUTH_TOKEN', authToken);
-      setUser(user);
-      const categories = await categoriesAPI(authToken);
-      setRelevantCategories(categories);
-      if (user.role === STUDENT_ROLE) {
-        await connectToSendbird(user.sendbird_id);
-        const channel = await connectToChannel(user.channel_url);
-        setBotChannel(channel);
-      }
       finish();
-      if (user.role === STUDENT_ROLE) {
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({
-              routeName: 'AppPage',
-              index: 0,
-              actions: [
-                { routeName: 'ChatPage' },
-                { routeName: 'ForumPage' },
-              ],
-            }),
-          ],
-        });
-        this.props.navigation.dispatch(resetAction);
-      } else {
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'AppPage' }),
-          ],
-        });
-        this.props.navigation.dispatch(resetAction);
-      }
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'SplashPage' }),
+        ],
+      });
+      this.props.navigation.dispatch(resetAction);
     }
   }
 
@@ -324,16 +274,9 @@ const mapStateToProps = ({ loginState }) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  setToken: authToken => dispatch(setAuthToken(authToken)),
   start: () => dispatch(startLogIn()),
   finish: () => dispatch(loggedIn()),
   error: () => dispatch(loginError()),
-  setUser: user => dispatch(setLoggedInUser(user)),
-  setRelevantCategories: (categories) => {
-    dispatch(setCategories(categories.slice(0)));
-    dispatch(applyFilters(categories.slice(0)));
-  },
-  setBotChannel: channel => dispatch(setChannel(channel)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

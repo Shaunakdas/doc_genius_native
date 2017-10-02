@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
-import { StatusBar, View } from 'react-native';
+import { StatusBar, View, BackHandler, Platform } from 'react-native';
 import { Provider } from 'react-redux';
 import moment from 'moment';
 import configureStore from './store/configureStore';
@@ -27,6 +27,7 @@ const getNavigator = () => {
   }, {
     headerMode: 'none',
     initialRouteName: 'ChatPage',
+    gesturesEnabled: false,
   });
 
   const ForumNavigator = DrawerNavigator({
@@ -77,6 +78,7 @@ const getNavigator = () => {
     },
   }, {
     headerMode: 'none',
+    gesturesEnabled: false,
   });
 
   const AppNavigator = TabNavigator({
@@ -124,6 +126,7 @@ const getNavigator = () => {
     },
   }, {
     headerMode: 'none',
+    gesturesEnabled: false,
   });
 
   return MainNavigator;
@@ -154,6 +157,16 @@ class MainApp extends Component {
     });
   }
 
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      if (Platform.OS === 'android') {
+        BackHandler.exitApp();
+        return true;
+      }
+      return false;
+    });
+  }
+
   onChange = (_, __, action) => {
     const { routeName, params = {} } = action;
     if (routeName === 'DrawerClose' && !params.filtersApplied) {
@@ -165,6 +178,7 @@ class MainApp extends Component {
   }
 
   async componentWillUnMount() {
+    BackHandler.removeEventListener('hardwareBackPress');
     try {
       await disconnectFromSendbird();
     } catch (_) {
@@ -182,7 +196,10 @@ class MainApp extends Component {
           animated={false}
           barStyle="light-content"
         />
-        <Navigator onNavigationStateChange={this.onChange} />
+        <Navigator
+          onNavigationStateChange={this.onChange}
+          ref={instance => this.instance = instance}
+        />
       </View>
     );
   }

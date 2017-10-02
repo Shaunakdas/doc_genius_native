@@ -2,6 +2,8 @@ import React from 'react';
 import { Text, Image, ScrollView, View, KeyboardAvoidingView } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
+
 
 import { commonStyle as cs, signupPageStyle as s, font } from '../common/styles';
 import { Button, IconButton, Input } from '../components';
@@ -9,14 +11,8 @@ import IMAGES from '../common/images';
 import { validateEmail, validGraduationYear, saveData } from '../common/helper';
 import COLORS, { alpha } from '../common/colors';
 import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
-import { studentSignUpApI, counselorSignUpApI, userAPI, categoriesAPI } from '../common/api';
-import {
-  setAuthToken,
-  loggedIn,
-  setLoggedInUser,
-  setCategories,
-  applyFilters,
-} from '../store/actions';
+import { studentSignUpApI, counselorSignUpApI } from '../common/api';
+import { loggedIn, setLoggedInUser } from '../store/actions';
 
 const commonInputProps = {
   style: cs.input,
@@ -31,7 +27,6 @@ const commonInputProps = {
 class SignupPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
-    setUser: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -191,10 +186,6 @@ class SignupPage extends React.Component {
           {
             type: 'Navigation/NAVIGATE',
             routeName: 'VerifyPage',
-            params: {
-              username,
-              password,
-            },
           },
         );
       }
@@ -215,24 +206,16 @@ class SignupPage extends React.Component {
         },
         signingUp: false });
       } else {
-        const { setToken, setRelevantCategories } = this.props;
-        const { authToken } = response;
-        const user = await userAPI(authToken);
-        setToken(authToken);
+        const { auth_token: authToken } = response;
         saveData('AUTH_TOKEN', authToken);
-        setUser(user);
-        const categories = await categoriesAPI(authToken);
-        setRelevantCategories(categories);
-        this.setState({ signingUp: false }, () => {
-          this.props.navigation.dispatch({
-            type: 'Navigation/NAVIGATE',
-            routeName: 'AppPage',
-            action: {
-              type: 'Navigation/NAVIGATE',
-              routeName: 'ForumPage',
-            },
-          });
+        this.setState({ signingUp: false });
+        const resetAction = NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'SplashPage' }),
+          ],
         });
+        this.props.navigation.dispatch(resetAction);
       }
     }
   }
@@ -291,7 +274,7 @@ class SignupPage extends React.Component {
           {role === COUNSELOR_ROLE ? <Input
             inputProps={{
               ...commonInputProps,
-              placeholder: 'Counselor Code',
+              placeholder: 'Activation Token',
             }}
             wrapperStyle={cs.inputWrapper}
             error={errors.counselorCode}
@@ -317,6 +300,7 @@ class SignupPage extends React.Component {
               ...commonInputProps,
               placeholder: 'Email',
               keyboardType: 'email-address',
+              maxLength: 50,
             }}
             wrapperStyle={cs.inputWrapper}
             error={errors.email}
@@ -394,13 +378,8 @@ class SignupPage extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  setToken: authToken => dispatch(setAuthToken(authToken)),
   setLoggedIn: () => dispatch(loggedIn()),
   setUser: user => dispatch(setLoggedInUser(user)),
-  setRelevantCategories: (categories) => {
-    dispatch(setCategories(categories.slice(0)));
-    dispatch(applyFilters(categories.slice(0)));
-  },
 });
 
 

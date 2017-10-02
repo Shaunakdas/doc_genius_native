@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { commonStyle as cs, splashPageStyle as s } from '../common/styles';
 import COLORS from '../common/colors';
 import IMAGES from '../common/images';
-import { getData } from '../common/helper';
+import { getData, removeData } from '../common/helper';
 import { STUDENT_ROLE } from '../common/constants';
 import {
   userAPI,
@@ -32,6 +32,13 @@ class SplashPage extends React.Component {
     navigation: PropTypes.object.isRequired,
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      loadingMessage: 'Please wait while loading assets ...',
+    };
+  }
+
   async componentDidMount() {
     await Font.loadAsync({
       'firasans-light': require('../assets/fonts/light.ttf'),
@@ -40,6 +47,8 @@ class SplashPage extends React.Component {
     });
     this.start();
   }
+
+  setMessage = loadingMessage => this.setState({ loadingMessage });
 
   start = async () => {
     const resetAction = NavigationActions.reset({
@@ -57,12 +66,15 @@ class SplashPage extends React.Component {
     const authToken = await getData('AUTH_TOKEN');
     try {
       if (authToken) {
+        this.setMessage('Loading Profile...');
         const user = await userAPI(authToken);
         setToken(authToken);
         setUser(user);
+        this.setMessage('Loading Forum...');
         const categories = await categoriesAPI(authToken);
         setRelevantCategories(categories);
         if (user.role === STUDENT_ROLE) {
+          this.setMessage('Loading Chat...');
           await connectToSendbird(user.sendbird_id);
           const channel = await connectToChannel(user.channel_url);
           setBotChannel(channel);
@@ -90,8 +102,9 @@ class SplashPage extends React.Component {
         }
         return true;
       }
+      await removeData('AUTH_TOKEN');
     } catch (error) {
-    // do nothing
+      console.log(error); // eslint-disable-line no-console
     }
     return false;
   }
@@ -118,7 +131,7 @@ class SplashPage extends React.Component {
               color: COLORS.WHITE,
             }}
           >
-            Please wait while loading assets ...
+            {this.state.loadingMessage}
           </Text>
         </View>
       </View>

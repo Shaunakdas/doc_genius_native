@@ -2,21 +2,18 @@ import React from 'react';
 import { Text, View, Image, ScrollView } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 import { commonStyle as cs, loginPageStyle as s, font } from '../common/styles';
 import { Button, Input, IconButton } from '../components';
 import IMAGES from '../common/images';
-import { userAPI, categoriesAPI, connectToChannel, connectToSendbird, changePasswordAPI } from '../common/api';
+import { changePasswordAPI } from '../common/api';
+import { saveData } from '../common/helper';
 import COLORS, { alpha } from '../common/colors';
 import {
   startLogIn,
   loginError,
-  setAuthToken,
   loggedIn,
-  setLoggedInUser,
-  setCategories,
-  applyFilters,
-  setChannel,
 } from '../store/actions';
 
 const commonInputProps = {
@@ -35,8 +32,6 @@ class ForgotPasswordPage extends React.Component {
     start: PropTypes.func.isRequired,
     finish: PropTypes.func.isRequired,
     error: PropTypes.func.isRequired,
-    setToken: PropTypes.func.isRequired,
-    setUser: PropTypes.func.isRequired,
     loggingIn: PropTypes.bool.isRequired,
   }
 
@@ -131,10 +126,8 @@ class ForgotPasswordPage extends React.Component {
     const {
       finish,
       error,
-      setToken,
-      setUser,
-      setRelevantCategories,
-      setBotChannel } = this.props;
+    } = this.props;
+
     const response = await changePasswordAPI(username, password, token);
     if (response.success === false) {
       this.setState({
@@ -146,25 +139,15 @@ class ForgotPasswordPage extends React.Component {
       error();
     } else {
       const { auth_token: authToken } = response;
-      const user = await userAPI(authToken);
-      setToken(authToken);
-      setUser(user);
-      const categories = await categoriesAPI(authToken);
-      setRelevantCategories(categories);
-      await connectToSendbird(user.sendbird_id);
-      const channel = await connectToChannel(user.channel_url);
-      setBotChannel(channel);
+      await saveData('AUTH_TOKEN', authToken);
       finish();
-      this.props.navigation.dispatch(
-        {
-          type: 'Navigation/NAVIGATE',
-          routeName: 'AppPage',
-          action: {
-            type: 'Navigation/NAVIGATE',
-            routeName: 'ChatPage',
-          },
-        },
-      );
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'SplashPage' }),
+        ],
+      });
+      this.props.navigation.dispatch(resetAction);
     }
   }
 
@@ -258,16 +241,9 @@ const mapStateToProps = ({ loginState }) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  setToken: authToken => dispatch(setAuthToken(authToken)),
   start: () => dispatch(startLogIn()),
   finish: () => dispatch(loggedIn()),
   error: () => dispatch(loginError()),
-  setUser: user => dispatch(setLoggedInUser(user)),
-  setRelevantCategories: (categories) => {
-    dispatch(setCategories(categories.slice(0)));
-    dispatch(applyFilters(categories.slice(0)));
-  },
-  setBotChannel: channel => dispatch(setChannel(channel)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ForgotPasswordPage);

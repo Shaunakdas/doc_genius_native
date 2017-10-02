@@ -18,6 +18,7 @@ import {
   MARK_READ_NOTIFICATION,
   RESET_CHAT,
   PREPEND_MESSAGES,
+  SET_ROOT_NAVIGATION,
 } from '../common/constants';
 
 export function startLogIn() {
@@ -149,6 +150,12 @@ export function resetChat() {
   };
 }
 
+export function setRootNavigation(navigation) {
+  return {
+    type: SET_ROOT_NAVIGATION,
+    navigation,
+  };
+}
 
 export function prependMessages(messages) {
   return {

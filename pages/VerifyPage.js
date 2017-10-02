@@ -2,21 +2,19 @@ import React from 'react';
 import { Text, View, Image, ScrollView } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 import { commonStyle as cs, loginPageStyle as s, font } from '../common/styles';
 import { Button, Input } from '../components';
 import IMAGES from '../common/images';
-import { activateAPI, userAPI, categoriesAPI, connectToChannel, connectToSendbird } from '../common/api';
+import { activateAPI } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
+import { saveData } from '../common/helper';
+
 import {
   startLogIn,
   loginError,
-  setAuthToken,
   loggedIn,
-  setLoggedInUser,
-  setCategories,
-  applyFilters,
-  setChannel,
 } from '../store/actions';
 
 const commonInputProps = {
@@ -36,20 +34,14 @@ class VerifyPage extends React.Component {
     start: PropTypes.func.isRequired,
     finish: PropTypes.func.isRequired,
     error: PropTypes.func.isRequired,
-    setToken: PropTypes.func.isRequired,
-    setUser: PropTypes.func.isRequired,
     username: PropTypes.string.isRequired,
   }
 
   constructor(props) {
     super(props); this.inputs = {};
-    const { navigation } = props;
-    const { params = {} } = navigation.state;
-    const { password } = params;
     this.state = {
       values: {
         password: '',
-        rootPassword: password,
       },
       errors: {
         password: '',
@@ -111,11 +103,7 @@ class VerifyPage extends React.Component {
     const {
       finish,
       error,
-      setToken,
-      setUser,
-      username,
-      setRelevantCategories,
-      setBotChannel } = this.props;
+      username } = this.props;
     const response = await activateAPI(username, password);
     if (response.success === false) {
       this.setState({
@@ -127,25 +115,15 @@ class VerifyPage extends React.Component {
       error();
     } else {
       const { auth_token: authToken } = response;
-      const user = await userAPI(authToken);
-      setToken(authToken);
-      setUser(user);
-      const categories = await categoriesAPI(authToken);
-      setRelevantCategories(categories);
-      await connectToSendbird(user.sendbird_id);
-      const channel = await connectToChannel(user.channel_url);
-      setBotChannel(channel);
+      await saveData('AUTH_TOKEN', authToken);
       finish();
-      this.props.navigation.dispatch(
-        {
-          type: 'Navigation/NAVIGATE',
-          routeName: 'AppPage',
-          action: {
-            type: 'Navigation/NAVIGATE',
-            routeName: 'ChatPage',
-          },
-        },
-      );
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'SplashPage' }),
+        ],
+      });
+      this.props.navigation.dispatch(resetAction);
     }
   }
 
@@ -207,16 +185,9 @@ const mapStateToProps = ({ loginState, currentUser }) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  setToken: authToken => dispatch(setAuthToken(authToken)),
   start: () => dispatch(startLogIn()),
   finish: () => dispatch(loggedIn()),
   error: () => dispatch(loginError()),
-  setUser: user => dispatch(setLoggedInUser(user)),
-  setRelevantCategories: (categories) => {
-    dispatch(setCategories(categories.slice(0)));
-    dispatch(applyFilters(categories.slice(0)));
-  },
-  setBotChannel: channel => dispatch(setChannel(channel)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(VerifyPage);

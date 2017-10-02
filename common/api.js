@@ -142,9 +142,9 @@ export const counselorSignUpApI = async (
   });
   const response = await jsonFetch(`${ADMIN_BASE_URL}/user/sign_up`, { body, method: 'POST' });
   if (response.success !== false && response.auth_token) {
-    return response.auth_token;
+    return response;
   }
-  return { success: false, error: 'Invalid signup credentials. Please check Counselor Code and Email are proper.' };
+  return { success: false, error: 'Invalid signup credentials. Please check Activation Token and Email are proper.' };
 };
 
 export const categoriesAPI = async (authToken) => {

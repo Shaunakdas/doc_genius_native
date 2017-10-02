@@ -3,6 +3,7 @@ import {
   DISMISSED_FILTER,
   REFRESH_FORUM,
   REFRESH_PROFILE,
+  SET_ROOT_NAVIGATION,
 } from '../common/constants';
 
 const initialState = {
@@ -10,10 +11,16 @@ const initialState = {
   filterNumber: 0,
   profileNumber: 0,
   forumNumber: 0,
+  rootNavigation: null,
 };
 
 const appState = (state = initialState, action) => {
   switch (action.type) {
+    case SET_ROOT_NAVIGATION:
+      return {
+        ...state,
+        rootNavigation: action.navigation,
+      };
     case DISMISSED_FILTER:
       return {
         ...state,

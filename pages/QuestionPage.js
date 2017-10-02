@@ -36,6 +36,7 @@ class QuestionPage extends React.Component {
       reply_to_post_number: null,
       reply: '',
       refreshing: false,
+      liking: false,
     };
   }
 
@@ -195,16 +196,19 @@ class QuestionPage extends React.Component {
   likeOrUnlikePost = post => async () => {
     const { currentUserId, authToken } = this.props;
     const { user_id, current_user_liked, id, post_number } = post;
+    this.setState({ liking: true });
     if (user_id !== currentUserId) {
       let response = null;
+      this.toggleLikeOnStream(id, post_number);
       if (current_user_liked) {
         response = await unlikePostAPI(authToken, id);
       } else {
         response = await likePostAPI(authToken, id);
       }
-      if (response.success !== false) {
+      if (response.success === false) {
         this.toggleLikeOnStream(id, post_number);
       }
+      this.setState({ liking: false });
     }
   }
 
@@ -350,7 +354,7 @@ class QuestionPage extends React.Component {
         <IconButton
           source={post.current_user_liked ? IMAGES.HEART_FILL : IMAGES.HEART}
           style={{
-            marginRight: 12,
+            marginRight: 5,
             padding: 10,
             paddingLeft: 5,
           }}
@@ -368,6 +372,7 @@ class QuestionPage extends React.Component {
             style={{
               marginRight: 5,
               padding: 10,
+              paddingLeft: 5,
             }}
             imageStyle={{
               height: 16,
