@@ -12,7 +12,7 @@ import { validGraduationYear } from '../common/helper';
 import COLORS, { alpha } from '../common/colors';
 import { STUDENT_ROLE } from '../common/constants';
 import { setLoggedInUser } from '../store/actions';
-import { editUserAPI, userAPI } from '../common/api';
+import { editUserAPI, userAPI, uploadImageAPI } from '../common/api';
 
 
 const commonInputProps = {
@@ -141,33 +141,40 @@ class ProfileEditPage extends React.Component {
   takePhoto = async () => {
     const pickerResult = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
-      aspect: [1, 1],
+      aspect: [3, 3],
       quality: 0,
     });
-
     await this.handleImagePicked(pickerResult);
   };
 
   pickImage = async () => {
     const pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      aspect: [1, 1],
+      aspect: [3, 3],
       quality: 0,
     });
     await this.handleImagePicked(pickerResult);
   };
 
   handleImagePicked = async (pickerResult) => {
+    const { authToken, setUser } = this.props;
     this.setState({ uploading: true, isModalVisible: false });
     try {
       if (!pickerResult.cancelled) {
         const { image } = this.state;
-        this.setState({
-          image: {
-            ...image,
-            uri: pickerResult.uri,
-          },
-        });
+        const response = await uploadImageAPI(pickerResult.uri, authToken);
+        if (response.success !== false) {
+          this.setState({
+            image: {
+              ...image,
+              uri: pickerResult.uri,
+            },
+          });
+          const user = await userAPI(authToken);
+          if (user.success !== false) {
+            setUser(user);
+          }
+        }
       }
     } catch (e) {
       //
@@ -337,6 +344,7 @@ class ProfileEditPage extends React.Component {
               textStyle={{
                 ...font(16),
                 textAlign: 'center',
+                lineHeight: 32,
                 color: COLORS.PRIMARY,
               }}
               onPress={this.pickImage}
@@ -352,6 +360,7 @@ class ProfileEditPage extends React.Component {
               textStyle={{
                 ...font(16),
                 textAlign: 'center',
+                lineHeight: 32,
                 color: COLORS.PRIMARY,
               }}
               onPress={this.takePhoto}
@@ -365,6 +374,7 @@ class ProfileEditPage extends React.Component {
               textStyle={{
                 ...font(16),
                 textAlign: 'center',
+                lineHeight: 32,
                 color: COLORS.PRIMARY,
               }}
               onPress={this.hideModal}
@@ -377,10 +387,13 @@ class ProfileEditPage extends React.Component {
           <View
             style={{
               padding: 15,
-              borderRadius: 10,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <ActivityIndicator size={Platform.OS === 'ios' ? 0 : 14} color={COLORS.PRIMARY} />
+            <Text style={{ ...font(12), color: COLORS.ALMOST_WHITE }}> Uploading Image ... </Text>
           </View>
         </Modal>
       </View>

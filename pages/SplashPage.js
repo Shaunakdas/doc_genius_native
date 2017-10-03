@@ -145,7 +145,7 @@ const mapDispatchToProps = dispatch => ({
   finish: () => dispatch(loggedIn()),
   error: () => dispatch(loginError()),
   setUser: user => dispatch(setLoggedInUser(user)),
-  setRelevantCategories: (categories) => {
+  setRelevantCategories: (categories = []) => {
     dispatch(setCategories(categories.slice(0)));
     dispatch(applyFilters(categories.slice(0)));
   },

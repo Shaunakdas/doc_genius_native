@@ -1,5 +1,5 @@
 import SendBird from 'sendbird';
-import { BASE_URL, STUDENT_ROLE, COUNSELOR_ROLE, SENDBIRD_APP_ID, ADMIN_BASE_URL } from './constants';
+import { BASE_URL, STUDENT_ROLE, COUNSELOR_ROLE, SENDBIRD_APP_ID, ADMIN_BASE_URL, IMAGE_SERVICE_URL } from './constants';
 
 const sendbird = new SendBird({ appId: SENDBIRD_APP_ID });
 
@@ -319,4 +319,36 @@ export const startRecievingMessages = (handler) => {
     handler(channel, message);
   };
   sendbird.addChannelHandler('ADMIN_STREAM', ChannelHandler);
+};
+
+export const uploadImageAPI = async (uri, authToken) => {
+  const apiUrl = `${IMAGE_SERVICE_URL}/uploads.json`;
+  const uriParts = uri.split('.');
+  const fileType = uriParts[uriParts.length - 1];
+  const formData = new FormData();
+  formData.append('file', {
+    uri,
+    name: `photo.${fileType}`,
+    type: `image/${fileType}`,
+  });
+
+  const options = {
+    method: 'POST',
+    body: formData,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'multipart/form-data',
+      Authorization: authToken,
+    },
+  };
+  try {
+    const response = await fetch(apiUrl, options);
+    const jsonResponse = await response.json();
+    if (response.status >= 400 || jsonResponse.error || jsonResponse.errors) {
+      throw jsonResponse.error || jsonResponse || jsonResponse.errors;
+    }
+    return jsonResponse;
+  } catch (error) {
+    return buildError(error);
+  }
 };
