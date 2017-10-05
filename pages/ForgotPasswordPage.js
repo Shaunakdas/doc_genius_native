@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView } from 'react-native';
+import { Text, KeyboardAvoidingView, Image, ScrollView } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
@@ -161,16 +161,18 @@ class ForgotPasswordPage extends React.Component {
     const { loggingIn } = this.props;
     const hint = 'Activation token is sent to your email. \n *New Password should be different than the ones previously used.';
     return (
-      <View style={[cs.container, s.container]}>
-        <Image
-          style={s.logo}
-          source={IMAGES.LOGO}
-        />
+      <KeyboardAvoidingView
+        style={[cs.container, s.container]}
+        behavior="padding"
+      >
         <ScrollView
-          alwaysBounceVertical={false}
           style={cs.scroll}
           contentContainerStyle={cs.scrollContent}
         >
+          <Image
+            style={s.logo}
+            source={IMAGES.LOGO}
+          />
           <Text style={s.mainText}>Change Password</Text>
           <Text
             style={{
@@ -244,7 +246,7 @@ class ForgotPasswordPage extends React.Component {
           imageStyle={cs.backImage}
           onPress={this.goBack}
         />
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

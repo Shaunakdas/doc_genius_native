@@ -175,9 +175,10 @@ export const landingPageStyle = StyleSheet.create({
   container: {
     backgroundColor: COLORS.PRIMARY,
     alignItems: 'center',
+    paddingBottom: 50,
   },
   brandText: {
-    marginTop: 50,
+    marginTop: 40,
     ...font(40),
     color: COLORS.WHITE,
   },
@@ -205,7 +206,7 @@ export const selectionPageStyle = StyleSheet.create({
     ...font(40),
     marginTop: 15,
     color: COLORS.WHITE,
-    marginBottom: 40,
+    marginBottom: 35,
   },
   logo: {
     marginTop: 45,

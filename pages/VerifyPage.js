@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView } from 'react-native';
+import { Text, KeyboardAvoidingView, Image, ScrollView } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
@@ -134,16 +134,18 @@ class VerifyPage extends React.Component {
     const { errors } = this.state;
     const { loggingIn } = this.props;
     return (
-      <View style={[cs.container, s.container]}>
-        <Image
-          style={s.logo}
-          source={IMAGES.LOGO}
-        />
+      <KeyboardAvoidingView
+        style={[cs.container, s.container]}
+        behavior="padding"
+      >
         <ScrollView
-          alwaysBounceVertical={false}
           style={cs.scroll}
           contentContainerStyle={cs.scrollContent}
         >
+          <Image
+            style={s.logo}
+            source={IMAGES.LOGO}
+          />
           <Text style={s.mainText}>Verify Email</Text>
           <Input
             inputProps={{
@@ -173,7 +175,7 @@ class VerifyPage extends React.Component {
             loadingColor={COLORS.PRIMARY}
           />
         </ScrollView>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

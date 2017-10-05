@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView } from 'react-native';
+import { Text, Image, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -210,16 +210,18 @@ class LoginPage extends React.Component {
     const { errors, resetting, forgotState } = this.state;
     const { loggingIn } = this.props;
     return (
-      <View style={[cs.container, s.container]}>
-        <Image
-          style={s.logo}
-          source={IMAGES.LOGO}
-        />
+      <KeyboardAvoidingView
+        style={[cs.container, s.container]}
+        behavior="padding"
+      >
         <ScrollView
-          alwaysBounceVertical={false}
           style={cs.scroll}
           contentContainerStyle={cs.scrollContent}
         >
+          <Image
+            style={s.logo}
+            source={IMAGES.LOGO}
+          />
           <Text style={[s.mainText, forgotState ? { fontSize: 12 } : null]}>
             {forgotState ? 'Enter username to reset password.' : 'Log In'}
           </Text>
@@ -233,7 +235,7 @@ class LoginPage extends React.Component {
             value={username}
             ref={this.addInput('username')}
             onChange={this.onValueChange('username')}
-            onSubmit={this.onSubmit(forgotState ? 'password' : '')}
+            onSubmit={this.onSubmit(!forgotState ? 'password' : '')}
           />
           {!forgotState ? <Input
             inputProps={{
@@ -278,7 +280,7 @@ class LoginPage extends React.Component {
           imageStyle={cs.backImage}
           onPress={this.goBack}
         />
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

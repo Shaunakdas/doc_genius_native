@@ -27,8 +27,9 @@ const getNavigator = () => {
   }, {
     headerMode: 'none',
     initialRouteName: 'ChatPage',
-    gesturesEnabled: false,
-  });
+    navigationOptions: {
+      gesturesEnabled: false,
+    } });
 
   const ForumNavigator = DrawerNavigator({
     ForumPage: {
@@ -78,7 +79,9 @@ const getNavigator = () => {
     },
   }, {
     headerMode: 'none',
-    gesturesEnabled: false,
+    navigationOptions: {
+      gesturesEnabled: false,
+    },
   });
 
   const AppNavigator = TabNavigator({
@@ -126,8 +129,9 @@ const getNavigator = () => {
     },
   }, {
     headerMode: 'none',
-    gesturesEnabled: false,
-  });
+    navigationOptions: {
+      gesturesEnabled: false,
+    } });
 
   return MainNavigator;
 };
