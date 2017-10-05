@@ -69,8 +69,8 @@ class QuestionPage extends React.Component {
     let inputHeight = event.nativeEvent.contentSize.height;
     if (Platform.OS === 'ios') {
       const width = event.nativeEvent.contentSize.width;
-      if (width > fullWidth - 85) {
-        inputHeight = 19.5 * Math.ceil((width) / (fullWidth - 85));
+      if (width > fullWidth - 75) {
+        inputHeight = 19.5 * Math.ceil((width) / (fullWidth - 75));
       }
     }
     this.setState({ inputHeight: Math.min(inputHeight, 150) });
@@ -551,9 +551,8 @@ class QuestionPage extends React.Component {
 
   render() {
     const { inputHeight, keyboardHeight = 0, refreshing } = this.state;
-    const extraHeight = inputHeight === defaultInputHeight ? 85 : 78;
-    const androidHeight = Platform.OS === 'ios' ? 0 : 8;
-    const availableHeight = fullHeight - inputHeight - keyboardHeight - extraHeight - androidHeight;
+    const extraHeight = inputHeight === defaultInputHeight ? 93 : 85;
+    const availableHeight = fullHeight - inputHeight - keyboardHeight - extraHeight;
     const { loading, question, category } = this.state;
     const { details_stream } = question || {};
     return (

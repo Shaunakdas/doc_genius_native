@@ -87,7 +87,9 @@ class LoginPage extends React.Component {
       const { username } = this.state.values;
       if (username) {
         const { navigation } = this.props;
+        this.setState({ resetting: true });
         const response = await forgotPasswordAPI(username);
+        this.setState({ resetting: false });
         if (response.success === false) {
           this.setState({
             errors: {
@@ -266,7 +268,7 @@ class LoginPage extends React.Component {
             style={[cs.getStartedButton, s.button]}
             textStyle={[cs.getStartedButtonText]}
             onPress={this.getStarted}
-            isLoading={loggingIn}
+            isLoading={loggingIn || resetting}
             loadingColor={COLORS.PRIMARY}
           />
         </ScrollView>

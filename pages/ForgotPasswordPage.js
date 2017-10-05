@@ -159,6 +159,7 @@ class ForgotPasswordPage extends React.Component {
     } = this.state.values;
     const { errors } = this.state;
     const { loggingIn } = this.props;
+    const hint = 'Activation token is sent to your email. \n *New Password should be different than the ones previously used.';
     return (
       <View style={[cs.container, s.container]}>
         <Image
@@ -171,6 +172,17 @@ class ForgotPasswordPage extends React.Component {
           contentContainerStyle={cs.scrollContent}
         >
           <Text style={s.mainText}>Change Password</Text>
+          <Text
+            style={{
+              ...font(11),
+              textAlign: 'center',
+              marginHorizontal: 30,
+              marginVertical: 10,
+              color: COLORS.WHITE,
+            }}
+          >
+            {hint}
+          </Text>
           <Input
             inputProps={{
               ...commonInputProps,
@@ -214,6 +226,7 @@ class ForgotPasswordPage extends React.Component {
             marginTop: 3,
             marginBottom: 20,
             ...font(11),
+            textAlign: 'center',
           }}
           >{errors.overall}</Text> : null}
           <Button

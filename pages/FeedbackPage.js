@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, TextInput } from 'react-native';
+import { Text, View, Image, TextInput, ScrollView } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -59,41 +59,42 @@ class FeedbackPage extends React.Component {
           />
           <Text style={cs.headerText}> Feedback </Text>
         </View>
-        <View
-          style={s.questionContainer}
-        >
+        <ScrollView style={{ flex: 1 }}>
           <View
-            style={s.topLine}
+            style={s.questionContainer}
           >
-            <Text style={s.label}>We value your voice!</Text>
-            <IconButton
-              style={{ margin: 0, padding: 15 }}
-              imageStyle={{ height: 12, width: 12 }}
-              source={IMAGES.CLOSE}
-              onPress={this.goBack}
+            <View
+              style={s.topLine}
+            >
+              <Text style={s.label}>We value your voice!</Text>
+              <IconButton
+                style={{ margin: 0, padding: 15 }}
+                imageStyle={{ height: 12, width: 12 }}
+                source={IMAGES.CLOSE}
+                onPress={this.goBack}
+              />
+            </View>
+            <View
+              style={s.textInputContainer}
+            >
+              <TextInput
+                style={[s.textInput, { height: 90 }]}
+                multiline
+                underlineColorAndroid={COLORS.TRANSPARENT}
+                onChangeText={this.onInputChange}
+                value={feedback}
+              />
+            </View>
+            <Button
+              style={s.askButton}
+              textStyle={s.askButtonText}
+              text="Send"
+              onPress={this.sendFeedback}
+              isLoading={this.state.loading}
+              loadingColor={COLORS.WHITE}
             />
           </View>
-          <View
-            style={s.textInputContainer}
-          >
-            <TextInput
-              style={[s.textInput, { height: 150 }]}
-              multiline
-              underlineColorAndroid={COLORS.TRANSPARENT}
-              onChangeText={this.onInputChange}
-              value={feedback}
-              autoFocus
-            />
-          </View>
-          <Button
-            style={s.askButton}
-            textStyle={s.askButtonText}
-            text="Send"
-            onPress={this.sendFeedback}
-            isLoading={this.state.loading}
-            loadingColor={COLORS.WHITE}
-          />
-        </View>
+        </ScrollView>
       </View>
     );
   }

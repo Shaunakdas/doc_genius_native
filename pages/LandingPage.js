@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, ScrollView, Image } from 'react-native';
 import { PropTypes } from 'prop-types';
 
 import { commonStyle as cs, landingPageStyle as s } from '../common/styles';
@@ -18,7 +18,11 @@ export default class LandingPage extends React.Component {
 
   render() {
     return (
-      <View style={[cs.container, s.container]}>
+      <ScrollView
+        style={{ flex: 1 }}
+        alwaysBounceVertical={false}
+        contentContainerStyle={[cs.container, s.container]}
+      >
         <Text style={s.brandText}>ConnecPath</Text>
         <Image
           style={s.logo}
@@ -37,7 +41,7 @@ export default class LandingPage extends React.Component {
           textStyle={cs.buttonText}
           onPress={this.goTo('LoginPage')}
         />
-      </View>
+      </ScrollView>
     );
   }
 }

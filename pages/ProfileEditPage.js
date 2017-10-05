@@ -99,13 +99,14 @@ class ProfileEditPage extends React.Component {
     const {
       fullName,
       graduationYear,
+      role,
     } = this.state.values;
     const errors = {
       fullName: fullName ? '' : 'Full Name is required',
-      graduationYear: graduationYear ? '' : 'Graduation year is required',
+      graduationYear: graduationYear || role !== STUDENT_ROLE ? '' : 'Graduation year is required',
     };
 
-    if (graduationYear && !validGraduationYear(graduationYear)) {
+    if (role === STUDENT_ROLE && graduationYear && !validGraduationYear(graduationYear)) {
       errors.graduationYear = 'Not a valid graduation year';
     }
 

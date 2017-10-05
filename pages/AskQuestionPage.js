@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, TextInput, Keyboard } from 'react-native';
+import { Text, View, Image, TextInput, Keyboard, ScrollView } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
@@ -85,60 +85,62 @@ class AskQuestionPage extends React.Component {
           />
           <Text style={cs.headerText}> Ask the Forum ({category.name}) </Text>
         </View>
-        {fromForum ? <View style={s.hintView}>
-          <Text
-            style={s.hintText}
-          >
-            Have you tried asking Chatbot? It may be able to answer back faster!
-          </Text>
-        </View> : null}
-        <View
-          style={s.questionContainer}
-        >
+        <ScrollView style={{ flex: 1 }}>
+          {fromForum ? <View style={s.hintView}>
+            <Text
+              style={s.hintText}
+            >
+              Have you tried asking Chatbot? It may be able to answer back faster!
+            </Text>
+          </View> : null}
           <View
-            style={s.topLine}
+            style={s.questionContainer}
           >
-            <Text style={s.label}>Your Question:</Text>
-            <IconButton
-              style={{ margin: 0, padding: 15 }}
-              imageStyle={{ height: 12, width: 12 }}
-              source={IMAGES.CLOSE}
-              onPress={this.goBack}
+            <View
+              style={s.topLine}
+            >
+              <Text style={s.label}>Your Question:</Text>
+              <IconButton
+                style={{ margin: 0, padding: 15 }}
+                imageStyle={{ height: 12, width: 12 }}
+                source={IMAGES.CLOSE}
+                onPress={this.goBack}
+              />
+            </View>
+            <View
+              style={s.textInputContainer}
+            >
+              <TextInput
+                style={s.textInput}
+                multiline
+                underlineColorAndroid={COLORS.TRANSPARENT}
+                onChangeText={this.onInputChange}
+                value={question}
+                onContentSizeChange={this.onInputHeightChange}
+              />
+              <Text style={s.countLine}> {question.length}/200</Text>
+            </View>
+            <Button
+              style={s.askButton}
+              textStyle={s.askButtonText}
+              text="Post to Forum"
+              onPress={this.postQuestion}
+              isLoading={this.state.loading}
+              loadingColor={COLORS.WHITE}
             />
+            {this.state.error ? <Text
+              style={{
+                color: COLORS.RED,
+                marginHorizontal: 30,
+                marginVertical: 4,
+                ...font(12),
+                textAlign: 'center',
+              }}
+            >
+              Unable to post this question. Try again later
+            </Text> : null}
           </View>
-          <View
-            style={s.textInputContainer}
-          >
-            <TextInput
-              style={s.textInput}
-              multiline
-              underlineColorAndroid={COLORS.TRANSPARENT}
-              onChangeText={this.onInputChange}
-              value={question}
-              autoFocus
-            />
-            <Text style={s.countLine}> {question.length}/200</Text>
-          </View>
-          <Button
-            style={s.askButton}
-            textStyle={s.askButtonText}
-            text="Post to Forum"
-            onPress={this.postQuestion}
-            isLoading={this.state.loading}
-            loadingColor={COLORS.WHITE}
-          />
-          {this.state.error ? <Text
-            style={{
-              color: COLORS.RED,
-              marginHorizontal: 30,
-              marginVertical: 4,
-              ...font(12),
-              textAlign: 'center',
-            }}
-          >
-            Unable to post this question. Try again later
-          </Text> : null}
-        </View>
+        </ScrollView>
       </View>
     );
   }

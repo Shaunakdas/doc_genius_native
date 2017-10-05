@@ -165,9 +165,9 @@ export const splashPageStyle = StyleSheet.create({
     color: COLORS.WHITE,
   },
   logo: {
-    marginVertical: 50,
-    height: 150,
-    width: 150,
+    marginVertical: 40,
+    height: 120,
+    width: 120,
   },
 });
 
@@ -182,9 +182,9 @@ export const landingPageStyle = StyleSheet.create({
     color: COLORS.WHITE,
   },
   logo: {
-    marginVertical: 50,
-    height: 150,
-    width: 150,
+    marginVertical: 40,
+    height: 120,
+    width: 120,
   },
   typeText: {
     color: COLORS.WHITE,
@@ -273,7 +273,7 @@ export const loginPageStyle = StyleSheet.create({
     width: 55,
   },
   button: {
-    marginTop: fullHeight - 540,
+    marginTop: 40,
   },
   forgotPasswordButton: {
     marginTop: 15,
@@ -538,7 +538,7 @@ export const askQuestionPageStyle = StyleSheet.create({
     marginVertical: 4,
   },
   textInput: {
-    height: 100,
+    height: 45,
     ...font(14),
     textAlignVertical: 'top',
   },

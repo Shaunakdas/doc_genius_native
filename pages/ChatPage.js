@@ -385,7 +385,7 @@ class ChatPage extends React.Component {
   render() {
     const { inputHeight, keyboardHeight = 0, chatInput, refreshing } = this.state;
     const { chatHistory } = this.props;
-    const extraHeight = keyboardHeight ? 90 : 150;
+    const extraHeight = keyboardHeight ? 90 : 140;
     const availableHeight = fullHeight - inputHeight - keyboardHeight - extraHeight;
     return (
       <View style={[cs.container, s.container]}>
@@ -434,23 +434,25 @@ class ChatPage extends React.Component {
             }
           </ScrollView>
         </View>
-        <View
-          style={s.chatInputContainer}
-        >
-          <TextInput
-            style={[s.chatInput, { height: inputHeight }]}
-            multiline
-            onContentSizeChange={this.onInputHeightChange}
-            underlineColorAndroid={COLORS.TRANSPARENT}
-            value={chatInput}
-            onChangeText={this.onInputChange}
-          />
-          <IconButton
-            source={IMAGES.SEND}
-            style={s.chatSendButton}
-            imageStyle={s.chatSendImage}
-            onPress={this.sendUserChat}
-          />
+        <View style={{ paddingTop: 3 }}>
+          <View
+            style={s.chatInputContainer}
+          >
+            <TextInput
+              style={[s.chatInput, { height: inputHeight }]}
+              multiline
+              onContentSizeChange={this.onInputHeightChange}
+              underlineColorAndroid={COLORS.TRANSPARENT}
+              value={chatInput}
+              onChangeText={this.onInputChange}
+            />
+            <IconButton
+              source={IMAGES.SEND}
+              style={s.chatSendButton}
+              imageStyle={s.chatSendImage}
+              onPress={this.sendUserChat}
+            />
+          </View>
         </View>
       </View>
     );
