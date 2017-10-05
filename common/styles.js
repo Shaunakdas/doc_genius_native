@@ -183,9 +183,9 @@ export const landingPageStyle = StyleSheet.create({
     color: COLORS.WHITE,
   },
   logo: {
-    marginVertical: 40,
-    height: 120,
-    width: 120,
+    marginVertical: 30,
+    height: 110,
+    width: 110,
   },
   typeText: {
     color: COLORS.WHITE,
@@ -203,7 +203,7 @@ export const selectionPageStyle = StyleSheet.create({
     alignItems: 'center',
   },
   mainText: {
-    ...font(40),
+    ...font(35),
     marginTop: 15,
     color: COLORS.WHITE,
     marginBottom: 35,
@@ -262,7 +262,7 @@ export const loginPageStyle = StyleSheet.create({
     alignItems: 'center',
   },
   mainText: {
-    ...font(40),
+    ...font(35),
     marginTop: 15,
     color: COLORS.WHITE,
     marginBottom: 20,
