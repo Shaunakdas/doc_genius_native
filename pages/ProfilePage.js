@@ -399,10 +399,10 @@ class ProfilePage extends React.Component {
         <IconButton
           source={IMAGES.SETTINGS}
           style={{
-            padding: 5,
+            padding: 15,
             position: 'absolute',
-            top: 30,
-            right: 15,
+            top: 20,
+            right: 5,
             elevation: 2,
           }}
           imageStyle={{
