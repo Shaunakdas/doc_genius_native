@@ -3,6 +3,7 @@ import { Text, View, Image, ScrollView, ActivityIndicator, Platform, Keyboard, T
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import Swipeout from 'react-native-swipeout';
 
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
@@ -18,6 +19,7 @@ class QuestionPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
     categories: PropTypes.array.isRequired,
+    currentUser: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -37,6 +39,7 @@ class QuestionPage extends React.Component {
       reply: '',
       refreshing: false,
       liking: false,
+      swipedOutId: null,
     };
   }
 
@@ -61,7 +64,7 @@ class QuestionPage extends React.Component {
   }
 
   onRefresh = () => {
-    this.setState({ refreshing: true });
+    this.setState({ refreshing: true, swipedOutId: null });
     this.fetchQuestion();
   }
 
@@ -77,6 +80,10 @@ class QuestionPage extends React.Component {
   }
 
   onChangeText = reply => this.setState({ reply });
+
+  resetSwipe =() =>{
+    this.setState({ swipedOutId: null });
+  }
 
   adjustScroll = () => {
     if (this.scrollView) {
@@ -131,6 +138,10 @@ class QuestionPage extends React.Component {
     navigation.goBack();
   }
 
+  handleSwipeOut = (_, swipedOutId) => {
+    this.setState({ swipedOutId });
+  }
+
   keyBoardDidShow = (event) => {
     const keyboardHeight = event.endCoordinates.height;
     this.setState({ keyboardHeight });
@@ -150,6 +161,7 @@ class QuestionPage extends React.Component {
 
   replyTo = post => () => {
     this.setState({
+      swipedOutId: null,
       reply_to_post_number:
         post.reply_to_post_number ? post.reply_to_post_number : post.post_number,
     }, this.focus);
@@ -447,7 +459,30 @@ class QuestionPage extends React.Component {
       </View>
     </View>
   )
+
   renderA = (answer, showBorder) => {
+    const { currentUser } = this.props;
+    const isCurrentUser = answer.user_id === currentUser.id;
+    const swipeoutBtns = [
+      {
+        text: 'Button',
+      },
+    ];
+    return isCurrentUser ? (
+      <Swipeout
+        rowID={answer.id}
+        right={swipeoutBtns}
+        backgroundColor={COLORS.TRANSPARENT}
+        autoClose
+        onOpen={this.handleSwipeOut}
+        close={answer.id !== this.state.swipedOutId}
+      >
+        {this.renderAInner(answer, showBorder)}
+      </Swipeout>
+    ) : this.renderAInner(answer, showBorder);
+  }
+
+  renderAInner = (answer, showBorder) => {
     const isReply = !!answer.reply_to_post_number;
     return (
       <View
@@ -575,6 +610,7 @@ class QuestionPage extends React.Component {
         <View style={{ height: availableHeight }}>
           <ScrollView
             style={{ flex: 1 }}
+            onScroll={this.resetSwipe}
             refreshControl={
               <RefreshControl
                 onRefresh={this.onRefresh}
@@ -611,6 +647,7 @@ class QuestionPage extends React.Component {
               onContentSizeChange={this.onInputHeightChange}
               underlineColorAndroid={COLORS.TRANSPARENT}
               value={this.state.reply}
+              onFocus={this.resetSwipe}
               onChangeText={this.onChangeText}
               ref={input => this.input = input}
             />

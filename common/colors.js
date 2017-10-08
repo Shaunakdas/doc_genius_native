@@ -16,6 +16,7 @@ export default {
   SEARCH_TEXT: '#8E8E93',
   QA: '#D1D5DB',
   RED: '#FF0000',
+  BEIGE: '#FFE8E8',
 };
 
 

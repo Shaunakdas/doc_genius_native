@@ -1,8 +1,8 @@
 {
   "expo": {
-   "name": "Connecpath",
+   "name": "ConnecPath",
    "icon": "./assets/img/logo.png",
-   "version": "1.0.3",
+   "version": "1.0.4",
    "slug": "connecpath-forum",
    "sdkVersion": "21.0.0",
    "privacy": "unlisted",   

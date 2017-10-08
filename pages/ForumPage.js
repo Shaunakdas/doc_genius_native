@@ -28,6 +28,7 @@ class ForumPage extends React.Component {
     filters: PropTypes.array.isRequired,
     categories: PropTypes.array.isRequired,
     forumNumber: PropTypes.number.isRequired,
+    currentUser: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -106,8 +107,10 @@ class ForumPage extends React.Component {
   }
 
   renderUser = (user_id, time) => {
+    const { currentUser } = this.props;
     const user = this.state.questions.user_stream[user_id];
-    const image = getUserImage(user);
+    const isCurrentUser = currentUser.id === user.id;
+    const image = isCurrentUser ? currentUser.image : getUserImage(user);
     const isChatBot = user.username === 'cherylbot';
     let [ display, ...ignore ] = user.name.split(' '); // eslint-disable-line
     if (user.user_fields.role === STUDENT_ROLE) {
@@ -526,7 +529,8 @@ const mapStateToProps
     filters,
     loginState: { authToken },
     categories,
+    currentUser,
     appState: { forumNumber },
-  }) => ({ filters, authToken, categories, forumNumber });
+  }) => ({ filters, authToken, categories, forumNumber, currentUser });
 
 export default connect(mapStateToProps)(ForumPage);
