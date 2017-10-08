@@ -114,6 +114,7 @@ class QuestionPage extends React.Component {
     const post_structure = {};
     post_stream.forEach((post) => {
       if (post.reply_to_post_number) {
+        post_structure[post.reply_to_post_number] = post_structure[post.reply_to_post_number] || [];
         post_structure[post.reply_to_post_number].push(post.post_number);
       } else {
         post_structure[post.post_number] = [];
@@ -281,6 +282,91 @@ class QuestionPage extends React.Component {
     });
   }
 
+  editReplyOnPost = (postId, reply) => (post) => {
+    if (post.id === postId) {
+      return {
+        ...post,
+        raw: reply,
+      };
+    }
+    return post;
+  }
+
+  editReplyOnStream = (answerId, reply) => {
+    const { question } = this.state;
+    const details = question.details_stream.details;
+    const replies = details.replies;
+    const post_stream = details.post_stream;
+    const newReplies = Object.keys(replies).reduce((tillNow, id) => {
+      const post = replies[id];
+      tillNow[id] = { // eslint-disable-line no-param-reassign
+        ...post,
+        raw: post.id === answerId ? reply : post.raw,
+      };
+      return tillNow;
+    }, {});
+    const newQuestion = {
+      ...question,
+      details_stream: {
+        ...question.details_stream,
+        details: {
+          ...details,
+          post_stream: post_stream.map(this.editReplyOnPost(answerId, reply)),
+          replies: {
+            ...newReplies,
+          },
+        },
+      },
+    };
+    this.setState({ question: newQuestion });
+  }
+
+  deleteOnStream = (answerId) => {
+    const { question } = this.state;
+    const details = question.details_stream.details;
+    const replies = details.replies;
+    const post_stream = details.post_stream;
+    const newReplies = Object.keys(replies).reduce((tillNow, id) => {
+      const post = replies[id];
+      if (post.id !== answerId) {
+        tillNow[id] = post; // eslint-disable-line no-param-reassign
+      }
+      return tillNow;
+    }, {});
+    const newQuestion = {
+      ...question,
+      details_stream: {
+        ...question.details_stream,
+        details: {
+          ...details,
+          post_stream: post_stream.filter(post => post.id !== answerId),
+          replies: {
+            ...newReplies,
+          },
+        },
+      },
+    };
+    this.setState({ question: newQuestion });
+  }
+
+  deleteReply = id => async () => {
+    const { authToken } = this.props;
+    this.setState({
+      reply: '',
+      reply_to_post_number: null,
+      swipedOutId: null,
+      originalReply: '',
+      refreshing: true,
+    });
+    Keyboard.dismiss();
+    const response = await deleteAnswerAPI(authToken, id);
+    if (response.success !== false) {
+      this.deleteOnStream(id);
+    }
+    this.setState({
+      refreshing: false,
+    });
+  }
 
   submitReply = async () => {
     const { reply, reply_to_post_number, question, swipedOutId, originalReply } = this.state;
@@ -290,16 +376,26 @@ class QuestionPage extends React.Component {
       reply_to_post_number: null,
       swipedOutId: null,
       originalReply: '',
+      refreshing: true,
     });
     Keyboard.dismiss();
-    if (reply === null || reply.length === 0) return;
+    if (reply === null || reply.length === 0) {
+      this.setState({
+        refreshing: false,
+      });
+      return;
+    }
     if (swipedOutId) {
-      if (reply === originalReply) return;
-      // const response = await updateAnswerAPI(authToken, reply, swipedOutId);
-      // if (response.success !== false) {
-      //   console.log(' Works ');
-      // }
-      console.log(this.state.question, swipedOutId);
+      if (reply === originalReply) {
+        this.setState({
+          refreshing: false,
+        });
+        return;
+      }
+      const response = await updateAnswerAPI(authToken, reply, swipedOutId);
+      if (response.success !== false) {
+        this.editReplyOnStream(swipedOutId, reply);
+      }
     } else {
       const response =
       await createAnswerAPI(authToken,
@@ -325,6 +421,9 @@ class QuestionPage extends React.Component {
         this.addPostToStream(user, post);
       }
     }
+    this.setState({
+      refreshing: false,
+    });
   }
 
   renderUser = (user_id) => {
@@ -376,12 +475,37 @@ class QuestionPage extends React.Component {
       {moment(time).fromNow()}
     </Text>
   )
+  renderDeleteButton = id => (
+    <Button
+      text="Delete"
+      style={{
+        backgroundColor: COLORS.DELETE_BG,
+        flex: 1,
+        alignSelf: 'stretch',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      imageStyle={{
+        height: 25,
+        width: 25,
+        resizeMode: 'contain',
+        marginBottom: 10,
+      }}
+      imageSource={IMAGES.TRASH}
+      textStyle={{
+        textAlign: 'center',
+        ...font(14),
+        color: COLORS.WHITE,
+      }}
+      onPress={this.deleteReply(id)}
+    />
+  );
 
   renderEditButton = text => (
     <Button
       text="Edit"
       style={{
-        backgroundColor: 'red',
+        backgroundColor: COLORS.EDIT_BG,
         flex: 1,
         alignSelf: 'stretch',
         alignItems: 'center',
@@ -449,76 +573,104 @@ class QuestionPage extends React.Component {
     );
   };
 
-  renderQ = question => (
-    <View
-      style={{
-        margin: 8,
-        backgroundColor: COLORS.WHITE,
-        borderRadius: 10,
-        padding: 6,
-        overflow: 'hidden',
-      }}
+  renderQ = (question) => {
+    const { currentUser } = this.props;
+    const isCurrentUser = question.user_id === currentUser.id;
+    const swipeoutBtns = [
+      {
+        component: this.renderEditButton(question.raw),
+      },
+    ];
+    return (
+      <View
+        style={{
+          margin: 8,
+          backgroundColor: COLORS.WHITE,
+          borderRadius: 10,
+          padding: 6,
+          overflow: 'hidden',
+        }}
+      >
+        {isCurrentUser ? (
+          <Swipeout
+            rowID={question.id}
+            right={swipeoutBtns}
+            backgroundColor={COLORS.TRANSPARENT}
+            autoClose
+            onOpen={this.handleSwipeOut}
+            close={question.id !== this.state.swipedOutId}
+            buttonWidth={80}
+          >
+            {this.renderQInner(question)}
+          </Swipeout>
+        ) : this.renderQInner(question)}
+      </View>);
+  }
+
+  renderQInner = question => (
+    <View style={{
+      padding: 5,
+      paddingRight: 8,
+    }}
     >
+      <Text
+        style={{
+          position: 'absolute',
+          top: 14,
+          left: -14,
+          ...font(40),
+          color: alpha(COLORS.SECONDARY, 0.3),
+        }}
+      >
+          Q
+      </Text>
       <View style={{
-        padding: 5,
-        paddingRight: 8,
+        paddingLeft: 15,
+        paddingBottom: 4,
       }}
       >
-        <Text
+        <View
           style={{
-            position: 'absolute',
-            top: 14,
-            left: -14,
-            ...font(40),
-            color: alpha(COLORS.SECONDARY, 0.3),
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
-          Q
-        </Text>
-        <View style={{
-          paddingLeft: 15,
-          paddingBottom: 4,
-        }}
+          {this.renderUser(question.user_id)}
+          {this.renderButtons(question)}
+        </View>
+        <Text
+          style={{
+            ...font(13),
+            marginBottom: 8,
+            marginTop: 2,
+          }}
         >
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            {this.renderUser(question.user_id)}
-            {this.renderButtons(question)}
-          </View>
-          <Text
-            style={{
-              ...font(13),
-              marginBottom: 8,
-              marginTop: 2,
-            }}
-          >
-            {question.raw}
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            {this.renderTime(question.created_at)}
-          </View>
+          {question.raw}
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          {this.renderTime(question.created_at)}
         </View>
       </View>
     </View>
   )
 
   renderA = (answer, showBorder) => {
+    if (!answer) return null;
     const { currentUser } = this.props;
     const isCurrentUser = answer.user_id === currentUser.id;
     const swipeoutBtns = [
       {
         component: this.renderEditButton(answer.raw),
+      },
+      {
+        component: this.renderDeleteButton(answer.id),
       },
     ];
     return isCurrentUser ? (
@@ -631,7 +783,7 @@ class QuestionPage extends React.Component {
       ...detail,
       ...detail.post_stream[0],
     };
-    const showAnswers = detail.post_stream.length > 1;
+    const showAnswers = question.replies && Object.keys(question.replies).length > 1;
     return (<View>
       {this.renderQ(question)}
       {showAnswers ? this.renderAs(detail) : null}
@@ -664,7 +816,6 @@ class QuestionPage extends React.Component {
         <View style={{ height: availableHeight }}>
           <ScrollView
             style={{ flex: 1 }}
-            onScroll={this.resetSwipeOnScroll}
             refreshControl={
               <RefreshControl
                 onRefresh={this.onRefresh}

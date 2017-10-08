@@ -232,8 +232,8 @@ export const deleteAnswerAPI = async (authToken, id) => {
   const body = JSON.stringify({
     id,
   });
-  const response = await jsonFetch(url, { body, method: 'DELETE' }, authToken);
-  return response;
+  await jsonFetch(url, { body, method: 'DELETE' }, authToken);
+  return { success: true };
 };
 
 

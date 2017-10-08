@@ -44,4 +44,5 @@ export default {
   PROFILE_BG: require('../assets/img/profile_bg.png'),
   SETTINGS: require('../assets/img/settings.png'),
   GOTO: require('../assets/img/arrow_right_blue.png'),
+  TRASH: require('../assets/img/trash.png'),
 };
