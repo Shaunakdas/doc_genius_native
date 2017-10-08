@@ -17,6 +17,8 @@ export default {
   QA: '#D1D5DB',
   RED: '#FF0000',
   BEIGE: '#FFE8E8',
+  EDIT_BG: '#E88800',
+  DELETE_BG: '#E74C3C',
 };
 
 

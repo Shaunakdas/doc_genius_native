@@ -217,6 +217,26 @@ export const createAnswerAPI = async (authToken, raw, question_id, reply_to_post
   return response;
 };
 
+export const updateAnswerAPI = async (authToken, raw, id) => {
+  const url = `${BASE_URL}/answer`;
+  const body = JSON.stringify({
+    id,
+    post: { raw },
+  });
+  const response = await jsonFetch(url, { body, method: 'PUT' }, authToken);
+  return response;
+};
+
+export const deleteAnswerAPI = async (authToken, id) => {
+  const url = `${BASE_URL}/answer`;
+  const body = JSON.stringify({
+    id,
+  });
+  const response = await jsonFetch(url, { body, method: 'DELETE' }, authToken);
+  return response;
+};
+
+
 export const likePostAPI = async (authToken, id) => {
   const url = `${BASE_URL}/answer/like`;
   const body = JSON.stringify({

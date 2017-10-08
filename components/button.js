@@ -4,7 +4,7 @@ import {
   View,
   Text,
   TouchableNativeFeedback,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   Platform,
   Image,
   ActivityIndicator,
@@ -32,7 +32,7 @@ export default class Button extends Component {
 
 
   render() {
-    const TouchableWrapper = Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
+    const TouchableWrapper = Platform.OS === 'ios' ? TouchableWithoutFeedback : TouchableNativeFeedback;
     const {
       isLoading,
       onPress,

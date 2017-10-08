@@ -1,5 +1,14 @@
 import React from 'react';
-import { Text, View, Image, ScrollView, ActivityIndicator, Platform, Keyboard, TextInput, RefreshControl } from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  ScrollView,
+  ActivityIndicator,
+  Platform,
+  Keyboard,
+  TextInput,
+  RefreshControl } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -9,9 +18,9 @@ import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, font, fullWidth, fullHeight, questionPageStyle as s } from '../common/styles';
 import { STUDENT_ROLE } from '../common/constants';
-import { questionAPI, createAnswerAPI, unlikePostAPI, likePostAPI } from '../common/api';
+import { questionAPI, createAnswerAPI, unlikePostAPI, likePostAPI, updateAnswerAPI, deleteAnswerAPI } from '../common/api';
 import { getCategoryById, getUserImage } from '../common/helper';
-import { IconButton } from '../components';
+import { IconButton, Button } from '../components';
 
 const defaultInputHeight = 19.5;
 
@@ -40,6 +49,7 @@ class QuestionPage extends React.Component {
       refreshing: false,
       liking: false,
       swipedOutId: null,
+      originalReply: '',
     };
   }
 
@@ -81,8 +91,13 @@ class QuestionPage extends React.Component {
 
   onChangeText = reply => this.setState({ reply });
 
-  resetSwipe =() =>{
-    this.setState({ swipedOutId: null });
+  onEdit = reply =>
+    () => this.setState({ reply, reply_to_post_number: null, originalReply: reply }, this.focus);
+
+  resetSwipeOnScroll = () => {
+    if (!this.state.keyboardHeight) {
+      this.setState({ swipedOutId: null, originalReply: '' });
+    }
   }
 
   adjustScroll = () => {
@@ -268,35 +283,47 @@ class QuestionPage extends React.Component {
 
 
   submitReply = async () => {
-    const { reply, reply_to_post_number, question } = this.state;
+    const { reply, reply_to_post_number, question, swipedOutId, originalReply } = this.state;
     const { authToken, currentUser } = this.props;
     this.setState({
       reply: '',
       reply_to_post_number: null,
+      swipedOutId: null,
+      originalReply: '',
     });
     Keyboard.dismiss();
-    const response =
-     await createAnswerAPI(authToken,
-        reply,
-        question.details_stream.details.id,
-        reply_to_post_number);
-    if (response.success !== false) {
-      const post = {
-        created_at: response.created_at,
-        post_number: response.post_number,
-        raw: response.cooked.replace(/(<([^>]+)>)/ig, ''),
-        id: response.id,
-        reply_to_post_number,
-        reply_count: 0,
-        like_count: 0,
-        user_id: currentUser.id,
-        current_user_liked: false,
-      };
-      const user = {
-        ...currentUser,
-        user_fields: currentUser,
-      };
-      this.addPostToStream(user, post);
+    if (reply === null || reply.length === 0) return;
+    if (swipedOutId) {
+      if (reply === originalReply) return;
+      // const response = await updateAnswerAPI(authToken, reply, swipedOutId);
+      // if (response.success !== false) {
+      //   console.log(' Works ');
+      // }
+      console.log(this.state.question, swipedOutId);
+    } else {
+      const response =
+      await createAnswerAPI(authToken,
+          reply,
+          question.details_stream.details.id,
+          reply_to_post_number);
+      if (response.success !== false) {
+        const post = {
+          created_at: response.created_at,
+          post_number: response.post_number,
+          raw: response.cooked.replace(/(<([^>]+)>)/ig, ''),
+          id: response.id,
+          reply_to_post_number,
+          reply_count: 0,
+          like_count: 0,
+          user_id: currentUser.id,
+          current_user_liked: false,
+        };
+        const user = {
+          ...currentUser,
+          user_fields: currentUser,
+        };
+        this.addPostToStream(user, post);
+      }
     }
   }
 
@@ -349,6 +376,32 @@ class QuestionPage extends React.Component {
       {moment(time).fromNow()}
     </Text>
   )
+
+  renderEditButton = text => (
+    <Button
+      text="Edit"
+      style={{
+        backgroundColor: 'red',
+        flex: 1,
+        alignSelf: 'stretch',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      imageStyle={{
+        height: 25,
+        width: 25,
+        resizeMode: 'contain',
+        marginBottom: 10,
+      }}
+      imageSource={IMAGES.ESSAY}
+      textStyle={{
+        textAlign: 'center',
+        ...font(14),
+        color: COLORS.WHITE,
+      }}
+      onPress={this.onEdit(text)}
+    />
+  );
 
   renderButtons = (post) => {
     const isQuestion = post.posts_count > 0;
@@ -465,7 +518,7 @@ class QuestionPage extends React.Component {
     const isCurrentUser = answer.user_id === currentUser.id;
     const swipeoutBtns = [
       {
-        text: 'Button',
+        component: this.renderEditButton(answer.raw),
       },
     ];
     return isCurrentUser ? (
@@ -476,6 +529,7 @@ class QuestionPage extends React.Component {
         autoClose
         onOpen={this.handleSwipeOut}
         close={answer.id !== this.state.swipedOutId}
+        buttonWidth={80}
       >
         {this.renderAInner(answer, showBorder)}
       </Swipeout>
@@ -610,7 +664,7 @@ class QuestionPage extends React.Component {
         <View style={{ height: availableHeight }}>
           <ScrollView
             style={{ flex: 1 }}
-            onScroll={this.resetSwipe}
+            onScroll={this.resetSwipeOnScroll}
             refreshControl={
               <RefreshControl
                 onRefresh={this.onRefresh}
@@ -647,7 +701,6 @@ class QuestionPage extends React.Component {
               onContentSizeChange={this.onInputHeightChange}
               underlineColorAndroid={COLORS.TRANSPARENT}
               value={this.state.reply}
-              onFocus={this.resetSwipe}
               onChangeText={this.onChangeText}
               ref={input => this.input = input}
             />
