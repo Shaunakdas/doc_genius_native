@@ -172,11 +172,12 @@ export const categoriesAPI = async (authToken) => {
   return response;
 };
 
-export const postsAPI = async (authToken, filters, searchTerm, page = 1) => {
+export const postsAPI = async (authToken, filters, searchTerm, page = 1, limit = 10) => {
   const filterIds = filters.map(filter => filter.id);
   const queryString = buildQuery({
     query: searchTerm,
     id: filterIds,
+    limit,
     page,
   });
   const url = `${BASE_URL}/questions?${queryString}`;

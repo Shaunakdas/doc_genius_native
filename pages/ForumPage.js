@@ -4,12 +4,10 @@ import {
   View,
   Image,
   TextInput,
-  ScrollView,
+  TouchableOpacity,
+  FlatList,
   ActivityIndicator,
   Platform,
-  TouchableOpacity,
-  RefreshControl,
-  FlatList,
 } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
@@ -30,6 +28,7 @@ class ForumPage extends React.Component {
     categories: PropTypes.array.isRequired,
     forumNumber: PropTypes.number.isRequired,
     currentUser: PropTypes.object.isRequired,
+    authToken: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -38,14 +37,15 @@ class ForumPage extends React.Component {
       searchTerm: '',
       questions: null,
       refreshing: false,
-      loading: true,
+      loading: false,
       currentPage: 1,
       addingMore: false,
+      total: 0,
     };
   }
 
   async componentDidMount() {
-    await this.fetchPosts();
+    await this.fetchPosts(null, true);
   }
 
   async componentWillReceiveProps(nextProps) {
@@ -65,12 +65,11 @@ class ForumPage extends React.Component {
   }
 
   onSubmit = () => {
-    this.fetchPosts();
+    this.fetchPosts(null, true);
   }
 
   onRefresh = () => {
-    if (!this.state.loading && !this.state.refreshing) {
-      this.setState({ refreshing: true });
+    if (!this.state.refreshing) {
       this.fetchPosts();
     }
   }
@@ -78,30 +77,59 @@ class ForumPage extends React.Component {
   clearSearch = () => {
     this.setState({
       searchTerm: '',
-    }, this.fetchPosts);
+    }, () => this.fetchPosts(null, true));
   }
 
-  fetchPosts = async (sentFilters = null, loading = false) => {
+  fetchPosts = (sentFilters = null, loading = false) => {
     const { authToken } = this.props;
     const filters = sentFilters || this.props.filters;
     const { searchTerm } = this.state;
-    if (loading) {
-      this.setState({ loading: true });
-    } else {
-      this.setState({ refreshing: true });
-    }
-    const questions = await postsAPI(authToken, filters, searchTerm) || {};
-    this.setState({ questions, loading: false, refreshing: false, currentPage: 1 });
+    this.setState({ loading, refreshing: !loading, questions: null }, async () => {
+      const questions = await postsAPI(authToken, filters, searchTerm) || {};
+      let total = false;
+      if (questions && questions.id_stream && questions.id_stream.topic_list) {
+        total = questions.id_stream.topic_list.length;
+      }
+      this.setState({ questions, loading: false, refreshing: false, currentPage: 1, total });
+    });
   }
 
   addPosts = async () => {
-    // const { authToken, filters } = this.props;
-    // const { searchTerm, addingMore, currentPage, loading, refreshing } = this.state;
-    // if (!addingMore && !loading && !refreshing) {
-    //   this.setState({ addingMore: true });
-    //   await postsAPI(authToken, filters, searchTerm, currentPage + 1);
-    //   this.setState({ addingMore: false, currentPage: currentPage + 1 });
-    // }
+    const { authToken, filters } = this.props;
+    const {
+      searchTerm,
+      addingMore,
+      currentPage,
+      refreshing,
+      questions,
+      total,
+    } = this.state;
+    const hasMore = questions && questions.details_stream &&
+      total > questions.details_stream.length;
+    if (!addingMore && !refreshing && hasMore) {
+      this.setState({ addingMore: true });
+      const nextQuestions = await postsAPI(authToken, filters, searchTerm, currentPage + 1);
+      if (nextQuestions && nextQuestions.details_stream && nextQuestions.details_stream) {
+        const resultQuestions = {
+          ...questions,
+          details_stream: [
+            ...questions.details_stream,
+            ...nextQuestions.details_stream,
+          ],
+          user_stream: {
+            ...questions.user_stream,
+            ...nextQuestions.user_stream,
+          },
+        };
+        this.setState({
+          addingMore: false,
+          currentPage: currentPage + 1,
+          questions: resultQuestions,
+        });
+      } else {
+        this.setState({ addingMore: false });
+      }
+    }
   }
 
   openDrawer = () => {
@@ -399,8 +427,14 @@ class ForumPage extends React.Component {
 
   render() {
     const { filters } = this.props;
-    const { loading, questions, refreshing } = this.state;
-    const { details_stream, user_stream } = questions || {};
+    const { questions, refreshing, loading, addingMore } = this.state;
+    const { details_stream, user_stream } = filters.length === 0 ? {
+      details_stream: [],
+      user_stream: {},
+    } : questions || {
+      details_stream: [],
+      user_stream: {},
+    };
     return (
       <View
         style={[cs.container, { backgroundColor: alpha(COLORS.PRIMARY, 0.3) }]}
@@ -496,61 +530,45 @@ class ForumPage extends React.Component {
             /> : null}
           </View>
         </View>
-        { loading ? (
-          <ScrollView
-            style={{ flex: 1 }}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                marginHorizontal: 40,
-                marginTop: 20,
-              }}
-            >
-              <ActivityIndicator
-                size={Platform.OS === 'ios' ? 1 : 20}
-                color={COLORS.SECONDARY}
-              />
-            </View>
-          </ScrollView>
-        ) : ((filters.length === 0 || !details_stream || details_stream.length === 0) ? (
-          <ScrollView
-            style={{ flex: 1 }}
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing && !loading}
-                onRefresh={this.onRefresh}
-              />
-            }
-          >
-            <Text
-              style={{
-                color: COLORS.SECONDARY,
-                textAlign: 'center',
-                marginHorizontal: 40,
-                marginTop: 40,
-              }}
-            >
-            No results found. Please select different categories or try another search term.
-            </Text>
-          </ScrollView>
-        ) :
-          <FlatList
-            data={details_stream}
-            extraData={user_stream}
-            keyExtractor={this.keyExtractor}
-            renderItem={this.renderQA}
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing && !loading}
-                onRefresh={this.onRefresh}
-              />
-            }
-            onEndReached={this.addPosts}
-            onEndReachedThreshold={0}
-          />
-        ) }
+        <FlatList
+          data={details_stream}
+          extraData={user_stream}
+          keyExtractor={this.keyExtractor}
+          renderItem={this.renderQA}
+          ListEmptyComponent={
+            loading ? (
+              <View style={{ marginTop: 30, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size={Platform.OS === 'ios' ? 0 : 14} color={COLORS.PRIMARY} />
+                <Text style={{ marginLeft: 30, ...font(12), color: COLORS.SECONDARY }}>
+                  Loading Posts...
+                </Text>
+              </View>
+            ) :
+              refreshing ? null : (<Text
+                style={{
+                  color: COLORS.SECONDARY,
+                  textAlign: 'center',
+                  marginHorizontal: 40,
+                  marginTop: 40,
+                  ...font(12),
+                }}
+              >
+                {'No results found. Please select different categories or try another search term.'}
+              </Text>)
+          }
+          ListFooterComponent={
+            addingMore ? (<View style={{ marginVertical: 5, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <ActivityIndicator size={Platform.OS === 'ios' ? 0 : 14} color={COLORS.PRIMARY} />
+              <Text style={{ marginLeft: 30, ...font(12), color: COLORS.SECONDARY }}>
+                Loading More...
+              </Text>
+            </View>) : null
+          }
+          onRefresh={this.onRefresh}
+          refreshing={refreshing}
+          onEndReached={this.addPosts}
+          onEndReachedThreshold={0}
+        />
       </View>
     );
   }

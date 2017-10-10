@@ -197,7 +197,7 @@ class ChatPage extends React.Component {
       } else if (chatHistory.length === 0) {
         const { channel_url, authToken, sessionId } = this.props;
         setTimeout(async () => {
-          const response = await sendMessageToBot('Who are you?', channel_url, sessionId, authToken);
+          const response = await sendMessageToBot('Get started', channel_url, sessionId, authToken);
           this.addChatBotReply(response);
           this.setState({ chatLoading: false });
         }, 500);
