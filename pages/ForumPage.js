@@ -157,7 +157,7 @@ class ForumPage extends React.Component {
     const isChatBot = user.username === 'cherylbot';
     let [ display, ...ignore ] = user.name.split(' '); // eslint-disable-line
     if (user.user_fields.role === STUDENT_ROLE) {
-      const grade = Math.min(12 - (user.user_fields.graduation_year - 2017), 12);
+      const grade = Math.min(12 - (user.user_fields.graduation_year - 2018), 12);
       display = `${display} (${grade}th)`;
     }
     return (

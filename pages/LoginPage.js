@@ -183,7 +183,7 @@ class LoginPage extends React.Component {
         this.setState({
           errors: {
             ...this.state.errors,
-            overall: 'Login credentials are not valid!',
+            overall: 'Username or password you entered is incorrect.\nPlease try again or reset password',
           },
         });
       }
@@ -250,6 +250,13 @@ class LoginPage extends React.Component {
             onChange={this.onValueChange('password')}
             onSubmit={this.onSubmit('')}
           /> : null}
+          {errors.overall ? <Text style={{
+            color: alpha(COLORS.RED, 0.7),
+            marginHorizontal: 20,
+            ...font(10),
+            textAlign: 'center',
+          }}
+          >{typeof errors.overall === 'string' ? errors.overall : "Couldn't login now. Try later"}</Text> : null}
           {!forgotState ? <Button
             text="Forgot Password?"
             style={s.forgotPasswordButton}
@@ -258,13 +265,6 @@ class LoginPage extends React.Component {
             onPress={this.forgotPassword}
             isLoading={resetting}
           /> : null }
-          {errors.overall ? <Text style={{
-            color: alpha(COLORS.RED, 0.7),
-            marginTop: 3,
-            marginBottom: 20,
-            ...font(10),
-          }}
-          >{typeof errors.overall === 'string' ? errors.overall : "Couldn't login now. Try later"}</Text> : null}
           <Button
             text={forgotState ? 'Reset Password' : 'Get Started'}
             style={[cs.getStartedButton, s.button]}

@@ -53,6 +53,9 @@ const getNavigator = () => {
       },
     },
     contentComponent: CategoryDrawer,
+    navigationOptions: {
+      drawerLockMode: 'locked-closed',
+    },
   });
 
   const ProfileNavigator = StackNavigator({

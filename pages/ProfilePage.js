@@ -316,7 +316,7 @@ class ProfilePage extends React.Component {
           >
             {
               currentUser.role === STUDENT_ROLE ?
-                `${(12 - (currentUser.graduation_year - 2017))}th Grade`
+                `${(12 - (currentUser.graduation_year - 2018))}th Grade`
                 : COUNSELOR_ROLE
             }
           </Text>
