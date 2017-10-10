@@ -21,8 +21,8 @@ export const validateEmail = (email) => {
 export const validGraduationYear = (year) => {
   const numericValue = +year;
   return (!isNaN(numericValue) &&
-          (numericValue >= 2017) &&
-          (numericValue <= 2026) &&
+          (numericValue >= 2018) &&
+          (numericValue <= 2021) &&
           (year.length === 4));
 };
 

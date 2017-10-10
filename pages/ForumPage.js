@@ -9,6 +9,7 @@ import {
   Platform,
   TouchableOpacity,
   RefreshControl,
+  FlatList,
 } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
@@ -38,6 +39,8 @@ class ForumPage extends React.Component {
       questions: null,
       refreshing: false,
       loading: true,
+      currentPage: 1,
+      addingMore: false,
     };
   }
 
@@ -88,7 +91,17 @@ class ForumPage extends React.Component {
       this.setState({ refreshing: true });
     }
     const questions = await postsAPI(authToken, filters, searchTerm) || {};
-    this.setState({ questions, loading: false, refreshing: false });
+    this.setState({ questions, loading: false, refreshing: false, currentPage: 1 });
+  }
+
+  addPosts = async () => {
+    // const { authToken, filters } = this.props;
+    // const { searchTerm, addingMore, currentPage, loading, refreshing } = this.state;
+    // if (!addingMore && !loading && !refreshing) {
+    //   this.setState({ addingMore: true });
+    //   await postsAPI(authToken, filters, searchTerm, currentPage + 1);
+    //   this.setState({ addingMore: false, currentPage: currentPage + 1 });
+    // }
   }
 
   openDrawer = () => {
@@ -105,6 +118,8 @@ class ForumPage extends React.Component {
     const { navigation } = this.props;
     navigation.navigate('QuestionPage', { id: question.id, category_id: question.category_id, focusReply });
   }
+
+  keyExtractor = detail => detail.id;
 
   renderUser = (user_id, time) => {
     const { currentUser } = this.props;
@@ -263,50 +278,50 @@ class ForumPage extends React.Component {
     </View>
     : null);
 
-renderQ = (question, detail) => (
-  <View style={{
-    padding: 5,
-    paddingRight: 8,
-  }}
-  >
-    <Text
-      style={{
-        position: 'absolute',
-        top: -8,
-        left: -12,
-        ...font(40),
-        color: alpha(COLORS.SECONDARY, 0.3),
-      }}
-    >
-        Q
-    </Text>
+  renderQ = (question, detail) => (
     <View style={{
-      paddingLeft: 15,
-      paddingBottom: 4,
+      padding: 5,
+      paddingRight: 8,
     }}
     >
       <Text
-        numberOfLines={2}
         style={{
-          ...font(13),
-          marginBottom: 8,
+          position: 'absolute',
+          top: -8,
+          left: -12,
+          ...font(40),
+          color: alpha(COLORS.SECONDARY, 0.3),
         }}
       >
-        {question.raw}
+          Q
       </Text>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
+      <View style={{
+        paddingLeft: 15,
+        paddingBottom: 4,
+      }}
       >
-        {this.renderUser(question.user_id, question.created_at)}
-        {this.renderButtons(question, detail)}
+        <Text
+          numberOfLines={2}
+          style={{
+            ...font(13),
+            marginBottom: 8,
+          }}
+        >
+          {question.raw}
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          {this.renderUser(question.user_id, question.created_at)}
+          {this.renderButtons(question, detail)}
+        </View>
       </View>
     </View>
-  </View>
-)
+  )
 
   renderA = (answer, detail) => (
     <View
@@ -358,7 +373,7 @@ renderQ = (question, detail) => (
     </View>
   )
 
-  renderQA = (detail) => {
+  renderQA = ({ item: detail }) => {
     const { categories } = this.props;
     const question = {
       ...detail,
@@ -385,7 +400,7 @@ renderQ = (question, detail) => (
   render() {
     const { filters } = this.props;
     const { loading, questions, refreshing } = this.state;
-    const { details_stream } = questions || {};
+    const { details_stream, user_stream } = questions || {};
     return (
       <View
         style={[cs.container, { backgroundColor: alpha(COLORS.PRIMARY, 0.3) }]}
@@ -481,16 +496,10 @@ renderQ = (question, detail) => (
             /> : null}
           </View>
         </View>
-        <ScrollView
-          style={{ flex: 1 }}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing && !loading}
-              onRefresh={this.onRefresh}
-            />
-          }
-        >
-          { loading ? (
+        { loading ? (
+          <ScrollView
+            style={{ flex: 1 }}
+          >
             <View
               style={{
                 flexDirection: 'row',
@@ -504,7 +513,17 @@ renderQ = (question, detail) => (
                 color={COLORS.SECONDARY}
               />
             </View>
-          ) : ((filters.length === 0 || !details_stream || details_stream.length === 0) ? (
+          </ScrollView>
+        ) : ((filters.length === 0 || !details_stream || details_stream.length === 0) ? (
+          <ScrollView
+            style={{ flex: 1 }}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing && !loading}
+                onRefresh={this.onRefresh}
+              />
+            }
+          >
             <Text
               style={{
                 color: COLORS.SECONDARY,
@@ -515,10 +534,23 @@ renderQ = (question, detail) => (
             >
             No results found. Please select different categories or try another search term.
             </Text>
-          ) :
-            details_stream.map(this.renderQA)
-          ) }
-        </ScrollView>
+          </ScrollView>
+        ) :
+          <FlatList
+            data={details_stream}
+            extraData={user_stream}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderQA}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing && !loading}
+                onRefresh={this.onRefresh}
+              />
+            }
+            onEndReached={this.addPosts}
+            onEndReachedThreshold={0}
+          />
+        ) }
       </View>
     );
   }
