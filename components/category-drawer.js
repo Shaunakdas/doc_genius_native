@@ -57,7 +57,6 @@ class CategoryDrawer extends Component {
       name: filter.name,
     }));
     apply(filters);
-    this.closeDrawer();
   }
 
   removeAll = () => {
@@ -67,7 +66,7 @@ class CategoryDrawer extends Component {
         id: category.id,
         selected: false,
       })),
-    });
+    }, this.onApplyFilters);
   }
 
   selectAll = () => {
@@ -77,7 +76,7 @@ class CategoryDrawer extends Component {
         id: category.id,
         selected: true,
       })),
-    });
+    }, this.onApplyFilters);
   }
 
   closeDrawer = () => {
@@ -95,7 +94,7 @@ class CategoryDrawer extends Component {
         }
         return category;
       }),
-    });
+    }, this.onApplyFilters);
   };
 
   render() {
@@ -110,13 +109,6 @@ class CategoryDrawer extends Component {
             style={s.headerImage}
           />
           <Text style={s.headerText}> Filters </Text>
-          <Button
-            style={s.postButton}
-            textStyle={s.postButtonText}
-            text="Apply"
-            onPress={this.onApplyFilters}
-          />
-
         </View>
         <ScrollView
           style={{ flex: 1 }}
