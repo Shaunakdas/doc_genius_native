@@ -42,11 +42,14 @@ export const getUserImage = (user, size = 30, resolution = 3) => {
   if (user.username === 'cherylbot') {
     return IMAGES.BOT_USER;
   }
-  const prefix = !user.school_code || user.school_code === 'indiez' ? '' : user.school_code;
+  console.log(user, user.id);
   let avatar_url = user.avatar_url;
+  let school_code = user.school_code;
   if (user.user_fields) {
-    avatar_url = user.user_fields.avatar_url;
+    avatar_url = user.user_fields.avatar_url || user.avatar_template;
+    school_code = user.user_fields.school_code;
   }
+  const prefix = !school_code || school_code === 'indiez' ? '' : school_code;
   if (avatar_url) {
     return { uri: `http://${prefix}${SCHOOL_BASE}${avatar_url.replace('{size}', size * resolution)}`, height: size, width: size };
   }

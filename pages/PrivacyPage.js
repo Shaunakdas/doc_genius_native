@@ -40,7 +40,7 @@ export default class PrivacyPage extends React.Component {
           />
         </View>
         <WebView
-          source={{ uri: 'https://connecpath.com/about/privacy' }}
+          source={{ uri: 'https://connecpath.com/privacy/' }}
           startInLoadingState
         />
       </View>

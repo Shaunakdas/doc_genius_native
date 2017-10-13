@@ -40,7 +40,7 @@ export default class TermsPage extends React.Component {
           />
         </View>
         <WebView
-          source={{ uri: 'https://connecpath.com/about/terms/' }}
+          source={{ uri: 'https://connecpath.com/terms/' }}
           startInLoadingState
         />
       </View>

@@ -132,8 +132,8 @@ class SignupPage extends React.Component {
       errors.email = 'Please enter a valid email';
     }
 
-    if (password && password.length < 10) {
-      errors.password = 'Must be at least 10 characters';
+    if (password && password.length < 8) {
+      errors.password = 'Must be at least 8 characters';
     }
 
     if (password && confirmPassword && password !== confirmPassword) {

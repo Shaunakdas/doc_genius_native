@@ -159,6 +159,8 @@ class ForumPage extends React.Component {
     if (user.user_fields.role === STUDENT_ROLE) {
       const grade = Math.min(12 - (user.user_fields.graduation_year - 2018), 12);
       display = `${display} (${grade}th)`;
+    } else {
+      display = `${display} (Counselor)`;
     }
     return (
       <View

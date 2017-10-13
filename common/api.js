@@ -38,7 +38,7 @@ const jsonFetch = async (url, options = {}, authToken = '') => {
     });
     const jsonResponse = await response.json();
     if (response.status >= 400 || jsonResponse.error || jsonResponse.errors) {
-      throw jsonResponse.error || jsonResponse || jsonResponse.errors;
+      throw jsonResponse.error || jsonResponse.errors || jsonResponse;
     }
     return jsonResponse;
   } catch (error) {

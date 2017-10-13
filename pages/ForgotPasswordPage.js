@@ -102,8 +102,8 @@ class ForgotPasswordPage extends React.Component {
       token: token ? '' : 'Activation token is required',
       confirmPassword: confirmPassword ? '' : 'Please re-type password',
     };
-    if (password.length < 10) {
-      errors.password = 'Should be atleast 10 characters';
+    if (password.length < 8) {
+      errors.password = 'Should be atleast 8 characters';
     }
     if (password && confirmPassword && confirmPassword !== password) {
       errors.confirmPassword = 'Passwords should match';
