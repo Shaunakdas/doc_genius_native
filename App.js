@@ -269,6 +269,7 @@ class MainApp extends Component {
         }}
         wrapperStyle={{
           paddingTop: 36,
+          backgroundColor: Platform.OS === 'android' ? alpha(COLORS.BLACK, 0.7) : COLORS.TRANSPARENT,
         }}
         circleDefaultStyle={{
           width: 6,
