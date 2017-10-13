@@ -11,11 +11,17 @@ import IMAGES from '../common/images';
 import { getCurrentRouteName } from '../common/helper';
 import { Button } from '../components';
 import { STUDENT_ROLE } from '../common/constants';
+import { setRootNavigation } from '../store/actions';
 
 class Navigation extends Component {
   static propTypes = {
     navigation: PropTypes.any.isRequired,
     role: PropTypes.string.isRequired,
+    setNavigation: PropTypes.func.isRequired,
+  }
+
+  componentDidMount = () => {
+    this.props.setNavigation(this.props.navigation);
   }
 
   goToPage = page => () => {
@@ -68,4 +74,8 @@ const mapStateToProps = ({ currentUser }) => {
   };
 };
 
-export default connect(mapStateToProps)(Navigation);
+const mapDispatchToProps = dispatch => ({
+  setNavigation: navigation => dispatch(setRootNavigation(navigation)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation);

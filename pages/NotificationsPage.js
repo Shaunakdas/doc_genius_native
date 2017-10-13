@@ -126,10 +126,10 @@ class NotificationsPage extends React.Component {
               marginRight: 3 }}
           />
           <View style={{ flex: 1 }}>
-            <Text style={{ marginLeft: 15, ...font(13) }}>
+            <Text style={{ marginLeft: 15, ...font(13), backgroundColor: COLORS.TRANSPARENT }}>
               {`${notification.userFullName} ${actions[notification.type]}`}
             </Text>
-            <Text style={{ marginLeft: 15, ...font(10), marginVertical: 3 }}>
+            <Text style={{ marginLeft: 15, ...font(10), marginVertical: 3, backgroundColor: COLORS.TRANSPARENT }}>
               {moment(notification.created_at).fromNow()}
             </Text>
           </View>

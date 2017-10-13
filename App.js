@@ -12,7 +12,7 @@ import {
 import { Provider } from 'react-redux';
 import moment from 'moment';
 import { BlurView } from 'expo';
-import SwipeALot from 'react-native-swipe-a-lot';
+import SwipeALot from './swipealot';
 
 
 import configureStore from './store/configureStore';
@@ -20,7 +20,7 @@ import PAGES from './pages';
 import COLORS, { alpha } from './common/colors';
 import { font, chatPageStyle as chs, fullWidth } from './common/styles';
 import IMAGES from './common/images';
-import { DISMISSED_FILTER, REFRESH_PROFILE, STUDENT_ROLE } from './common/constants';
+import { DISMISSED_FILTER, REFRESH_PROFILE, STUDENT_ROLE, COUNSELOR_ROLE } from './common/constants';
 import { Navigation, CategoryDrawer } from './components';
 import { disconnectFromSendbird } from './common/api';
 
@@ -155,12 +155,18 @@ const getNavigator = () => {
 
 const store = configureStore();
 
+const mappings = {
+  [STUDENT_ROLE]: ['ChatPage', 'ChatPage', 'ForumPage', 'ProfilePage'],
+  [COUNSELOR_ROLE]: ['ForumPage', 'ForumPage', 'ForumPage', 'ProfilePage'],
+};
+
 class MainApp extends Component {
   componentWillMount() {
     this.navigator = getNavigator();
     this.state = {
       showOnboarding: false,
       role: STUDENT_ROLE,
+      obIndex: 0,
     };
 
     moment.updateLocale('en', {
@@ -206,6 +212,20 @@ class MainApp extends Component {
     }
   }
 
+  onPageChange = (index) => {
+    const { obIndex, role } = this.state;
+    const currentPage = mappings[role][obIndex];
+    const nextPage = mappings[role][index];
+    this.setState({ obIndex: index }, () => {
+      if (currentPage !== nextPage) {
+        const { appState: { rootNavigation } } = store.getState();
+        if (rootNavigation) {
+          rootNavigation.navigate(nextPage);
+        }
+      }
+    });
+  }
+
   async componentWillUnMount() {
     BackHandler.removeEventListener('hardwareBackPress');
     try {
@@ -220,6 +240,14 @@ class MainApp extends Component {
   }
 
   hideOnboarding = () => {
+    const { obIndex, role } = this.state;
+    if (obIndex !== 0) {
+      const defaultPage = mappings[role][0];
+      const { appState: { rootNavigation } } = store.getState();
+      if (rootNavigation) {
+        rootNavigation.navigate(defaultPage);
+      }
+    }
     this.setState({ showOnboarding: false });
   }
 
@@ -235,6 +263,7 @@ class MainApp extends Component {
     };
     return (<BlurView tint="dark" intensity={80} style={StyleSheet.absoluteFill}>
       <SwipeALot
+        onSetActivePage={this.onPageChange}
         autoPlay={{
           enable: false,
         }}
@@ -509,6 +538,7 @@ class MainApp extends Component {
     };
     return (<BlurView tint="dark" intensity={80} style={StyleSheet.absoluteFill}>
       <SwipeALot
+        onSetActivePage={this.onPageChange}
         autoPlay={{
           enable: false,
         }}
