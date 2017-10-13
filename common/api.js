@@ -112,6 +112,17 @@ export const editUserAPI = async (authToken, fullName, graduation_year, role) =>
   return response;
 };
 
+export const updateDeviceTokenAPI = async (authToken, device_token) => {
+  const url = `${BASE_URL}/user`;
+  const body = JSON.stringify({
+    user_fields: {
+      device_token,
+    },
+  });
+  const response = await jsonFetch(url, { body, method: 'PUT' }, authToken);
+  return response;
+};
+
 
 export const studentSignUpApI =
  async ({ fullName, email, username, graduationYear, password, schoolCode: school_code }) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, Image, ActivityIndicator, Platform } from 'react-native';
 import { PropTypes } from 'prop-types';
-import { Font } from 'expo';
+import { Font, Notifications, Permissions } from 'expo';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
@@ -15,6 +15,7 @@ import {
   categoriesAPI,
   connectToChannel,
   connectToSendbird,
+  updateDeviceTokenAPI,
 } from '../common/api';
 import {
   startLogIn,
@@ -50,6 +51,22 @@ class SplashPage extends React.Component {
 
   setMessage = loadingMessage => this.setState({ loadingMessage });
 
+  registerForPushNotificationsAsync = async () => {
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS,
+    );
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      return null;
+    }
+    const token = await Notifications.getExpoPushTokenAsync();
+    return token;
+  }
+
   start = async () => {
     const resetAction = NavigationActions.reset({
       index: 0,
@@ -78,6 +95,11 @@ class SplashPage extends React.Component {
           await connectToSendbird(user.sendbird_id);
           const channel = await connectToChannel(user.channel_url);
           setBotChannel(channel);
+        }
+        this.setMessage('Enabling Push Notifications...');
+        const device_token = await this.registerForPushNotificationsAsync();
+        if (device_token) {
+          await updateDeviceTokenAPI(authToken, device_token);
         }
         finish();
         if (user.role === STUDENT_ROLE) {

@@ -42,7 +42,6 @@ export const getUserImage = (user, size = 30, resolution = 3) => {
   if (user.username === 'cherylbot') {
     return IMAGES.BOT_USER;
   }
-  console.log(user, user.id);
   let avatar_url = user.avatar_url;
   let school_code = user.school_code;
   if (user.user_fields) {
