@@ -2,19 +2,19 @@
   "expo": {
    "name": "ConnecPath",
    "icon": "./assets/img/logo.png",
-   "version": "1.0.4",
+   "version": "1.0.5",
    "slug": "connecpath-forum",
    "sdkVersion": "21.0.0",
    "privacy": "unlisted",   
    "ios": {
      "bundleIdentifier": "com.connecpath.forum",
-     "buildNumber": "3",
+     "buildNumber": "5",
      "supportsTablet": false,
      "icon":"./assets/img/apple_logo.png"
    },
    "android": {
      "package": "com.connecpath.forum",
-     "versionCode": 3
+     "versionCode": 5
    },
    "orientation" : "portrait",
    "loading":{
