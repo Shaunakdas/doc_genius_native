@@ -19,6 +19,7 @@ export default {
   BEIGE: '#FFE8E8',
   EDIT_BG: '#E88800',
   DELETE_BG: '#E74C3C',
+  OB_TEXT: '#666666',
 };
 
 

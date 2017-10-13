@@ -49,7 +49,7 @@ class ProfilePage extends React.Component {
       const { notifications, user_list: { field_stream: users } } = response;
       const applicableNotifications =
         notifications.filter(({ notification_type }) =>
-          [5, 9, 13].indexOf(notification_type) !== -1)
+          [5, 9, 13, 14].indexOf(notification_type) !== -1)
           .map((notification) => {
             const {
               id,
@@ -186,7 +186,8 @@ class ProfilePage extends React.Component {
     const actions = {
       5: 'liked your post',
       9: 'replied to your post',
-      13: 'created a new question',
+      13: 'posted a new question',
+      14: 'made an announcement',
     };
     return (
       <TouchableOpacity

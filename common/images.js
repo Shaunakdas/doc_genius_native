@@ -45,4 +45,8 @@ export default {
   SETTINGS: require('../assets/img/settings.png'),
   GOTO: require('../assets/img/arrow_right_blue.png'),
   TRASH: require('../assets/img/trash.png'),
+  WHITE_BOT_USER: require('../assets/img/white_bot.png'),
+  WHITE_BOTBUBBLE: require('../assets/img/whitebotbubble.png'),
+  ONBOARD_LOGO: require('../assets/img/onboard_logo.png'),
+  OB_PROFILE_BG: require('../assets/img/ob_profile_bg.png'),
 };

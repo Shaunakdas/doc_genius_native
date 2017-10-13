@@ -1,14 +1,14 @@
 import React from 'react';
 import { Text, View, Image, ActivityIndicator, Platform } from 'react-native';
 import { PropTypes } from 'prop-types';
-import { Font, Notifications, Permissions } from 'expo';
+import { Font, Notifications, Permissions, Asset } from 'expo';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { commonStyle as cs, splashPageStyle as s } from '../common/styles';
 import COLORS from '../common/colors';
 import IMAGES from '../common/images';
-import { getData, removeData } from '../common/helper';
+import { getData, removeData, saveData } from '../common/helper';
 import { STUDENT_ROLE } from '../common/constants';
 import {
   userAPI,
@@ -41,15 +41,18 @@ class SplashPage extends React.Component {
   }
 
   async componentDidMount() {
-    await Font.loadAsync({
+    const imageAssets = this.cacheImages(Object.values(IMAGES));
+    await Promise.all(...imageAssets, Font.loadAsync({
       'firasans-light': require('../assets/fonts/light.ttf'),
       'firasans-regular': require('../assets/fonts/regular.ttf'),
       'firasans-semibold': require('../assets/fonts/semibold.ttf'),
-    });
+    }));
     this.start();
   }
 
   setMessage = loadingMessage => this.setState({ loadingMessage });
+
+  cacheImages = images => images.map(image => Asset.fromModule(image).downloadAsync())
 
   registerForPushNotificationsAsync = async () => {
     const { status: existingStatus } = await Permissions.getAsync(
@@ -96,17 +99,23 @@ class SplashPage extends React.Component {
           const channel = await connectToChannel(user.channel_url);
           setBotChannel(channel);
         }
-        this.setMessage('Enabling Push Notifications...');
+        this.setMessage('Loading Notifications...');
         const device_token = await this.registerForPushNotificationsAsync();
         if (device_token) {
           await updateDeviceTokenAPI(authToken, device_token);
         }
         finish();
+        const launchedUsers = (await getData('LAUNCHED_USERS')) || [];
+        const onLaunch = launchedUsers.indexOf(user.id) === -1;
+        if (onLaunch) {
+          await saveData('LAUNCHED_USERS', launchedUsers.concat(user.id));
+        }
         if (user.role === STUDENT_ROLE) {
           this.props.navigation.dispatch(
             {
               type: 'Navigation/NAVIGATE',
               routeName: 'AppPage',
+              params: { onLaunch, role: user.role },
               action: {
                 type: 'Navigation/NAVIGATE',
                 routeName: 'ChatPage',
@@ -119,6 +128,7 @@ class SplashPage extends React.Component {
             actions: [
               NavigationActions.navigate({ routeName: 'AppPage' }),
             ],
+            params: { onLaunch, role: user.role },
           });
           this.props.navigation.dispatch(resetAction);
         }

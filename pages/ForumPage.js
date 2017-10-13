@@ -168,7 +168,8 @@ class ForumPage extends React.Component {
           flexDirection: 'row',
           alignItems: 'center',
           width: fullWidth - 160,
-          paddingRight: 5 }}
+          paddingRight: 5,
+        }}
       >
         <Image
           source={image}
@@ -182,18 +183,20 @@ class ForumPage extends React.Component {
         <Text
           style={{
             ...font(11),
-            marginLeft: 6,
+            marginLeft: 2,
+            flex: 1,
           }}
           numberOfLines={1}
         >
           {isChatBot ? 'Cheryl (Bot)' : display}
         </Text>
-        <Text style={{
-          flex: 1,
-          marginLeft: 8,
-          ...font(11),
-          color: COLORS.SECONDARY,
-        }}
+        <Text
+          style={{
+            ...font(11),
+            color: COLORS.SECONDARY,
+            width: 38,
+          }}
+          numberOfLines={1}
         >
           {moment(time).fromNow()}
         </Text>
@@ -202,12 +205,14 @@ class ForumPage extends React.Component {
   }
 
   renderTime = time => (
-    <Text style={{
-      flex: 1,
-      marginRight: 8,
-      ...font(11),
-      color: COLORS.SECONDARY,
-    }}
+    <Text
+      style={{
+        flex: 1,
+        marginRight: 8,
+        ...font(11),
+        color: COLORS.SECONDARY,
+      }}
+      numberOfLines={1}
     >
       {moment(time).fromNow()}
     </Text>
