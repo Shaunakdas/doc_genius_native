@@ -328,22 +328,22 @@ class ProfileEditPage extends React.Component {
         >
           <View
             style={{
-              backgroundColor: COLORS.ALMOST_WHITE,
+              backgroundColor: COLORS.MODAL_BG,
               borderRadius: 15,
-              marginHorizontal: 40,
+              marginHorizontal: 20,
               paddingVertical: 10,
+              alignItems: 'stretch',
             }}
           >
             <Button
               text="Pick an Image"
               style={{
                 borderBottomWidth: 1,
-                borderColor: COLORS.SECONDARY,
+                borderColor: COLORS.MODAL_BORDER,
                 padding: 5,
-                paddingHorizontal: 20,
               }}
               textStyle={{
-                ...font(16),
+                ...font(20),
                 textAlign: 'center',
                 lineHeight: 32,
                 color: COLORS.PRIMARY,
@@ -354,12 +354,11 @@ class ProfileEditPage extends React.Component {
               text="Take a Photo"
               style={{
                 borderBottomWidth: 1,
-                borderColor: COLORS.SECONDARY,
+                borderColor: COLORS.MODAL_BORDER,
                 padding: 5,
-                paddingHorizontal: 20,
               }}
               textStyle={{
-                ...font(16),
+                ...font(20),
                 textAlign: 'center',
                 lineHeight: 32,
                 color: COLORS.PRIMARY,

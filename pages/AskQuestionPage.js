@@ -6,6 +6,7 @@ import { NavigationActions } from 'react-navigation';
 
 import { IconButton, Button } from '../components';
 import IMAGES from '../common/images';
+import { COUNSELOR_ROLE } from '../common/constants';
 import COLORS from '../common/colors';
 import { createQuestionAPI } from '../common/api';
 import { commonStyle as cs, askQuestionPageStyle as s, font } from '../common/styles';
@@ -14,6 +15,7 @@ import { refreshForum } from '../store/actions';
 class AskQuestionPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -76,6 +78,8 @@ class AskQuestionPage extends React.Component {
 
   render() {
     const { category, question, fromForum } = this.state;
+    const { role } = this.props.currentUser;
+    const isCounselor = role === COUNSELOR_ROLE;
     return (
       <View style={[cs.container, s.container]}>
         <View style={cs.header}>
@@ -86,7 +90,7 @@ class AskQuestionPage extends React.Component {
           <Text style={cs.headerText}> Ask the Forum ({category.name}) </Text>
         </View>
         <ScrollView style={{ flex: 1 }}>
-          {fromForum ? <View style={s.hintView}>
+          {fromForum && !isCounselor ? <View style={s.hintView}>
             <Text
               style={s.hintText}
             >
@@ -99,7 +103,7 @@ class AskQuestionPage extends React.Component {
             <View
               style={s.topLine}
             >
-              <Text style={s.label}>Your Question:</Text>
+              <Text style={s.label}>{isCounselor ? 'Your Announcement:' : 'Your Question:'}</Text>
               <IconButton
                 style={{ margin: 0, padding: 15 }}
                 imageStyle={{ height: 12, width: 12 }}
@@ -146,7 +150,8 @@ class AskQuestionPage extends React.Component {
   }
 }
 
-const mapStateToProps = ({ loginState: { authToken } }) => ({ authToken });
+const mapStateToProps = ({ loginState: { authToken }, currentUser }) =>
+  ({ authToken, currentUser });
 const mapDispatchToProps = dispatch => ({
   setForumToRefresh: () => dispatch(refreshForum()),
 });

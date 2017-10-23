@@ -17,7 +17,7 @@ import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, font, fullWidth } from '../common/styles';
 import { IconButton } from '../components';
-import { STUDENT_ROLE } from '../common/constants';
+import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
 import { postsAPI } from '../common/api';
 import { getCategoryById, getUserImage } from '../common/helper';
 
@@ -148,6 +148,11 @@ class ForumPage extends React.Component {
   }
 
   keyExtractor = detail => detail.id;
+
+  isUserCounselor = (user_id) => {
+    const user = this.state.questions.user_stream[user_id];
+    return (user.user_fields.role === COUNSELOR_ROLE || user.username === 'cherylbot');
+  }
 
   renderUser = (user_id, time) => {
     const { currentUser } = this.props;
@@ -313,13 +318,13 @@ class ForumPage extends React.Component {
     </View>
     : null);
 
-  renderQ = (question, detail) => (
+  renderQ = (question, detail, isCounselor = false) => (
     <View style={{
       padding: 5,
       paddingRight: 8,
     }}
     >
-      <Text
+      { !isCounselor ? <Text
         style={{
           position: 'absolute',
           top: -8,
@@ -329,7 +334,7 @@ class ForumPage extends React.Component {
         }}
       >
           Q
-      </Text>
+      </Text> : null}
       <View style={{
         paddingLeft: 15,
         paddingBottom: 4,
@@ -358,7 +363,7 @@ class ForumPage extends React.Component {
     </View>
   )
 
-  renderA = (answer, detail) => (
+  renderA = (answer, detail, isCounselor = false) => (
     <View
       style={{
         paddingTop: 8,
@@ -366,7 +371,7 @@ class ForumPage extends React.Component {
         paddingRight: 8,
       }}
     >
-      <Text
+      {!isCounselor ? <Text
         style={{
           position: 'absolute',
           top: 8,
@@ -376,7 +381,7 @@ class ForumPage extends React.Component {
         }}
       >
         A
-      </Text>
+      </Text> : null}
       <View style={{
         borderTopWidth: 1,
         borderColor: '#B1E0EC',
@@ -415,10 +420,11 @@ class ForumPage extends React.Component {
       ...detail.post_stream[0],
     };
     const answer = detail.post_stream.length > 1 ? detail.post_stream[1] : null;
+    const isCounselor = this.isUserCounselor(question.user_id);
     return (<TouchableOpacity
       style={{
         margin: 8,
-        backgroundColor: COLORS.WHITE,
+        backgroundColor: isCounselor ? COLORS.BEIGE : COLORS.WHITE,
         borderRadius: 10,
         padding: 6,
         overflow: 'hidden',
@@ -427,8 +433,8 @@ class ForumPage extends React.Component {
       onPress={this.goToQuestion(detail)}
     >
       {this.renderCategoryLabel(getCategoryById(categories, question.category_id))}
-      {this.renderQ(question, detail)}
-      {answer ? this.renderA(answer, detail) : null}
+      {this.renderQ(question, detail, isCounselor)}
+      {answer ? this.renderA(answer, detail, isCounselor) : null}
     </TouchableOpacity>);
   }
 

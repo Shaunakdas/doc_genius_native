@@ -248,6 +248,14 @@ export const deleteAnswerAPI = async (authToken, id) => {
   return { success: true };
 };
 
+export const deleteQuestionAPI = async (authToken, id) => {
+  const url = `${BASE_URL}/question`;
+  const body = JSON.stringify({
+    id,
+  });
+  await jsonFetch(url, { body, method: 'DELETE' }, authToken);
+  return { success: true };
+};
 
 export const likePostAPI = async (authToken, id) => {
   const url = `${BASE_URL}/answer/like`;

@@ -20,6 +20,10 @@ export default {
   EDIT_BG: '#E88800',
   DELETE_BG: '#E74C3C',
   OB_TEXT: '#666666',
+  MODAL_BG: '#E8E8E8',
+  MODAL_BUTTON: '#507fc7',
+  MODAL_BORDER: '#b9b9b9',
+  MODAL_TEXT: '#060606',
 };
 
 

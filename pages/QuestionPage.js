@@ -13,12 +13,13 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Swipeout from 'react-native-swipeout';
+import Modal from 'react-native-modal';
 
 import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, font, fullWidth, fullHeight, questionPageStyle as s } from '../common/styles';
-import { STUDENT_ROLE } from '../common/constants';
-import { questionAPI, createAnswerAPI, unlikePostAPI, likePostAPI, updateAnswerAPI, deleteAnswerAPI } from '../common/api';
+import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
+import { questionAPI, createAnswerAPI, unlikePostAPI, likePostAPI, updateAnswerAPI, deleteAnswerAPI, deleteQuestionAPI } from '../common/api';
 import { getCategoryById, getUserImage } from '../common/helper';
 import { IconButton, Button } from '../components';
 
@@ -50,6 +51,7 @@ class QuestionPage extends React.Component {
       liking: false,
       swipedOutId: null,
       originalReply: '',
+      confirmDelete: false,
     };
   }
 
@@ -104,6 +106,11 @@ class QuestionPage extends React.Component {
     if (this.scrollView) {
       setTimeout(() => this.scrollView.scrollToEnd({ animated: false }), 500);
     }
+  }
+
+  isUserCounselor = (user_id) => {
+    const user = this.state.question.user_stream[user_id];
+    return (user.user_fields.role === COUNSELOR_ROLE || user.username === 'cherylbot');
   }
 
   processQuestion = (question) => {
@@ -368,6 +375,36 @@ class QuestionPage extends React.Component {
     });
   }
 
+  deleteQuestion = async () => {
+    const { authToken } = this.props;
+    const questionId = this.state.question.details_stream.details.id;
+    this.setState({
+      refreshing: true,
+    });
+    const response = await deleteQuestionAPI(authToken, questionId);
+    if (response.success !== false) {
+      this.setState({
+        refreshing: false,
+      });
+      this.goBack();
+    } else {
+      this.setState({
+        refreshing: false,
+      });
+    }
+  }
+
+  shouldDeleteQuestion = () => {
+    this.setState({
+      reply: '',
+      reply_to_post_number: null,
+      swipedOutId: null,
+      originalReply: '',
+    });
+    Keyboard.dismiss();
+    this.showConfirmModal();
+  }
+
   submitReply = async () => {
     const { reply, reply_to_post_number, question, swipedOutId, originalReply } = this.state;
     const { authToken, currentUser } = this.props;
@@ -426,6 +463,85 @@ class QuestionPage extends React.Component {
     });
   }
 
+  showConfirmModal = () => this.setState({ confirmDelete: true });
+
+  hideConfirmModal = () => this.setState({ confirmDelete: false });
+
+  renderModal = () => (
+    <Modal
+      isVisible={this.state.confirmDelete}
+      onBackdropPress={this.hideConfirmModal}
+    >
+      <View
+        style={{
+          marginHorizontal: 20,
+          backgroundColor: COLORS.MODAL_BG,
+          borderRadius: 12,
+        }}
+      >
+        <View
+          style={{
+            paddingVertical: 20,
+            borderBottomColor: COLORS.MODAL_BORDER,
+            borderBottomWidth: 1,
+          }}
+        >
+          <Text
+            style={{
+              ...font(14),
+              textAlign: 'center',
+              paddingVertical: 20,
+              paddingHorizontal: 15,
+              color: COLORS.MODAL_TEXT,
+            }}
+          >
+            {'Deleting question erase the question and rest of comments displayed here. Are you sure to delete this question?'}
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginBottom: 14,
+          }}
+        >
+          <Button
+            text="Ok"
+            style={{
+              flex: 1,
+              borderRightWidth: 1,
+              borderRightColor: COLORS.MODAL_BORDER,
+              borderBottomLeftRadius: 12,
+            }}
+            textStyle={{
+              ...font(14),
+              textAlign: 'center',
+              paddingVertical: 10,
+              color: COLORS.MODAL_BUTTON,
+              borderBottomLeftRadius: 12,
+            }}
+            onPress={this.deleteQuestion}
+          />
+          <Button
+            text="Cancel"
+            style={{
+              flex: 1,
+              borderRightWidth: 1,
+              borderRightColor: COLORS.MODAL_BORDER,
+              borderBottomRightRadius: 12,
+            }}
+            textStyle={{
+              ...font(14),
+              textAlign: 'center',
+              paddingVertical: 10,
+              color: COLORS.MODAL_BUTTON,
+              borderBottomRightRadius: 12,
+            }}
+            onPress={this.hideConfirmModal}
+          />
+        </View>
+      </View>
+    </Modal>
+  )
   renderUser = (user_id) => {
     const user = this.state.question.user_stream[user_id];
     const image = getUserImage(user);
@@ -477,7 +593,7 @@ class QuestionPage extends React.Component {
       {moment(time).fromNow()}
     </Text>
   )
-  renderDeleteButton = id => (
+  renderDeleteButton = (id, isQuestion = false) => (
     <Button
       text="Delete"
       style={{
@@ -499,7 +615,7 @@ class QuestionPage extends React.Component {
         ...font(14),
         color: COLORS.WHITE,
       }}
-      onPress={this.deleteReply(id)}
+      onPress={isQuestion ? this.shouldDeleteQuestion : this.deleteReply(id)}
     />
   );
 
@@ -575,25 +691,34 @@ class QuestionPage extends React.Component {
     );
   };
 
-  renderQ = (question) => {
+  renderQ = (question, isCounselor = false) => {
     const { currentUser } = this.props;
     const isCurrentUser = question.user_id === currentUser.id;
-    const swipeoutBtns = [
-      {
+    const swipeoutBtns = (currentUser.role === COUNSELOR_ROLE && !isCounselor)
+      || (isCounselor && isCurrentUser) ?
+      [
+        {
+          component: this.renderDeleteButton(question.id, true),
+        },
+      ]
+      :
+      [];
+    if (isCurrentUser) {
+      swipeoutBtns.unshift({
         component: this.renderEditButton(question.raw),
-      },
-    ];
+      });
+    }
     return (
       <View
         style={{
           margin: 8,
-          backgroundColor: COLORS.WHITE,
+          backgroundColor: isCounselor ? COLORS.BEIGE : COLORS.WHITE,
           borderRadius: 10,
           padding: 6,
           overflow: 'hidden',
         }}
       >
-        {isCurrentUser ? (
+        {swipeoutBtns.length ? (
           <Swipeout
             rowID={question.id}
             right={swipeoutBtns}
@@ -603,19 +728,19 @@ class QuestionPage extends React.Component {
             close={question.id !== this.state.swipedOutId}
             buttonWidth={80}
           >
-            {this.renderQInner(question)}
+            {this.renderQInner(question, isCounselor)}
           </Swipeout>
-        ) : this.renderQInner(question)}
+        ) : this.renderQInner(question, isCounselor)}
       </View>);
   }
 
-  renderQInner = question => (
+  renderQInner = (question, isCounselor = false) => (
     <View style={{
       padding: 5,
       paddingRight: 8,
     }}
     >
-      <Text
+      {!isCounselor ? <Text
         style={{
           position: 'absolute',
           top: 14,
@@ -625,7 +750,7 @@ class QuestionPage extends React.Component {
         }}
       >
           Q
-      </Text>
+      </Text> : null}
       <View style={{
         paddingLeft: 15,
         paddingBottom: 4,
@@ -663,19 +788,23 @@ class QuestionPage extends React.Component {
     </View>
   )
 
-  renderA = (answer, showBorder) => {
+  renderA = (answer, showBorder, isCounselor = false) => {
     if (!answer) return null;
     const { currentUser } = this.props;
     const isCurrentUser = answer.user_id === currentUser.id;
-    const swipeoutBtns = [
-      {
-        component: this.renderEditButton(answer.raw),
-      },
-      {
-        component: this.renderDeleteButton(answer.id),
-      },
-    ];
-    return isCurrentUser ? (
+    const swipeoutBtns = (currentUser.role === COUNSELOR_ROLE && !isCounselor)
+    || (isCounselor && isCurrentUser) ? [
+        {
+          component: this.renderDeleteButton(answer.id),
+        },
+      ] : [];
+    if (isCurrentUser) {
+      swipeoutBtns.unshift(
+        {
+          component: this.renderEditButton(answer.raw),
+        });
+    }
+    return swipeoutBtns.length ? (
       <Swipeout
         rowID={answer.id}
         right={swipeoutBtns}
@@ -745,7 +874,7 @@ class QuestionPage extends React.Component {
     );
   };
 
-  renderAs = (detail) => {
+  renderAs = (detail, isCounselor = false) => {
     const replies = detail.replies;
     const post_structure = detail.post_structure;
     return (
@@ -758,7 +887,7 @@ class QuestionPage extends React.Component {
           overflow: 'hidden',
         }}
       >
-        <Text
+        {!isCounselor ? <Text
           style={{
             position: 'absolute',
             top: 24,
@@ -768,12 +897,12 @@ class QuestionPage extends React.Component {
           }}
         >
         A
-        </Text>
+        </Text> : null }
         {Object.keys(post_structure).slice(1).map((post_id, index) => {
           const threads = post_structure[post_id];
           return (<View key={post_id}>
-            {this.renderA(replies[post_id], index > 0)}
-            {threads.map(thread => this.renderA(replies[thread], true))}
+            {this.renderA(replies[post_id], index > 0, isCounselor)}
+            {threads.map(thread => this.renderA(replies[thread], true, isCounselor))}
           </View>);
         })}
       </View>
@@ -786,9 +915,10 @@ class QuestionPage extends React.Component {
       ...detail.post_stream[0],
     };
     const showAnswers = question.replies && Object.keys(question.replies).length > 1;
+    const isCounselor = this.isUserCounselor(question.user_id);
     return (<View>
-      {this.renderQ(question)}
-      {showAnswers ? this.renderAs(detail) : null}
+      {this.renderQ(question, isCounselor)}
+      {showAnswers ? this.renderAs(detail, isCounselor) : null}
     </View>);
   }
 
@@ -865,6 +995,7 @@ class QuestionPage extends React.Component {
             />
           </View>
         </View>
+        {this.renderModal()}
       </View>
     );
   }
