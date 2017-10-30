@@ -10,7 +10,7 @@ import { Button, IconButton, Input } from '../components';
 import { commonStyle as cs, editPageStyle as s, font } from '../common/styles';
 import { validGraduationYear } from '../common/helper';
 import COLORS, { alpha } from '../common/colors';
-import { STUDENT_ROLE } from '../common/constants';
+// import { STUDENT_ROLE } from '../common/constants';
 import { setLoggedInUser } from '../store/actions';
 import { editUserAPI, userAPI, uploadImageAPI } from '../common/api';
 
@@ -40,23 +40,21 @@ class ProfileEditPage extends React.Component {
       image: user.image,
       uploading: false,
       values: {
-        fullName: user.name,
-        graduationYear: user.graduation_year,
-        role: user.role,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        sex: user.sex,
+        dateOfBirth: user.dateOfBirth,
         id: user.id,
-        schoolCode: user.school_code,
-        school: user.school_name,
-        username: user.username,
         email: user.email,
+        mobileNumber: user.mobileNumber,
       },
       errors: {
-        fullName: '',
-        graduationYear: '',
-        schoolCode: '',
-        school: '',
-        username: '',
+        firstName: '',
+        lastName: '',
+        sex: '',
+        dateOfBirth: '',
         email: '',
-        overall: '',
+        mobileNumber: '',
       },
       updating: false,
     };
@@ -79,13 +77,12 @@ class ProfileEditPage extends React.Component {
     this.setState({
       updating: true,
       errors: {
-        fullName: '',
-        graduationYear: '',
-        schoolCode: '',
-        school: '',
-        username: '',
+        firstName: '',
+        lastName: '',
+        sex: '',
+        dateOfBirth: '',
         email: '',
-        overall: '',
+        mobileNumber: '',
       },
     }, this.validate);
   }
@@ -97,17 +94,22 @@ class ProfileEditPage extends React.Component {
 
   validate = () => {
     const {
-      fullName,
-      graduationYear,
-      role,
+      firstName,
+      lastName,
+      sex,
+      dateOfBirth,
+      mobileNumber,
     } = this.state.values;
     const errors = {
-      fullName: fullName ? '' : 'Full Name is required',
-      graduationYear: graduationYear || role !== STUDENT_ROLE ? '' : 'Graduation year is required',
+      firstName: firstName ? '' : 'First Name is required',
+      lastName: lastName ? '' : 'Last Name is required',
+      sex: sex ? '' : 'Sex is required',
+      dateOfBirth: dateOfBirth ? '' : 'Date of Birth is required',
+      mobileNumber: mobileNumber ? '' : 'Mobile Number is required',
     };
 
-    if (role === STUDENT_ROLE && graduationYear && !validGraduationYear(graduationYear)) {
-      errors.graduationYear = 'Not a valid graduation year';
+    if (mobileNumber && !validGraduationYear(mobileNumber)) {
+      errors.mobileNumber = 'Not a valid mobile Number';
     }
 
     this.setState({
@@ -118,9 +120,10 @@ class ProfileEditPage extends React.Component {
   }
 
   update = async () => {
-    const { fullName, graduationYear, role } = this.state.values;
+    const { firstName, lastName, sex, dateOfBirth, mobileNumber } = this.state.values;
     const { authToken, setUser, navigation } = this.props;
-    const response = await editUserAPI(authToken, fullName, graduationYear, role);
+    const response = await editUserAPI(authToken, firstName, lastName, sex,
+      dateOfBirth, mobileNumber);
     if (response.success !== false) {
       const user = await userAPI(authToken);
       if (user.success !== false) {
@@ -186,7 +189,7 @@ class ProfileEditPage extends React.Component {
 
   render() {
     const { errors, values, updating, image } = this.state;
-    const { fullName, graduationYear, role, school, schoolCode, username, email } = values;
+    const { firstName, lastName, sex, dateOfBirth, mobileNumber, email } = values;
     return (
       <View
         style={[cs.container, { backgroundColor: COLORS.PRIMARY }]}
@@ -237,61 +240,61 @@ class ProfileEditPage extends React.Component {
           <Input
             inputProps={{
               ...commonInputProps,
-              placeholder: 'Full Name',
+              placeholder: 'First Name',
             }}
             wrapperStyle={cs.inputWrapper}
-            error={errors.fullName}
-            value={fullName}
-            ref={this.addInput('fullName')}
-            onChange={this.onValueChange('fullName')}
-            showLabel
-          />
-          {role === STUDENT_ROLE ? <Input
-            inputProps={{
-              ...commonInputProps,
-              placeholder: 'Graduation Year',
-            }}
-            wrapperStyle={cs.inputWrapper}
-            error={errors.graduationYear}
-            value={graduationYear}
-            ref={this.addInput('graduationYear')}
-            onChange={this.onValueChange('graduationYear')}
-            showLabel
-          /> : null}
-          <Input
-            inputProps={{
-              ...commonInputProps,
-              placeholder: 'School Name',
-              editable: false,
-            }}
-            wrapperStyle={cs.inputWrapper}
-            error={errors.school}
-            value={school}
-            ref={this.addInput('school')}
+            error={errors.firstName}
+            value={firstName}
+            ref={this.addInput('firstName')}
+            onChange={this.onValueChange('firstName')}
             showLabel
           />
           <Input
             inputProps={{
               ...commonInputProps,
-              placeholder: 'School Code',
-              editable: false,
+              placeholder: 'Last Name',
             }}
             wrapperStyle={cs.inputWrapper}
-            error={errors.schoolCode}
-            value={schoolCode}
-            ref={this.addInput('schoolCode')}
+            error={errors.lastName}
+            value={lastName}
+            ref={this.addInput('lastName')}
+            onChange={this.onValueChange('lastName')}
             showLabel
           />
           <Input
             inputProps={{
               ...commonInputProps,
-              placeholder: 'Username',
-              editable: false,
+              placeholder: 'Sex',
             }}
             wrapperStyle={cs.inputWrapper}
-            error={errors.username}
-            value={username}
-            ref={this.addInput('username')}
+            error={errors.sex}
+            value={sex}
+            ref={this.addInput('sex')}
+            onChange={this.onValueChange('sex')}
+            showLabel
+          />
+          <Input
+            inputProps={{
+              ...commonInputProps,
+              placeholder: 'Date Of Birth',
+            }}
+            wrapperStyle={cs.inputWrapper}
+            error={errors.dateOfBirth}
+            value={dateOfBirth}
+            ref={this.addInput('dateOfBirth')}
+            onChange={this.onValueChange('dateOfBirth')}
+            showLabel
+          />
+          <Input
+            inputProps={{
+              ...commonInputProps,
+              placeholder: 'Mobile Number',
+            }}
+            wrapperStyle={cs.inputWrapper}
+            error={errors.mobileNumber}
+            value={mobileNumber}
+            ref={this.addInput('mobileNumber')}
+            onChange={this.onValueChange('mobileNumber')}
             showLabel
           />
           <Input
