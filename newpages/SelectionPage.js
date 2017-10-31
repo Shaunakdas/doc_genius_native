@@ -5,7 +5,7 @@ import { PropTypes } from 'prop-types';
 import { commonStyle as cs, selectionPageStyle as s } from '../common/styles';
 import { Button, IconButton } from '../components';
 import IMAGES from '../common/images';
-// import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
+import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
 
 export default class SelectionPage extends React.Component {
   static propTypes = {
@@ -17,9 +17,9 @@ export default class SelectionPage extends React.Component {
     navigation.goBack();
   }
 
-  goTo = (page) => () => {
+  goTo = (page, params) => () => {
     const { navigation } = this.props;
-    navigation.navigate(page);
+    navigation.navigate(page, params);
   }
 
   render() {
@@ -29,18 +29,18 @@ export default class SelectionPage extends React.Component {
           style={s.logo}
           source={IMAGES.LOGO}
         />
-        <Text style={s.mainText}>Sign Up Options</Text>
+        <Text style={s.mainText}>Who are you?</Text>
         <Button
-          text="Login"
+          text="I'm a Counselor"
           style={[cs.button, s.button]}
           textStyle={cs.buttonText}
-          onPress={this.goTo('LoginPage')}
+          onPress={this.goTo('SignupPage', { role: COUNSELOR_ROLE })}
         />
         <Button
-          text="Sign Up"
+          text="I'm a Student"
           style={[cs.button, s.button]}
           textStyle={cs.buttonText}
-          onPress={this.goTo('SignupPage')}
+          onPress={this.goTo('SignupPage', { user: STUDENT_ROLE })}
         />
         <IconButton
           source={IMAGES.BACK}
