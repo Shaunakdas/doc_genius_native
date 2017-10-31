@@ -2,16 +2,16 @@ import React from 'react';
 import { Text, Image, ScrollView, View, KeyboardAvoidingView } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
 
 
 import { commonStyle as cs, signupPageStyle as s, font } from '../common/styles';
 import { Button, IconButton, Input } from '../components';
 import IMAGES from '../common/images';
-import { validateEmail, validGraduationYear, saveData } from '../common/helper';
+import { validateEmail, saveData } from '../common/helper';
 import COLORS, { alpha } from '../common/colors';
-import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
-import { studentSignUpApI, counselorSignUpApI } from '../common/api';
+// import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
+import { studentSignUpApI } from '../common/api';
 import { loggedIn, setLoggedInUser } from '../store/actions';
 
 const commonInputProps = {
@@ -31,34 +31,20 @@ class SignupPage extends React.Component {
 
   constructor(props) {
     super(props);
-    const { navigation = {} } = props;
-    const { params = {} } = navigation.state;
-    const { role = STUDENT_ROLE } = params;
+    // const { navigation = {} } = props;
+    // const { params = {} } = navigation.state;
+    // const { role = STUDENT_ROLE } = params;
     this.inputs = {};
     this.state = {
       signingUp: false,
       values: {
-        schoolCode: '',
-        counselorCode: '',
-        fullName: '',
         email: '',
-        username: '',
         password: '',
-        confirmPassword: '',
-        graduationYear: '',
       },
       errors: {
-        schoolCode: '',
-        counselorCode: '',
-        fullName: '',
         email: '',
-        username: '',
         password: '',
-        confirmPassword: '',
-        graduationYear: '',
-        overall: '',
       },
-      role,
     };
   }
 
@@ -83,15 +69,8 @@ class SignupPage extends React.Component {
     this.setState({
       signingUp: true,
       errors: {
-        schoolCode: '',
-        counselorCode: '',
-        fullName: '',
         email: '',
-        username: '',
         password: '',
-        confirmPassword: '',
-        graduationYear: '',
-        overall: '',
       },
     }, this.validate);
   }
@@ -102,31 +81,16 @@ class SignupPage extends React.Component {
   }
 
   validate = () => {
-    const { role } = this.state;
     const {
-      schoolCode,
-      counselorCode,
-      fullName,
       email,
-      username,
       password,
       confirmPassword,
-      graduationYear,
     } = this.state.values;
     const errors = {
-      schoolCode: schoolCode ? '' : 'School Code is required',
-      counselorCode: counselorCode || role === STUDENT_ROLE ? '' : 'Counselor Code is required',
-      fullName: fullName ? '' : 'Full Name is required',
       email: email ? '' : 'Email is required',
-      username: username ? '' : 'Username is required',
       password: password ? '' : 'Password is required',
       confirmPassword: confirmPassword ? '' : 'Password is required',
-      graduationYear: graduationYear || role === COUNSELOR_ROLE ? '' : 'Graduation year is required',
     };
-
-    if (graduationYear && !validGraduationYear(graduationYear)) {
-      errors.graduationYear = 'Not a valid graduation year';
-    }
 
     if (email && !validateEmail(email)) {
       errors.email = 'Please enter a valid email';
@@ -151,86 +115,42 @@ class SignupPage extends React.Component {
   }
 
   signup = async () => {
-    const { role } = this.state;
     const { setUser } = this.props;
     const {
-      fullName,
       email,
-      username,
       password,
-      graduationYear,
-      counselorCode,
-      schoolCode,
     } = this.state.values;
-
-    if (role === STUDENT_ROLE) {
-      const response = await studentSignUpApI({
-        fullName,
-        email,
-        username,
-        graduationYear,
-        password,
-        schoolCode,
-      });
-      if (response.success === false) {
-        const overallError = response.message || response.error || 'Signup failed try again!';
-        this.setState({ errors: {
-          ...this.state.errors,
-          overall: typeof overallError === 'string' ? overallError : 'Signup failed try again!',
+    const response = await studentSignUpApI({
+      email,
+      password,
+    });
+    if (response.success === false) {
+      const overallError = response.message || response.error || 'Signup failed try again!';
+      this.setState({ errors: {
+        ...this.state.errors,
+        overall: typeof overallError === 'string' ? overallError : 'Signup failed try again!',
+      },
+      signingUp: false });
+    } else {
+      setUser(response);
+      const { auth_token: authToken } = response;
+      saveData('AUTH_TOKEN', authToken);
+      this.setState({ signingUp: false });
+      this.props.navigation.dispatch(
+        {
+          type: 'Navigation/NAVIGATE',
+          routeName: 'VerifyPage',
         },
-        signingUp: false });
-      } else {
-        setUser(response);
-        this.setState({ signingUp: false });
-        this.props.navigation.dispatch(
-          {
-            type: 'Navigation/NAVIGATE',
-            routeName: 'VerifyPage',
-          },
-        );
-      }
-    } else if (role === COUNSELOR_ROLE) {
-      const response = await counselorSignUpApI({
-        fullName,
-        email,
-        username,
-        password,
-        counselorCode,
-        schoolCode,
-      });
-      if (response.success === false) {
-        const error = response.error;
-        this.setState({ errors: {
-          ...this.state.errors,
-          overall: typeof error === 'string' ? error : 'Signup failed try again!',
-        },
-        signingUp: false });
-      } else {
-        const { auth_token: authToken } = response;
-        saveData('AUTH_TOKEN', authToken);
-        this.setState({ signingUp: false });
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'SplashPage' }),
-          ],
-        });
-        this.props.navigation.dispatch(resetAction);
-      }
+      );
     }
   }
 
   render() {
-    const { role, errors, signingUp } = this.state;
+    const { errors, signingUp } = this.state;
     const {
-      schoolCode,
-      counselorCode,
-      fullName,
       email,
-      username,
       password,
       confirmPassword,
-      graduationYear,
     } = this.state.values;
     return (
       <KeyboardAvoidingView
@@ -245,56 +165,7 @@ class SignupPage extends React.Component {
             style={s.logo}
             source={IMAGES.LOGO}
           />
-          <Text style={s.mainText}>{role} Sign-Up</Text>
-          <Input
-            inputProps={{
-              ...commonInputProps,
-              placeholder: 'School Code',
-            }}
-            wrapperStyle={cs.inputWrapper}
-            error={errors.schoolCode}
-            value={schoolCode}
-            ref={this.addInput('schoolCode')}
-            onChange={this.onValueChange('schoolCode')}
-            onSubmit={this.onSubmit(role === STUDENT_ROLE ? 'graduationYear' : 'counselorCode')}
-          />
-          {role === STUDENT_ROLE ? <Input
-            inputProps={{
-              ...commonInputProps,
-              placeholder: 'Graduation Year',
-              keyboardType: 'numeric',
-            }}
-            wrapperStyle={cs.inputWrapper}
-            error={errors.graduationYear}
-            value={graduationYear}
-            ref={this.addInput('graduationYear')}
-            onChange={this.onValueChange('graduationYear')}
-            onSubmit={this.onSubmit('fullName')}
-          /> : null}
-          {role === COUNSELOR_ROLE ? <Input
-            inputProps={{
-              ...commonInputProps,
-              placeholder: 'Activation Token',
-            }}
-            wrapperStyle={cs.inputWrapper}
-            error={errors.counselorCode}
-            value={counselorCode}
-            ref={this.addInput('counselorCode')}
-            onChange={this.onValueChange('counselorCode')}
-            onSubmit={this.onSubmit('fullName')}
-          /> : null}
-          <Input
-            inputProps={{
-              ...commonInputProps,
-              placeholder: 'Full Name',
-            }}
-            wrapperStyle={cs.inputWrapper}
-            error={errors.fullName}
-            value={fullName}
-            ref={this.addInput('fullName')}
-            onChange={this.onValueChange('fullName')}
-            onSubmit={this.onSubmit('email')}
-          />
+          <Text style={s.mainText}>Sign-Up</Text>
           <Input
             inputProps={{
               ...commonInputProps,
@@ -307,18 +178,6 @@ class SignupPage extends React.Component {
             value={email}
             ref={this.addInput('email')}
             onChange={this.onValueChange('email')}
-            onSubmit={this.onSubmit('username')}
-          />
-          <Input
-            inputProps={{
-              ...commonInputProps,
-              placeholder: 'Username',
-            }}
-            wrapperStyle={cs.inputWrapper}
-            error={errors.username}
-            value={username}
-            ref={this.addInput('username')}
-            onChange={this.onValueChange('username')}
             onSubmit={this.onSubmit('password')}
           />
           <Input
