@@ -25,7 +25,7 @@ const commonInputProps = {
   autoCapitalize: 'none',
 };
 
-class SignUpFormPage extends React.Component {
+class SignupFormPage extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
     // currentUser: PropTypes.any.isRequired,
@@ -307,4 +307,4 @@ const mapDispatchToProps = dispatch => ({
   setUser: user => dispatch(setLoggedInUser(user)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpFormPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SignupFormPage);

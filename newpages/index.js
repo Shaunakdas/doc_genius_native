@@ -1,6 +1,7 @@
 import LandingPage from './LandingPage';
 import SelectionPage from './SelectionPage';
 import SignupPage from './SignupPage';
+import SignupFormPage from './SignupFormPage';
 import LoginPage from './LoginPage';
 import ForgotPasswordPage from './ForgotPasswordPage';
 // import ChatPage from './ChatPage';
@@ -22,6 +23,7 @@ export default {
   LandingPage,
   SelectionPage,
   SignupPage,
+  SignupFormPage,
   LoginPage,
   // ChatPage,
   // ForumPage,

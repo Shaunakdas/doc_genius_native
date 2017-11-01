@@ -1,9 +1,25 @@
 {
   "users": [
-    { "id": 1, "first_name": "shaunak", "last_name": "das", "sex": "male", "date_of_birth": "20-08-1991", "mobile_number": "9740644522" }
+    {
+      "id": 1,
+      "first_name": "shaunak",
+      "last_name": "das",
+      "sex": "male",
+      "date_of_birth": "20-08-1991",
+      "mobile_number": "9740644522"
+    }
   ],
   "auth_tokens": [
-    { "id": 1, "auth_token": "some_token", "user_id": 1 }
+    {
+      "id": 1,
+      "auth_token": "some_token",
+      "user_id": 1
+    },
+    {
+      "id": 2
+    }
   ],
-  "profile": { "name": "typicode" }
+  "profile": {
+    "name": "typicode"
+  }
 }

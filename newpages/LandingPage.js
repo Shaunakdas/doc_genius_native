@@ -24,17 +24,17 @@ export default class LandingPage extends React.Component {
           style={{ flex: 1 }}
           contentContainerStyle={[cs.container, s.container]}
         >
-          <Text style={s.brandText}>ConnecPath</Text>
+          <Text style={s.brandText}>Genius</Text>
           <Image
             style={s.logo}
             source={IMAGES.LOGO}
           />
-          <Text style={s.typeText}>Connecting Students To Their Future</Text>
+          <Text style={s.typeText}>The Awesome way of learning Maths</Text>
           <Button
             text="Sign Up"
             style={cs.button}
             textStyle={cs.buttonText}
-            onPress={this.goTo('SelectionPage')}
+            onPress={this.goTo('SignupPage')}
           />
           <Button
             text="Log In"

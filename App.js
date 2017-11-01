@@ -132,6 +132,9 @@ const getNavigator = () => {
     SignupPage: {
       screen: PAGES.SignupPage,
     },
+    SignupFormPage: {
+      screen: PAGES.SignupFormPage,
+    },
     // LoginPage: {
     //   screen: PAGES.LoginPage,
     // },

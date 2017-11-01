@@ -1,5 +1,5 @@
 export const BASE_URL = 'http://managerconnecpath.tk';
-export const ADMIN_BASE_URL = 'http:/adminconnecpath.tk';
+export const ADMIN_BASE_URL = 'http://d0477543.ngrok.io';
 export const IMAGE_SERVICE_URL = 'http://13.59.133.37';
 
 export const APPSTATE_LOGGING_IN = 'APPSTATE_LOGGING_IN';

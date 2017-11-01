@@ -37,13 +37,26 @@ const jsonFetch = async (url, options = {}, authToken = '') => {
       headers: headers(authToken),
     });
     const jsonResponse = await response.json();
+    // console.log('1'+jsonResponse);
     if (response.status >= 400 || jsonResponse.error || jsonResponse.errors) {
+      // console.log('2'+jsonResponse);
       throw jsonResponse.error || jsonResponse.errors || jsonResponse;
     }
+    // console.log('3'+jsonResponse);
     return jsonResponse;
   } catch (error) {
+    // console.error(error);
     return buildError(error);
   }
+};
+
+// Genius APIs
+
+export const signupAPI = async (email, password) => {
+  const body = JSON.stringify({ email, password });
+  const response = await jsonFetch(`${ADMIN_BASE_URL}/auth_tokens/1`, { method: 'GET' });
+  console.log(response);
+  return response;
 };
 
 export const loginAPI = async (login, password) => {

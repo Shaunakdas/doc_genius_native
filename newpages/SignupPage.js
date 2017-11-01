@@ -11,7 +11,7 @@ import IMAGES from '../common/images';
 import { validateEmail, saveData } from '../common/helper';
 import COLORS, { alpha } from '../common/colors';
 // import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
-import { studentSignUpApI } from '../common/api';
+import { signupAPI } from '../common/api';
 import { loggedIn, setLoggedInUser } from '../store/actions';
 
 const commonInputProps = {
@@ -40,10 +40,12 @@ class SignupPage extends React.Component {
       values: {
         email: '',
         password: '',
+        confirmPassword: '',
       },
       errors: {
         email: '',
         password: '',
+        confirmPassword: '',
       },
     };
   }
@@ -71,6 +73,7 @@ class SignupPage extends React.Component {
       errors: {
         email: '',
         password: '',
+        confirmPassword: '',
       },
     }, this.validate);
   }
@@ -120,11 +123,12 @@ class SignupPage extends React.Component {
       email,
       password,
     } = this.state.values;
-    const response = await studentSignUpApI({
+    const response = await signupAPI({
       email,
       password,
     });
     if (response.success === false) {
+      // console.log(response.json());
       const overallError = response.message || response.error || 'Signup failed try again!';
       this.setState({ errors: {
         ...this.state.errors,
@@ -132,6 +136,7 @@ class SignupPage extends React.Component {
       },
       signingUp: false });
     } else {
+      console.log(response);
       setUser(response);
       const { auth_token: authToken } = response;
       saveData('AUTH_TOKEN', authToken);
@@ -139,9 +144,10 @@ class SignupPage extends React.Component {
       this.props.navigation.dispatch(
         {
           type: 'Navigation/NAVIGATE',
-          routeName: 'VerifyPage',
+          routeName: 'SignupFormPage',
         },
       );
+      // this.props.navigate('')
     }
   }
 
