@@ -7,6 +7,12 @@
       "sex": "male",
       "date_of_birth": "20-08-1991",
       "mobile_number": "9740644522"
+    },
+    {
+      "id": 2
+    },
+    {
+      "id": 3
     }
   ],
   "auth_tokens": [
@@ -21,5 +27,44 @@
   ],
   "profile": {
     "name": "typicode"
+  },
+  "homepage":{
+    "game_list":[
+      {
+        "id":1,
+        "title":"Game 1",
+        "category":"Category 1"
+      },
+      {
+        "id":2,
+        "title":"Game 1",
+        "category":"Category 1"
+      },
+      {
+        "id":3,
+        "title":"Game 1",
+        "category":"Category 1"
+      },
+      {
+        "id":4,
+        "title":"Game 1",
+        "category":"Category 1"
+      },
+      {
+        "id":5,
+        "title":"Game 1",
+        "category":"Category 1"
+      },
+      {
+        "id":6,
+        "title":"Game 1",
+        "category":"Category 1"
+      },
+      {
+        "id":7,
+        "title":"Game 1",
+        "category":"Category 1"
+      }
+    ]
   }
 }

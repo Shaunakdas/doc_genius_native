@@ -18,7 +18,7 @@ import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, font } from '../common/styles';
 // import { IconButton } from '../components';
 // import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
-import { postsAPI } from '../common/api';
+import { gamesAPI } from '../common/api';
 // import { getCategoryById, getUserImage } from '../common/helper';
 
 class GameListPage extends React.Component {
@@ -83,9 +83,10 @@ class GameListPage extends React.Component {
   fetchPosts = (loading = false) => {
     const { authToken } = this.props;
     // const filters = sentFilters || this.props.filters;
-    const { searchTerm } = this.state;
+    // const { searchTerm } = this.state;
     this.setState({ loading, refreshing: !loading, questions: null }, async () => {
-      const questions = await postsAPI(authToken, null, searchTerm) || {};
+      const questions = await gamesAPI(authToken) || {};
+      // console.log(questions);
       let total = false;
       if (questions && questions.id_stream && questions.id_stream.topic_list) {
         total = questions.id_stream.topic_list.length;
@@ -108,7 +109,7 @@ class GameListPage extends React.Component {
       total > questions.details_stream.length;
     if (!addingMore && !refreshing && hasMore) {
       this.setState({ addingMore: true });
-      const nextQuestions = await postsAPI(authToken, filters, searchTerm, currentPage + 1);
+      const nextQuestions = await gamesAPI(authToken, filters, searchTerm, currentPage + 1);
       if (nextQuestions && nextQuestions.details_stream && nextQuestions.details_stream) {
         const resultQuestions = {
           ...questions,
@@ -439,20 +440,19 @@ class GameListPage extends React.Component {
   // }
 
   render() {
-    const { refreshing, loading, addingMore } = this.state;
-    const { details_stream, user_stream } = {
-      details_stream: [],
-      user_stream: {},
+    const { questions, refreshing, loading, addingMore } = this.state;
+    const { game_list } = questions || {
+      game_list: [],
     };
     return (
       <View
         style={[cs.container, { backgroundColor: alpha(COLORS.PRIMARY, 0.3) }]}
       >
         <FlatList
-          data={details_stream}
-          extraData={user_stream}
+          data={game_list}
+          extraData={game_list}
           keyExtractor={this.keyExtractor}
-          renderItem={this.renderQA}
+          renderItem={({ item }) => <Text>{item.title}</Text>}
           ListEmptyComponent={
             loading ? (
               <View style={{ marginTop: 30, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -484,7 +484,7 @@ class GameListPage extends React.Component {
           }
           onRefresh={this.onRefresh}
           refreshing={refreshing}
-          onEndReached={this.addPosts}
+          // onEndReached={this.addPosts}
           onEndReachedThreshold={0}
         />
       </View>

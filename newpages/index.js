@@ -18,6 +18,7 @@ import SplashPage from './SplashPage';
 // import VerifyPage from './VerifyPage';
 import QuestionPage from './QuestionPage';
 import WebPage from './WebPage';
+import GameListPage from './GameListPage';
 
 export default {
   LandingPage,
@@ -40,4 +41,5 @@ export default {
   QuestionPage,
   ForgotPasswordPage,
   WebPage,
+  GameListPage,
 };

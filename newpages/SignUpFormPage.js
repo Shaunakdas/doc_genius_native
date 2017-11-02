@@ -12,7 +12,7 @@ import IMAGES from '../common/images';
 // import { validateEmail } from '../common/helper';
 import COLORS, { alpha } from '../common/colors';
 // import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
-import { studentSignUpApI } from '../common/api';
+import { updateAPI } from '../common/api';
 // import { loggedIn, setLoggedInUser } from '../store/actions';
 
 const commonInputProps = {
@@ -140,7 +140,7 @@ class SignupFormPage extends React.Component {
     this.setState({
       errors,
     }, () => {
-      if (Object.values(errors).every(value => value === '')) { this.signup(); } else { this.setState({ signingUp: false }); }
+      if (Object.values(errors).every(value => value === '')) { this.update(); } else { this.setState({ signingUp: false }); }
     });
   }
 
@@ -148,8 +148,8 @@ class SignupFormPage extends React.Component {
     this.inputs[fieldName] = input;
   }
 
-  signup = async () => {
-    const { setUser } = this.props;
+  update = async () => {
+    const { authToken, setUser } = this.props;
     const {
       firstName,
       lastName,
@@ -157,7 +157,8 @@ class SignupFormPage extends React.Component {
       dateOfBirth,
       mobileNumber,
     } = this.state.values;
-    const response = await studentSignUpApI({
+    const response = await updateAPI({
+      authToken,
       firstName,
       lastName,
       sex,
@@ -177,7 +178,7 @@ class SignupFormPage extends React.Component {
       this.props.navigation.dispatch(
         {
           type: 'Navigation/NAVIGATE',
-          routeName: 'VerifyPage',
+          routeName: 'LandingPage',
         },
       );
     }

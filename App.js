@@ -135,9 +135,9 @@ const getNavigator = () => {
     SignupFormPage: {
       screen: PAGES.SignupFormPage,
     },
-    // LoginPage: {
-    //   screen: PAGES.LoginPage,
-    // },
+    LoginPage: {
+      screen: PAGES.LoginPage,
+    },
     AppPage: {
       screen: AppNavigator,
     },
@@ -146,6 +146,9 @@ const getNavigator = () => {
     // },
     ForgotPasswordPage: {
       screen: PAGES.ForgotPasswordPage,
+    },
+    GameListPage: {
+      screen: PAGES.GameListPage,
     },
   }, {
     headerMode: 'none',

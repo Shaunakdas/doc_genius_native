@@ -55,15 +55,40 @@ const jsonFetch = async (url, options = {}, authToken = '') => {
 export const signupAPI = async (email, password) => {
   const body = JSON.stringify({ email, password });
   const response = await jsonFetch(`${ADMIN_BASE_URL}/auth_tokens/1`, { method: 'GET' });
-  console.log(response);
+  // console.log(response);
   return response;
 };
 
-export const loginAPI = async (login, password) => {
-  const body = JSON.stringify({ login, password });
-  const response = await jsonFetch(`${ADMIN_BASE_URL}/user/login`, { body, method: 'POST' });
+export const newloginAPI = async (email, password) => {
+  const body = JSON.stringify({ email, password });
+  const response = await jsonFetch(`${ADMIN_BASE_URL}/auth_tokens/1`, { method: 'GET' });
+  // console.log(response);
   return response;
 };
+
+export const updateAPI = async (authToken, firstName, lastName, sex, dateOfBirth, mobileNumber) => {
+  const body = JSON.stringify({ firstName, lastName, sex, dateOfBirth, mobileNumber });
+  const response = await jsonFetch(`${ADMIN_BASE_URL}/users`, { body, method: 'POST' }, authToken);
+  // console.log(response);
+  return response;
+};
+
+
+export const gamesAPI = async (authToken, page = 1, limit = 10) => {
+  const queryString = buildQuery({
+    limit,
+    page,
+  });
+  const url = `${BASE_URL}/homepage?${queryString}`;
+  const response = await jsonFetch(url, { method: 'GET' }, authToken);
+  return response;
+};
+
+// export const loginAPI = async (login, password) => {
+//   const body = JSON.stringify({ login, password });
+//   const response = await jsonFetch(`${ADMIN_BASE_URL}/user/login`, { body, method: 'POST' });
+//   return response;
+// };
 
 export const activateAPI = async (username, activation_token) => {
   const body = JSON.stringify({ username, activation_token });
