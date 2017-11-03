@@ -12,11 +12,13 @@ import {
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 // import moment from 'moment';
+import { Font } from 'expo';
 
 // import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, font } from '../common/styles';
 // import { IconButton } from '../components';
+import { GamesList } from '../components';
 // import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
 import { gamesAPI } from '../common/api';
 // import { getCategoryById, getUserImage } from '../common/helper';
@@ -41,9 +43,16 @@ class GameListPage extends React.Component {
       currentPage: 1,
       addingMore: false,
       total: 0,
+      fontLoaded: false,
     };
   }
-
+  // async componentWillMount() {
+  //   await Font.loadAsync({
+  //     'Roboto': require('native-base/Fonts/Roboto.ttf'),
+  //     'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+  //   });
+  //   this.setState({ fontLoaded: true });
+  // }
   async componentDidMount() {
     await this.fetchPosts(true);
   }
@@ -445,49 +454,7 @@ class GameListPage extends React.Component {
       game_list: [],
     };
     return (
-      <View
-        style={[cs.container, { backgroundColor: alpha(COLORS.PRIMARY, 0.3) }]}
-      >
-        <FlatList
-          data={game_list}
-          extraData={game_list}
-          keyExtractor={this.keyExtractor}
-          renderItem={({ item }) => <Text>{item.title}</Text>}
-          ListEmptyComponent={
-            loading ? (
-              <View style={{ marginTop: 30, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                <ActivityIndicator size={Platform.OS === 'ios' ? 0 : 14} color={COLORS.PRIMARY} />
-                <Text style={{ marginLeft: 30, ...font(12), color: COLORS.SECONDARY }}>
-                  Loading Posts...
-                </Text>
-              </View>
-            ) :
-              refreshing ? null : (<Text
-                style={{
-                  color: COLORS.SECONDARY,
-                  textAlign: 'center',
-                  marginHorizontal: 40,
-                  marginTop: 40,
-                  ...font(12),
-                }}
-              >
-                {'No results found. Please select different categories or try another search term.'}
-              </Text>)
-          }
-          ListFooterComponent={
-            addingMore ? (<View style={{ marginVertical: 5, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <ActivityIndicator size={Platform.OS === 'ios' ? 0 : 14} color={COLORS.PRIMARY} />
-              <Text style={{ marginLeft: 30, ...font(12), color: COLORS.SECONDARY }}>
-                Loading More...
-              </Text>
-            </View>) : null
-          }
-          onRefresh={this.onRefresh}
-          refreshing={refreshing}
-          // onEndReached={this.addPosts}
-          onEndReachedThreshold={0}
-        />
-      </View>
+      <GamesList />
     );
   }
 }

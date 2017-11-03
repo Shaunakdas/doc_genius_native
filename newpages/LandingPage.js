@@ -42,6 +42,12 @@ export default class LandingPage extends React.Component {
             textStyle={cs.buttonText}
             onPress={this.goTo('LoginPage')}
           />
+          <Button
+            text="Games List"
+            style={cs.button}
+            textStyle={cs.buttonText}
+            onPress={this.goTo('GameListPage')}
+          />
         </ScrollView>
       </View>
     );
