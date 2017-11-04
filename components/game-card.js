@@ -17,9 +17,9 @@ export default class GameCard extends Component {
     return (
       <Card >
         <CardItem cardBody>
-          <Image style={{ height: 80, width: null, flex: 1 }} source={IMAGES.LOGO} />
+          <Image style={{ height: 100, width: null, flex: 1 }} source={IMAGES.LOGO} />
         </CardItem>
-        <CardItem footer>
+        <CardItem cardBody style={{ marginBottom: 20, marginTop: 20 }}>
           <Left>
             <Body>
               <Text style={{ fontWeight: 'bold' }}>Hello!</Text>
