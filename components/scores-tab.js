@@ -7,8 +7,10 @@ import {
   Text,
   Content,
   Left,
+  Right,
   Icon,
   Body,
+  Separator,
 } from 'native-base';
 // import {
 //   Image,
@@ -20,24 +22,35 @@ import GameCard from './game-card';
 export default class ScoresTab extends Component {
   render() {
     return (
-      <List style={{ padding: 5, backgroundColor: '#00bfff' }}>
-        <ListItem style={{ backgroundColor: '#00bfff', justifyContent: 'center', height: 70 }} icon>
+      <List style={{   }}>
+        <Separator bordered style={{ height: 40}}>
+            <Text style={{ fontSize: 17}}>Recent Scores</Text>
+          </Separator>
+        <ListItem style={{ justifyContent: 'center'}} icon>
           <Left>
-            <Icon name="plane" />
+            <Text>1. </Text>
           </Left>
-          <Body style={{ backgroundColor: '#00bfff', justifyContent: 'center', height: 70 }}>
-            <Text>Task Shifting</Text>
-            <Text note>Excersies your multitasking and task-switching skills</Text>
+          <Body style={{  justifyContent: 'center'}}>
+            <Text style={{ fontSize: 20}}>308</Text>
           </Body>
+          <Right >
+            <Text> 3 min ago</Text>
+          </Right>
         </ListItem>
-        <ListItem style={{ backgroundColor: '#00bfff', justifyContent: 'center', height: 70 }} icon>
+
+        <Separator bordered style={{ height: 40}}>
+            <Text style={{ fontSize: 17}}>Top Scores</Text>
+          </Separator>
+        <ListItem style={{  justifyContent: 'center'}} icon>
           <Left>
-            <Icon name="plane" />
+            <Text>1. </Text>
           </Left>
-          <Body style={{ backgroundColor: '#00bfff', justifyContent: 'center', height: 70 }}>
-            <Text>Response Control</Text>
-            <Text note>Challenges your ability to take a step back and think before you act</Text>
+          <Body style={{  justifyContent: 'center'}}>
+            <Text style={{ fontSize: 20}}>308</Text>
           </Body>
+          <Right >
+            <Text> 3 min ago</Text>
+          </Right>
         </ListItem>
       </List>
     );
