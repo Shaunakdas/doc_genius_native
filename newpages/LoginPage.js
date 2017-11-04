@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, Image, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { Image, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { Text } from 'native-base';
 import { PropTypes } from 'prop-types';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';

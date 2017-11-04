@@ -11,7 +11,7 @@ export const font = (fontSize, fontWeight = 'regular', fontFamily = 'firasans') 
 export const commonStyle = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.TRANSPARENT,
+    backgroundColor: "#0FF",
   },
   scrollContent: {
     alignItems: 'center',
