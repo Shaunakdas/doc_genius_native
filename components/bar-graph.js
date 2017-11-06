@@ -45,10 +45,11 @@ export default class BarGraph extends Component {
               <VictoryChart
               theme={VictoryTheme.material}
                   height={300}
+                  style={{ parent: { maxWidth: "100%" } }}
               >
                 <VictoryAxis 
                   tickValues={[1, 2]}
-                  tickFormat={["You", "Other Players\n(average)"]}
+                  tickFormat={["You", "Other Players\n\n  (average)"]}
                   domain={[0.5, 2.5]}
                 />
                 <VictoryAxis
