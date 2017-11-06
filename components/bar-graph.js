@@ -13,7 +13,7 @@ import {
 import {
   View,
 } from 'react-native';
-import { VictoryScatter, VictoryArea, VictoryLine, VictoryTheme, VictoryGroup, VictoryLabel } from "victory-native";
+import { VictoryAxis, VictoryChart, VictoryBar, VictoryTheme } from "victory-native";
 
 const data = [
   {quarter: 1, earnings: 4},
@@ -25,7 +25,7 @@ const animation = {
     duration: 3000,
     onLoad: { duration: 1000 }
 }
-export default class App extends Component {
+export default class BarGraph extends Component {
   render() {
     return (
       <Container style={{ marginTop: 25, paddingTop: 10, backgroundColor: '#000080' }}>
@@ -35,26 +35,42 @@ export default class App extends Component {
             <View >
               <ListItem avatar  style={{ backgroundColor: '#00bfff' }}>
                 <Left>
-                  <Icon name='school' />
+                  <Icon name='timer' />
                 </Left>
                 <Body>
-                  <Text>Memory</Text>
+                  <Text>Average Solving time</Text>
                   <Text note>High Score : 9700</Text>
                 </Body>
               </ListItem>
-              <VictoryGroup
-              animate={{animation}}
-                data={[{x: "a", y: 2}, {x: "b", y: 3}, {x: "c", y: 5}, {x: "d", y: 4}, {x: "e", y: 7}]}
-                color="blue"
-                style={{ parent: { maxWidth: "100%" } }}
+              <VictoryChart
+              theme={VictoryTheme.material}
+                  height={300}
               >
-                <VictoryLine />
-                <VictoryArea style={{ data: { fill: "#0000ff" } }}/>
-                <VictoryScatter size={6} symbol="circle"
-                style={{ data: { fill: "#ffffff" }, labels: { fill: "white", fontSize: 20 } }}
-                labels={['','','','',"11th Best\n\n2500"]} 
-                labelComponent={<VictoryLabel renderInPortal dx={-40} dy={20}/>}/>
-              </VictoryGroup>
+                <VictoryAxis 
+                  tickValues={[1, 2]}
+                  tickFormat={["You", "Other Players\n(average)"]}
+                  domain={[0.5, 2.5]}
+                />
+                <VictoryAxis
+                  dependentAxis
+                  tickCount={3}
+                  style ={{
+                    grid: {stroke: (t) => t > 0.5 ? "red" : "grey"},
+                    ticks: {stroke: "grey", size: 5},
+                  }}
+                />
+                <VictoryBar
+                  style={{
+                    data: {fill: "blue"}
+                  }}
+                  data={[
+                {user: 1, time: 3.0},
+                {user: 2, time: 6.5}
+              ]}
+                  x="user"
+                  y="time"
+                />
+              </VictoryChart>
               </View>
             </CardItem>
           </Card>

@@ -8,4 +8,5 @@ export { default as HighlightText } from './hyperlinktext.js';
 export { default as GamesList } from './games-list.js';
 export { default as SignUpForm } from './sign-up-form.js';
 export { default as GameDetails } from './game-details.js';
+export { default as LineGraph } from './line-graph.js';
 export { default as BarGraph } from './bar-graph.js';
