@@ -18,7 +18,7 @@ import { Font } from 'expo';
 import COLORS, { alpha } from '../common/colors';
 import { commonStyle as cs, font } from '../common/styles';
 // import { IconButton } from '../components';
-import { GamesList, SignUpForm, GameDetails } from '../components';
+import { BarGraph, GamesList, SignUpForm, GameDetails } from '../components';
 // import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
 import { gamesAPI } from '../common/api';
 // import { getCategoryById, getUserImage } from '../common/helper';
@@ -454,7 +454,7 @@ class GameListPage extends React.Component {
       game_list: [],
     };
     return (
-      <GameDetails />
+      <BarGraph />
     );
   }
 }
