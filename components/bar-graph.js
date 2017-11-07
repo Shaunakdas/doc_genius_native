@@ -31,7 +31,7 @@ export default class BarGraph extends Component {
       <Container style={{ marginTop: 25, paddingTop: 10, backgroundColor: '#000080' }}>
         <Content  style={{ paddingHorizontal: 25 }}>
           <Card style={{ backgroundColor: '#00bfff' }}>
-            <CardItem style={{ backgroundColor: '#00bfff' }}>
+            <CardItem style={{ backgroundColor: '#00bfff' }}  cardBody>
             <View >
               <ListItem avatar  style={{ backgroundColor: '#00bfff' }}>
                 <Left>
@@ -44,7 +44,7 @@ export default class BarGraph extends Component {
               </ListItem>
               <VictoryChart
               theme={VictoryTheme.material}
-                  height={300}
+                  height={250}
                   style={{ parent: { maxWidth: "100%" } }}
               >
                 <VictoryAxis 
