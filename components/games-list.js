@@ -8,46 +8,39 @@ import {
   Left, Right, Body, Button,
   Title,
   Icon,
-  Grid,
-  Row,
-  Col,
+  // Card,
+  // CardItem,
 } from 'native-base';
 // import {
 //   Image,
 //   Text,  
 // } from 'react-native';
-import IMAGES from '../common/images';
-// import GameTab from './game-tab';
+// import IMAGES from '../common/images';
+import GameTab from './game-tab';
 // import GameCard from './game-card';
 
 export default class GamesList extends Component {
   render() {
     return (
-      <Container style={{ marginTop: 25, paddingTop: 10, backgroundColor: '#00bfff' }}>
-        <Header>
-          <Left>
+      <Container style={{ marginTop: 25 }}>
+        <Header hasTabs>
+          <Left style={{ flex: 1 }}>
             <Button transparent>
-              <Icon name="arrow-back" />
+              <Icon name='menu' />
             </Button>
           </Left>
-          <Body>
-            <Title>Game Details</Title>
+          <Body style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Title>Genius</Title>
           </Body>
-          <Right />
+          <Right style={{ flex: 1 }} />
         </Header>
-        <Content>
-          <Grid>
-            <Row size={40}>
-
-            </Row>
-            <Row size={55}>
-            
-            </Row>
-            <Row size={15}>
-
-            </Row>
-          </Grid>
-        </Content>
+        <Tabs initialPage={0}>
+          <Tab heading="WORKOUT">
+            <GameTab />
+          </Tab>
+          <Tab heading="PERFORMANCE">
+          </Tab>
+        </Tabs>
       </Container>
     );
   }

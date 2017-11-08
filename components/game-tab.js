@@ -27,16 +27,16 @@ export default class GameTab extends Component {
           <ListItem style={{ backgroundColor: '#00bfff' }}>
             <Grid >
               <Col style={{ padding: 5 }}>
-                <GameCard />
-                <GameCard />
-                <GameCard />
-                <GameCard />
+                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
+                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
+                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
+                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
               </Col>
               <Col style={{ padding: 5 }}>
-                <GameCard />
-                <GameCard />
-                <GameCard />
-                <GameCard />
+                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
+                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
+                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
+                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
               </Col>
             </Grid>
           </ListItem>
