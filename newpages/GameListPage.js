@@ -454,7 +454,7 @@ class GameListPage extends React.Component {
       game_list: [],
     };
     return (
-      <GamesList />
+      <GameDetails />
     );
   }
 }
