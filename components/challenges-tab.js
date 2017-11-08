@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import {
   Grid,
   Col,
@@ -18,26 +20,33 @@ import {
 import GameCard from './game-card';
 
 export default class BenifitsTab extends Component {
-  render() {
+  static propTypes = {
+    challenges: PropTypes.any,
+  }
+  static defaultProps = {
+    challenges: [
+      { icon: 'flash',title: 'Score above 1480 to rank up to Novice', description: null },
+      { icon: 'people',title: 'Train with friends!', description: 'See if you can beat their score' },
+    ],
+  }
+  renderItem = ( item ) => {
     return (
-      <List style={{ padding: 5 }}>
-        <ListItem style={{  justifyContent: 'center', height: 70 }} icon>
-          <Left>
-            <Icon name="flash" />
-          </Left>
-          <Body style={{  justifyContent: 'center', height: 70 }}>
-            <Text>Score above 1480 to rank up to Novice</Text>
-          </Body>
-        </ListItem>
-        <ListItem style={{  justifyContent: 'center', height: 70 }} icon>
-          <Left>
-            <Icon name="people" />
-          </Left>
-          <Body style={{  justifyContent: 'center', height: 70 }}>
-            <Text>Train with friends!</Text>
-            <Text note>See if you can beat their score</Text>
-          </Body>
-        </ListItem>
+      <ListItem style={{  justifyContent: 'center', height: 70 }} icon>
+        <Left>
+          <Icon name={item.icon} />
+        </Left>
+        <Body style={{  justifyContent: 'center', height: 70 }}>
+          <Text>{item.title}</Text>
+          <Text note>{item.description}</Text>
+        </Body>
+      </ListItem>
+    );
+  };
+  render() {
+    const {
+      challenges } = this.props;
+    return (
+      <List style={{ padding: 5}} renderRow={this.renderItem} dataArray={challenges}>
       </List>
     );
   }
