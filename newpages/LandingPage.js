@@ -46,7 +46,7 @@ export default class LandingPage extends React.Component {
             text="Games List"
             style={cs.button}
             textStyle={cs.buttonText}
-            onPress={this.goTo('GameListPage')}
+            onPress={this.goTo('SignupFormPage')}
           />
         </ScrollView>
       </View>

@@ -14,6 +14,7 @@ import {
   Row,
   Button,
 } from 'native-base';
+import CalendarPicker from './calendar-picker.js';
 // import {
 //   Image,
 //   Text,  
@@ -23,7 +24,7 @@ import {
 import StandardPicker from './standard-picker';
 
 export default class SignUpform extends Component {
-
+  
   static propTypes = {
     standards: PropTypes.any,
   }
@@ -50,7 +51,7 @@ export default class SignUpform extends Component {
         <Content>
           <Form>
             <Grid >
-              <Row style={{ paddingHorizontal: 5 }}>
+              <Row style={{ paddingHorizontal: 10 }}>
                 <Col>
                   <Item floatingLabel>
                     <Label style={{ color: '#0FF'}}>First Name</Label>
@@ -64,12 +65,10 @@ export default class SignUpform extends Component {
                   </Item>
                 </Col>
               </Row>
-              <Row style={{ paddingHorizontal: 5 }}>
-                <Col>
-                  <Item floatingLabel>
-                    <Label style={{ color: '#0FF' }}>Date of Birth</Label>
-                    <Input style={{ color: '#FFF' }}/>
-                  </Item>
+              <Row style={{ paddingHorizontal: 10, marginTop: 20 }}>
+                <Col style={{ paddingHorizontal: 10, justifyContent: 'center' }}>
+                <Label style={{ color: '#0FF' }}>Date of Birth</Label>
+                  <CalendarPicker />
                 </Col>
                 <Col style={{ justifyContent: 'flex-end'}}>
                   <StandardPicker standards={standards}/>

@@ -37,6 +37,7 @@
     "react": "^16.0.0-beta.5",
     "react-balloon": "^0.2.5",
     "react-native": "^0.48.0",
+    "react-native-datepicker": "^1.6.0",
     "react-native-hyperlink": "0.0.11",
     "react-native-modal": "^4.0.0",
     "react-native-svg": "^5.4.2",
