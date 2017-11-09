@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   Grid,
   Col,
@@ -17,7 +18,21 @@ import {
 import GameCard from './game-card';
 
 export default class GameTab extends Component {
+  static propTypes = {
+    games: PropTypes.any,
+  }
+  static defaultProps = {
+    games: [
+      { id: 1, title: 'Bounce',subTitle: 'MEMORY',image: null },
+      { id: 2, title: 'True View',subTitle: 'FOCUS',image: null },
+      { id: 3, title: 'Jump Control',subTitle: 'COORDINATION',image: null },
+    ],
+  }
   render() {
+    const {
+      games } = this.props;
+    const gameCards = games.map((game) =>
+      <GameCard title={game.title} subTitle={game.subTitle} onPress={null} />);
     return (
       <Content >
         <List style={{ padding: 5, backgroundColor: '#00bfff'}}>
@@ -27,16 +42,10 @@ export default class GameTab extends Component {
           <ListItem style={{ backgroundColor: '#00bfff' }}>
             <Grid >
               <Col style={{ padding: 5 }}>
-                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
-                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
-                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
-                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
+                {gameCards}
               </Col>
               <Col style={{ padding: 5 }}>
-                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
-                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
-                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
-                <GameCard title={'Title'} subTitle={'Sub Title'} onPress={null} />
+                {gameCards}
               </Col>
             </Grid>
           </ListItem>

@@ -7,12 +7,12 @@ export default class StandardPicker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected2: undefined
+      selected2: undefined,
     };
   }
   onValueChange2(value: string) {
     this.setState({
-      selected2: value
+      selected2: value,
     });
   }
   static propTypes = {
@@ -20,13 +20,21 @@ export default class StandardPicker extends Component {
   }
 
   static defaultProps = {
-    standards: null,
+    standards: [
+      { label: '6th Class', key: '6' },
+      { label: '7th Class', key: '7' },
+      { label: '8th Class', key: '8' },
+      { label: '9th Class', key: '9' },
+      { label: '10th Class', key: '10' },
+    ],
   }
 
 
   render() {
     const {
       standards } = this.props;
+    const options = standards.map((item) =>
+      <Item label={item.label} value={item.key} />);
     return (
       <Picker
         style={{ color: '#0FF' }}
@@ -35,11 +43,7 @@ export default class StandardPicker extends Component {
         selectedValue={this.state.selected2}
         onValueChange={this.onValueChange2.bind(this)}
       >
-        <Item label="Standard" value="key0" />
-        <Item label="6th Class" value="key1" />
-        <Item label="7th Class" value="key2" />
-        <Item label="8th Class" value="key3" />
-        <Item label="9th Class" value="key4" />
+        {options}
       </Picker>
     );
   }

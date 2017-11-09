@@ -3,11 +3,14 @@ import { Text, Image, ScrollView, View, KeyboardAvoidingView } from 'react-nativ
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { setLoggedInUser } from '../store/actions';
+import {
+  Button,
+} from 'native-base';
 // import { NavigationActions } from 'react-navigation';
 
 
 import { commonStyle as cs, signupPageStyle as s, font } from '../common/styles';
-import { Button, IconButton, Input } from '../components';
+import { SignUpForm, IconButton, Input } from '../components';
 import IMAGES from '../common/images';
 // import { validateEmail } from '../common/helper';
 import COLORS, { alpha } from '../common/colors';
@@ -202,90 +205,7 @@ class SignupFormPage extends React.Component {
           style={cs.scroll}
           contentContainerStyle={cs.scrollContent}
         >
-          <Image
-            style={s.logo}
-            source={IMAGES.LOGO}
-          />
-          <Text style={s.mainText}>{role} Sign-Up</Text>
-          <Input
-            inputProps={{
-              ...commonInputProps,
-              placeholder: 'First Name',
-            }}
-            wrapperStyle={cs.inputWrapper}
-            error={errors.firstName}
-            value={firstName}
-            ref={this.addInput('firstName')}
-            onChange={this.onValueChange('firstName')}
-            onSubmit={this.onSubmit('lastName')}
-          />
-          <Input
-            inputProps={{
-              ...commonInputProps,
-              placeholder: 'Last Name',
-            }}
-            wrapperStyle={cs.inputWrapper}
-            error={errors.lastName}
-            value={lastName}
-            ref={this.addInput('lastName')}
-            onChange={this.onValueChange('lastName')}
-            onSubmit={this.onSubmit('email')}
-          />
-          <Input
-            inputProps={{
-              ...commonInputProps,
-              placeholder: 'Sex',
-            }}
-            wrapperStyle={cs.inputWrapper}
-            error={errors.sex}
-            value={sex}
-            ref={this.addInput('sex')}
-            onChange={this.onValueChange('sex')}
-            onSubmit={this.onSubmit('dateOfBirth')}
-          />
-          <Input
-            inputProps={{
-              ...commonInputProps,
-              placeholder: 'Date Of Birth',
-            }}
-            wrapperStyle={cs.inputWrapper}
-            error={errors.dateOfBirth}
-            value={dateOfBirth}
-            ref={this.addInput('dateOfBirth')}
-            onChange={this.onValueChange('dateOfBirth')}
-            onSubmit={this.onSubmit('mobileNumber')}
-          />
-          <Input
-            inputProps={{
-              ...commonInputProps,
-              placeholder: 'Mobile Number',
-              keyboardType: 'numeric',
-            }}
-            wrapperStyle={cs.inputWrapper}
-            error={errors.mobileNumber}
-            value={mobileNumber}
-            ref={this.addInput('mobileNumber')}
-            onChange={this.onValueChange('mobileNumber')}
-            onSubmit={this.onSubmit('')}
-          />
-          {errors.overall ? <Text style={{
-            color: alpha(COLORS.RED, 0.7),
-            marginTop: 3,
-            marginBottom: 20,
-            ...font(10),
-            marginHorizontal: 50,
-            textAlign: 'center',
-          }}
-          >{errors.overall}</Text> : null}
-          <Button
-            text="Get Started"
-            style={[cs.getStartedButton, s.button]}
-            textStyle={[cs.getStartedButtonText]}
-            onPress={this.getStarted}
-            loadingColor={COLORS.PRIMARY}
-            isLoading={signingUp}
-          />
-          <View style={{ height: 60 }} />
+          <SignUpForm />
         </ScrollView>
         <IconButton
           source={IMAGES.BACK}

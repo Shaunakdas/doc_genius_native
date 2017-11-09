@@ -59,7 +59,7 @@ export const signupAPI = async (email, password) => {
   return response;
 };
 
-export const newloginAPI = async (email, password) => {
+export const loginAPI = async (email, password) => {
   const body = JSON.stringify({ email, password });
   const response = await jsonFetch(`${ADMIN_BASE_URL}/auth_tokens/1`, { method: 'GET' });
   // console.log(response);
@@ -113,10 +113,19 @@ export const feedbackAPI = async (from, message, cc) => {
   return response;
 };
 
-
 export const changePasswordAPI = async (login, password, activation_token) => {
   const body = JSON.stringify({ login, password, activation_token });
   const response = await jsonFetch(`${ADMIN_BASE_URL}/passwords/update`, { body, method: 'POST' });
+  return response;
+};
+
+export const homePageAPI = async (authToken) => {
+  const response = await jsonFetch(`${BASE_URL}/homepage`, { method: 'GET' }, authToken);
+  return response;
+};
+
+export const gameDetailsAPI = async (authToken) => {
+  const response = await jsonFetch(`${BASE_URL}/game_list/1`, { method: 'GET' }, authToken);
   return response;
 };
 

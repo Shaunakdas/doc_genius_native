@@ -33,7 +33,27 @@
       {
         "id":1,
         "title":"Game 1",
-        "category":"Category 1"
+        "category":"Category 1",
+        "rank_name":"Weak",
+        "top_scores":412,
+        "benifits":[
+          { "title": "Task Shifting", "description": "Excersies your multitasking and task-switching skills" },
+          { "title": "Response Control", "description": "Challenges your ability to take a step back and think before you act" }
+        ],
+        "challenges": [
+          { "icon": "flash","title": "Score above 1480 to rank up to Novice", "description": "null" },
+          { "icon": "people","title": "Train with friends!", "description": "See if you can beat their score" }
+        ],
+        "scores": {
+          "recent":  [
+            { "value": 308,"time": "3 mins ago" },
+            { "value": 112,"time": "14 days ago" }
+          ],
+          "top": [
+            { "value": 412,"time": "3 months ago" },
+            { "value": 112,"time": "12 secs ago" }
+          ]
+        }
       },
       {
         "id":2,
@@ -66,5 +86,79 @@
         "category":"Category 1"
       }
     ]
+  },
+  "game_list":[
+      {
+        "id":1,
+        "title":"Game 1",
+        "category":"Category 1",
+        "rank_name":"Weak",
+        "top_scores":412,
+        "benifits":[
+          { "title": "Task Shifting", "description": "Excersies your multitasking and task-switching skills" },
+          { "title": "Response Control", "description": "Challenges your ability to take a step back and think before you act" }
+        ],
+        "challenges": [
+          { "icon": "flash","title": "Score above 1480 to rank up to Novice", "description": "null" },
+          { "icon": "people","title": "Train with friends!", "description": "See if you can beat their score" }
+        ],
+        "scores": {
+          "recent":  [
+            { "value": 308,"time": "3 mins ago" },
+            { "value": 112,"time": "14 days ago" }
+          ],
+          "top": [
+            { "value": 412,"time": "3 months ago" },
+            { "value": 112,"time": "12 secs ago" }
+          ]
+        }
+      },
+      {
+        "id":2,
+        "title":"Game 1",
+        "category":"Category 1"
+      },
+      {
+        "id":3,
+        "title":"Game 1",
+        "category":"Category 1"
+      },
+      {
+        "id":4,
+        "title":"Game 1",
+        "category":"Category 1"
+      },
+      {
+        "id":5,
+        "title":"Game 1",
+        "category":"Category 1"
+      },
+      {
+        "id":6,
+        "title":"Game 1",
+        "category":"Category 1"
+      },
+      {
+        "id":7,
+        "title":"Game 1",
+        "category":"Category 1"
+      }
+    ],
+  "game_attempts":{
+    "title": "Memory",
+    "high_score": 2300,
+    "recent_scores":[
+      { "value":308, "recent": false, "title":"" },
+      { "value":412, "recent": false, "title":"" },
+      { "value":112, "recent": false, "title":"" },
+      { "value":213, "recent": true, "title":"3rd Best" }
+    ],
+    "scores_comparision":[
+      { "value":308, "title":"You" },
+      { "value":200, "title":"Other Students \n (Average)" }
+    ],
+    "result":{
+      "title":"You keep imprressing me Shaunak. Thats a great performance"
+    }
   }
 }

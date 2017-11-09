@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   Header,
   Container,
@@ -20,7 +21,19 @@ import GameTab from './game-tab';
 // import GameCard from './game-card';
 
 export default class GamesList extends Component {
+  static propTypes = {
+    games: PropTypes.any,
+  }
+  static defaultProps = {
+    games: [
+      { id: 1, title: 'Bounce',subTitle: 'MEMORY',image: null },
+      { id: 2, title: 'True View',subTitle: 'FOCUS',image: null },
+      { id: 3, title: 'Jump Control',subTitle: 'COORDINATION',image: null },
+    ],
+  }
   render() {
+    const {
+      games } = this.props;
     return (
       <Container style={{ marginTop: 25 }}>
         <Header hasTabs>
@@ -36,7 +49,7 @@ export default class GamesList extends Component {
         </Header>
         <Tabs initialPage={0}>
           <Tab heading="WORKOUT">
-            <GameTab />
+            <GameTab games={games}/>
           </Tab>
           <Tab heading="PERFORMANCE">
           </Tab>

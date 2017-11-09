@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   Form,
   Container,
@@ -22,7 +23,24 @@ import {
 import StandardPicker from './standard-picker';
 
 export default class SignUpform extends Component {
+
+  static propTypes = {
+    standards: PropTypes.any,
+  }
+
+  static defaultProps = {
+    standards: [
+      { label: '6th Class', key: '6' },
+      { label: '7th Class', key: '7' },
+      { label: '8th Class', key: '8' },
+      { label: '9th Class', key: '9' },
+      { label: '10th Class', key: '10' },
+    ],
+  }
+  
   render() {
+    const {
+      standards } = this.props;
     return (
       <Container style={{ marginTop: 25, paddingTop: 10, backgroundColor: '#00bfff' }}>
         <Title>ABOUT YOU</Title>
@@ -54,7 +72,7 @@ export default class SignUpform extends Component {
                   </Item>
                 </Col>
                 <Col style={{ justifyContent: 'flex-end'}}>
-                  <StandardPicker />
+                  <StandardPicker standards={standards}/>
                 </Col>
               </Row>
 
