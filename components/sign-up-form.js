@@ -24,7 +24,20 @@ import CalendarPicker from './calendar-picker.js';
 import StandardPicker from './standard-picker';
 
 export default class SignUpform extends Component {
-  
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      date: "01-05-2006",
+    };
+    this.onDateChange = this.onDateChange.bind(this);
+  }
+
+  onDateChange = (date) => {
+    this.setState({ date: date });
+    console.log(this.state.date);
+  }
+
   static propTypes = {
     standards: PropTypes.any,
   }
@@ -68,7 +81,7 @@ export default class SignUpform extends Component {
               <Row style={{ paddingHorizontal: 10, marginTop: 20 }}>
                 <Col style={{ paddingHorizontal: 10, justifyContent: 'center' }}>
                 <Label style={{ color: '#0FF' }}>Date of Birth</Label>
-                  <CalendarPicker />
+                  <CalendarPicker onDateChange={this.onDateChange} date={this.state.date} />
                 </Col>
                 <Col style={{ justifyContent: 'flex-end'}}>
                   <StandardPicker standards={standards}/>
