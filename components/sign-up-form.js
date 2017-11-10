@@ -29,13 +29,19 @@ export default class SignUpform extends Component {
 
     this.state = {
       date: "01-05-2006",
+      standard: '6',
     };
     this.onDateChange = this.onDateChange.bind(this);
+    this.onStandardChange = this.onStandardChange.bind(this);
   }
 
   onDateChange = (date) => {
     this.setState({ date: date });
     console.log(this.state.date);
+  }
+
+  onStandardChange = (value) => {
+    this.setState({ standard: value });
   }
 
   static propTypes = {
@@ -54,7 +60,8 @@ export default class SignUpform extends Component {
   
   render() {
     const {
-      standards } = this.props;
+      standards
+       } = this.props;
     return (
       <Container style={{ marginTop: 25, paddingTop: 10, backgroundColor: '#00bfff' }}>
         <Title>ABOUT YOU</Title>
@@ -84,7 +91,10 @@ export default class SignUpform extends Component {
                   <CalendarPicker onDateChange={this.onDateChange} date={this.state.date} />
                 </Col>
                 <Col style={{ justifyContent: 'flex-end'}}>
-                  <StandardPicker standards={standards}/>
+                  <StandardPicker
+                    standards={standards}
+                    selected={this.state.standard}
+                    onValueChange={this.onStandardChange} />
                 </Col>
               </Row>
 
