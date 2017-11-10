@@ -84,6 +84,12 @@ export const gamesAPI = async (authToken, page = 1, limit = 10) => {
   return response;
 };
 
+export const standardsAPI = async () => {
+  const url = `${BASE_URL}/standards`;
+  const response = await jsonFetch(url, { method: 'GET' });
+  return response;
+};
+
 // export const loginAPI = async (login, password) => {
 //   const body = JSON.stringify({ login, password });
 //   const response = await jsonFetch(`${ADMIN_BASE_URL}/user/login`, { body, method: 'POST' });

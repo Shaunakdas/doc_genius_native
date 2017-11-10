@@ -15,7 +15,7 @@ import IMAGES from '../common/images';
 // import { validateEmail } from '../common/helper';
 import COLORS, { alpha } from '../common/colors';
 // import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
-import { updateAPI } from '../common/api';
+import { standardsAPI ,updateAPI } from '../common/api';
 // import { loggedIn, setLoggedInUser } from '../store/actions';
 
 const commonInputProps = {
@@ -40,6 +40,9 @@ class SignupFormPage extends React.Component {
     this.inputs = {};
     this.state = {
       signingUp: false,
+      standards:[
+      { label: '6th Class', key: '6' },
+    ],
       values: {
         firstName: '',
         lastName: '',
@@ -62,6 +65,18 @@ class SignupFormPage extends React.Component {
         overall: '',
       },
     };
+  }
+
+  fetchStandards = async () =>{
+    const standardResponse = await standardsAPI() || {};
+    console.log(standardResponse);
+    if (standardResponse.success !== false) {
+      this.setState({ standards: standardResponse});
+    }
+  }
+  
+  async componentDidMount() {
+    await this.fetchStandards();
   }
 
   onValueChange = fieldName => (value) => {
@@ -205,7 +220,7 @@ class SignupFormPage extends React.Component {
           style={cs.scroll}
           contentContainerStyle={cs.scrollContent}
         >
-          <SignUpForm />
+          <SignUpForm standards ={this.state.standards}/>
         </ScrollView>
         <IconButton
           source={IMAGES.BACK}
