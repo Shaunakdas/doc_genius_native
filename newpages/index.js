@@ -19,6 +19,7 @@ import SplashPage from './SplashPage';
 import QuestionPage from './QuestionPage';
 import WebPage from './WebPage';
 import GameListPage from './GameListPage';
+import GameDetailsPage from './GameDetailsPage';
 
 export default {
   LandingPage,
@@ -42,4 +43,5 @@ export default {
   ForgotPasswordPage,
   WebPage,
   GameListPage,
+  GameDetailsPage,
 };

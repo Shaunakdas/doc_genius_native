@@ -100,8 +100,8 @@
         "id":1,
         "title":"Game 1",
         "category":"Category 1",
-        "rank_name":"Weak",
-        "top_scores":412,
+        "rank":"Weak",
+        "best":412,
         "benifits":[
           { "title": "Task Shifting", "description": "Excersies your multitasking and task-switching skills" },
           { "title": "Response Control", "description": "Challenges your ability to take a step back and think before you act" }

@@ -18,9 +18,17 @@ import {
 // import IMAGES from '../common/images';
 import GameCard from './game-card';
 
+// const goNext = () => {
+//     console.log('goNext');
+//     // const { navigation } = this.props;
+//     // navigation.navigate('GameDetailsPage', {  });
+//   }
+
 export default class GameTab extends Component {
   static propTypes = {
     games: PropTypes.any,
+    goToGame: PropTypes.func,
+    navigation: PropTypes.any,
   }
   static defaultProps = {
     games: [
@@ -28,12 +36,15 @@ export default class GameTab extends Component {
       // { id: 2, title: 'True View',subTitle: 'FOCUS',image: null },
       // { id: 3, title: 'Jump Control',subTitle: 'COORDINATION',image: null },
     ],
+    goToGame: () => {},
   }
+  
   render() {
     const {
-      games } = this.props;
+      games,
+      goToGame } = this.props;
     const gameCards = games.map((game) =>
-      <GameCard title={game.title} subTitle={game.category} onPress={null} />);
+      <GameCard title={game.title} subTitle={game.category} onPress={ (game) => goToGame(game) } />);
     return (
       <Content style={{ backgroundColor: '#00bfff'  }}>
         <List style={{ padding: 5}}>

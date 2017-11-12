@@ -56,6 +56,12 @@ class GameListPage extends React.Component {
       this.fetchGames();
     }
   }
+  
+  goToGame = (game) => {
+    console.log(game);
+    const { navigation } = this.props;
+    navigation.navigate('GameDetailsPage', {  });
+  }
 
   render() {
     const { games, refreshing, loading, addingMore } = this.state;
@@ -63,7 +69,7 @@ class GameListPage extends React.Component {
       game_list: [],
     };
     return (
-      <GamesList games={game_list}/>
+      <GamesList games={game_list} goToGame = {this.goToGame}/>
     );
   }
 }

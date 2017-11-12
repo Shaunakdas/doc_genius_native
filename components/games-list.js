@@ -23,6 +23,7 @@ import GameTab from './game-tab';
 export default class GamesList extends Component {
   static propTypes = {
     games: PropTypes.any,
+    goToGame: PropTypes.func,
   }
   static defaultProps = {
     games: [
@@ -30,10 +31,12 @@ export default class GamesList extends Component {
       // { id: 2, title: 'True View',subTitle: 'FOCUS',image: null },
       // { id: 3, title: 'Jump Control',subTitle: 'COORDINATION',image: null },
     ],
+    goToGame: () => {},
   }
   render() {
     const {
-      games } = this.props;
+      games,
+      goToGame } = this.props;
     return (
       <Container style={{ marginTop: 25 }}>
         <Header hasTabs>
@@ -49,7 +52,7 @@ export default class GamesList extends Component {
         </Header>
         <Tabs initialPage={0}>
           <Tab heading="WORKOUT">
-            <GameTab games={games}/>
+            <GameTab games={games} goToGame={goToGame}/>
           </Tab>
           <Tab heading="PERFORMANCE">
           </Tab>
