@@ -7,6 +7,7 @@ import {
   ListItem,
   Text,
   Content,
+  Spinner,
   // Card,
   // CardItem,
 } from 'native-base';
@@ -34,20 +35,22 @@ export default class GameTab extends Component {
     const gameCards = games.map((game) =>
       <GameCard title={game.title} subTitle={game.subTitle} onPress={null} />);
     return (
-      <Content >
-        <List style={{ padding: 5, backgroundColor: '#00bfff'}}>
+      <Content style={{ backgroundColor: '#00bfff'  }}>
+        <List style={{ padding: 5}}>
           <ListItem style={{ backgroundColor: '#00bfff', justifyContent: 'center' }}>
             <Text style={{ color: '#ffffff'}}>Hello, Shaunak</Text>
           </ListItem>
-          <ListItem style={{ backgroundColor: '#00bfff' }}>
-            <Grid >
-              <Col style={{ padding: 5 }}>
-                {gameCards}
-              </Col>
-              <Col style={{ padding: 5 }}>
-                {gameCards}
-              </Col>
-            </Grid>
+          <ListItem style={{ backgroundColor: '#00bfff', justifyContent: 'center' }}>
+            {(games.length>0)?
+              <Grid >
+                <Col style={{ padding: 5 }}>
+                  {gameCards}
+                </Col>
+                <Col style={{ padding: 5 }}>
+                  {gameCards}
+                </Col>
+              </Grid>
+              : <Spinner color='blue' /> }
           </ListItem>
         </List>
       </Content>

@@ -46,7 +46,7 @@ class SplashPage extends React.Component {
       'firasans-light': require('../assets/fonts/light.ttf'),
       'firasans-regular': require('../assets/fonts/regular.ttf'),
       'firasans-semibold': require('../assets/fonts/semibold.ttf'),
-       'Roboto': require('native-base/Fonts/Roboto.ttf'),
+      'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     }));
     this.start();
@@ -56,22 +56,6 @@ class SplashPage extends React.Component {
 
   cacheImages = images => images.map(image => Asset.fromModule(image).downloadAsync())
 
-  registerForPushNotificationsAsync = async () => {
-    const { status: existingStatus } = await Permissions.getAsync(
-      Permissions.NOTIFICATIONS,
-    );
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-      finalStatus = status;
-    }
-    if (finalStatus !== 'granted') {
-      return null;
-    }
-    const token = await Notifications.getExpoPushTokenAsync();
-    return token;
-  }
-
   start = async () => {
     const resetAction = NavigationActions.reset({
       index: 0,
@@ -79,61 +63,24 @@ class SplashPage extends React.Component {
         NavigationActions.navigate({ routeName: 'LandingPage' }),
       ],
     });
-    const isLoginSuccess = await this.tryLogin();
+    const isLoginSuccess = false;
+    // const isLoginSuccess = await this.tryLogin();
     if (!isLoginSuccess) { this.props.navigation.dispatch(resetAction); }
   }
 
   tryLogin = async () => {
-    const { finish, setToken, setUser, setRelevantCategories, setBotChannel } = this.props;
+    // const { finish, setToken, setUser, setRelevantCategories, setBotChannel } = this.props;
     const authToken = await getData('AUTH_TOKEN');
     try {
       if (authToken) {
         this.setMessage('Loading Profile...');
-        const user = await userAPI(authToken);
-        setToken(authToken);
-        setUser(user);
-        this.setMessage('Loading Forum...');
-        const categories = await categoriesAPI(authToken);
-        setRelevantCategories(categories);
-        if (user.role === STUDENT_ROLE) {
-          this.setMessage('Loading Chat...');
-          await connectToSendbird(user.sendbird_id);
-          const channel = await connectToChannel(user.channel_url);
-          setBotChannel(channel);
-        }
-        this.setMessage('Loading Notifications...');
-        const device_token = await this.registerForPushNotificationsAsync();
-        if (device_token) {
-          await updateDeviceTokenAPI(authToken, device_token);
-        }
-        finish();
-        const launchedUsers = (await getData('LAUNCHED_USERS')) || [];
-        const onLaunch = launchedUsers.indexOf(user.id) === -1;
-        if (onLaunch) {
-          await saveData('LAUNCHED_USERS', launchedUsers.concat(user.id));
-        }
-        if (user.role === STUDENT_ROLE) {
-          this.props.navigation.dispatch(
-            {
-              type: 'Navigation/NAVIGATE',
-              routeName: 'AppPage',
-              params: { onLaunch, role: user.role },
-              action: {
-                type: 'Navigation/NAVIGATE',
-                routeName: 'ChatPage',
-              },
-            },
-          );
-        } else {
-          const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-              NavigationActions.navigate({ routeName: 'AppPage' }),
-            ],
-            params: { onLaunch, role: user.role },
-          });
-          this.props.navigation.dispatch(resetAction);
-        }
+        const resetAction = NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'GameListPage' }),
+          ],
+        });
+        this.props.navigation.dispatch(resetAction);
         return true;
       }
       await removeData('AUTH_TOKEN');

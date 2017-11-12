@@ -1,5 +1,5 @@
-export const BASE_URL = 'http://8c296be7.ngrok.io';
-export const ADMIN_BASE_URL = 'http://8c296be7.ngrok.io';
+export const BASE_URL = 'http://c0518a5a.ngrok.io';
+export const ADMIN_BASE_URL = 'http://c0518a5a.ngrok.io';
 export const IMAGE_SERVICE_URL = 'http://13.59.133.37';
 
 export const APPSTATE_LOGGING_IN = 'APPSTATE_LOGGING_IN';

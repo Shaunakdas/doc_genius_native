@@ -18,6 +18,16 @@ export const validateEmail = (email) => {
   return re.test(email);
 };
 
+export const validDateOfBirth = (date) => {
+  // eslint-disable-next-line
+  return true;
+};
+
+export const validMobileNumber = (email) => {
+  // eslint-disable-next-line
+  return true
+};
+
 export const validGraduationYear = (year) => {
   const numericValue = +year;
   return (!isNaN(numericValue) &&

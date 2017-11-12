@@ -6,7 +6,7 @@ import { setLoggedInUser } from '../store/actions';
 import {
   Button,
 } from 'native-base';
-// import { NavigationActions } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 
 
 import { commonStyle as cs, signupPageStyle as s, font } from '../common/styles';
@@ -66,8 +66,20 @@ class SignupFormPage extends React.Component {
       },
     };
   }
+  
+  nextAction = () =>{
+    console.log('nextAction');
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'GameListPage' }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
 
   fetchStandards = async () =>{
+    console.log('fetchStandards');
     const standardResponse = await standardsAPI() || {};
     console.log(standardResponse);
     if (standardResponse.success !== false) {
@@ -78,67 +90,33 @@ class SignupFormPage extends React.Component {
   async componentDidMount() {
     await this.fetchStandards();
   }
-
-  onValueChange = fieldName => (value) => {
-    this.setState({
-      values: {
-        ...this.state.values,
-        [fieldName]: value,
-      },
-      errors: {
-        ...this.state.errors,
-        [fieldName]: '',
-      },
-    });
-  }
-
-  onSubmit = nextFieldName => () => {
-    if (nextFieldName) { this.inputs[nextFieldName].focus(); }
-  }
-
-  getStarted = () => {
-    this.setState({
-      signingUp: true,
-      errors: {
-        firstName: '',
-        lastName: '',
-        sex: '',
-        dateOfBirth: '',
-        // email: '',
-        // password: '',
-        // confirmPassword: '',
-        mobileNumber: '',
-        overall: '',
-      },
-    }, this.validate);
-  }
-
+  
   goBack = () => {
     const { navigation } = this.props;
     navigation.goBack();
   }
 
-  validate = () => {
-    const {
-      firstName,
-      lastName,
-      sex,
-      dateOfBirth,
-      // email,
-      // password,
-      // confirmPassword,
-      mobileNumber,
-    } = this.state.values;
-    const errors = {
-      firstName: firstName ? '' : 'Full Name is required',
-      lastName: lastName ? '' : 'Full Name is required',
-      sex: sex ? '' : 'Full Name is required',
-      dateOfBirth: dateOfBirth ? '' : 'Full Name is required',
-      // email: email ? '' : 'Email is required',
-      // password: password ? '' : 'Password is required',
-      // confirmPassword: confirmPassword ? '' : 'Password is required',
-      mobileNumber: mobileNumber ? '' : 'Graduation year is required',
-    };
+  // validate = () => {
+  //   const {
+  //     firstName,
+  //     lastName,
+  //     sex,
+  //     dateOfBirth,
+  //     // email,
+  //     // password,
+  //     // confirmPassword,
+  //     mobileNumber,
+  //   } = this.state.values;
+  //   const errors = {
+  //     firstName: firstName ? '' : 'Full Name is required',
+  //     lastName: lastName ? '' : 'Full Name is required',
+  //     sex: sex ? '' : 'Full Name is required',
+  //     dateOfBirth: dateOfBirth ? '' : 'Full Name is required',
+  //     // email: email ? '' : 'Email is required',
+  //     // password: password ? '' : 'Password is required',
+  //     // confirmPassword: confirmPassword ? '' : 'Password is required',
+  //     mobileNumber: mobileNumber ? '' : 'Graduation year is required',
+  //   };
 
     // if (graduationYear && !validGraduationYear(graduationYear)) {
     //   errors.graduationYear = 'Not a valid graduation year';
@@ -155,62 +133,54 @@ class SignupFormPage extends React.Component {
     // if (password && confirmPassword && password !== confirmPassword) {
     //   errors.confirmPassword = "Passwords didn't match";
     // }
-    this.setState({
-      errors,
-    }, () => {
-      if (Object.values(errors).every(value => value === '')) { this.update(); } else { this.setState({ signingUp: false }); }
-    });
-  }
+  //   this.setState({
+  //     errors,
+  //   }, () => {
+  //     if (Object.values(errors).every(value => value === '')) { this.update(); } else { this.setState({ signingUp: false }); }
+  //   });
+  // }
 
-  addInput = fieldName => (input) => {
-    this.inputs[fieldName] = input;
-  }
+  // addInput = fieldName => (input) => {
+  //   this.inputs[fieldName] = input;
+  // }
 
-  update = async () => {
-    const { authToken, setUser } = this.props;
-    const {
-      firstName,
-      lastName,
-      sex,
-      dateOfBirth,
-      mobileNumber,
-    } = this.state.values;
-    const response = await updateAPI({
-      authToken,
-      firstName,
-      lastName,
-      sex,
-      dateOfBirth,
-      mobileNumber,
-    });
-    if (response.success === false) {
-      const overallError = response.message || response.error || 'Signup failed try again!';
-      this.setState({ errors: {
-        ...this.state.errors,
-        overall: typeof overallError === 'string' ? overallError : 'Signup failed try again!',
-      },
-      signingUp: false });
-    } else {
-      setUser(response);
-      this.setState({ signingUp: false });
-      this.props.navigation.dispatch(
-        {
-          type: 'Navigation/NAVIGATE',
-          routeName: 'LandingPage',
-        },
-      );
-    }
-  }
+  // update = async () => {
+  //   const { authToken, setUser } = this.props;
+  //   const {
+  //     firstName,
+  //     lastName,
+  //     sex,
+  //     dateOfBirth,
+  //     mobileNumber,
+  //   } = this.state.values;
+  //   const response = await updateAPI({
+  //     authToken,
+  //     firstName,
+  //     lastName,
+  //     sex,
+  //     dateOfBirth,
+  //     mobileNumber,
+  //   });
+  //   if (response.success === false) {
+  //     const overallError = response.message || response.error || 'Signup failed try again!';
+  //     this.setState({ errors: {
+  //       ...this.state.errors,
+  //       overall: typeof overallError === 'string' ? overallError : 'Signup failed try again!',
+  //     },
+  //     signingUp: false });
+  //   } else {
+  //     setUser(response);
+  //     this.setState({ signingUp: false });
+  //     this.props.navigation.dispatch(
+  //       {
+  //         type: 'Navigation/NAVIGATE',
+  //         routeName: 'LandingPage',
+  //       },
+  //     );
+  //   }
+  // }
 
   render() {
-    const { role, errors, signingUp } = this.state;
-    const {
-      firstName,
-      lastName,
-      sex,
-      dateOfBirth,
-      mobileNumber,
-    } = this.state.values;
     return (
       <KeyboardAvoidingView
         style={[cs.container, s.container]}
@@ -220,7 +190,10 @@ class SignupFormPage extends React.Component {
           style={cs.scroll}
           contentContainerStyle={cs.scrollContent}
         >
-          <SignUpForm standards ={this.state.standards}/>
+          <SignUpForm
+            standards={this.state.standards} nextAction={this.nextAction}
+             />
+            }
         </ScrollView>
         <IconButton
           source={IMAGES.BACK}

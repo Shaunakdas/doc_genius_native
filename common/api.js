@@ -66,9 +66,10 @@ export const loginAPI = async (email, password) => {
   return response;
 };
 
-export const updateAPI = async (authToken, firstName, lastName, sex, dateOfBirth, mobileNumber) => {
-  const body = JSON.stringify({ firstName, lastName, sex, dateOfBirth, mobileNumber });
-  const response = await jsonFetch(`${ADMIN_BASE_URL}/users`, { body, method: 'POST' }, authToken);
+export const updateAPI = async (authToken, firstName, lastName, standard, dateOfBirth, mobileNumber) => {
+  const body = JSON.stringify({ firstName, lastName, standard, dateOfBirth, mobileNumber });
+  // const response = await jsonFetch(`${ADMIN_BASE_URL}/users`, { body, method: 'POST' }, authToken);
+  const response = await jsonFetch(`${ADMIN_BASE_URL}/auth_tokens/1`, { method: 'GET' });
   // console.log(response);
   return response;
 };
