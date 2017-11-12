@@ -11,7 +11,7 @@ import IMAGES from '../common/images';
 import { saveData } from '../common/helper';
 import { NON_VERIFIED_LOGIN } from '../common/constants';
 import {
-  newloginAPI,
+  loginAPI,
   forgotPasswordAPI,
 } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
@@ -169,7 +169,7 @@ class LoginPage extends React.Component {
     const { username, password } = this.state.values;
     const { finish, error, setUser }
       = this.props;
-    const response = await newloginAPI(username, password);
+    const response = await loginAPI(username, password);
     if (response.success === false) {
       if (response.error === NON_VERIFIED_LOGIN) {
         setUser({ username });

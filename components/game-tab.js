@@ -24,16 +24,16 @@ export default class GameTab extends Component {
   }
   static defaultProps = {
     games: [
-      { id: 1, title: 'Bounce',subTitle: 'MEMORY',image: null },
-      { id: 2, title: 'True View',subTitle: 'FOCUS',image: null },
-      { id: 3, title: 'Jump Control',subTitle: 'COORDINATION',image: null },
+      // { id: 1, title: 'Bounce',subTitle: 'MEMORY',image: null },
+      // { id: 2, title: 'True View',subTitle: 'FOCUS',image: null },
+      // { id: 3, title: 'Jump Control',subTitle: 'COORDINATION',image: null },
     ],
   }
   render() {
     const {
       games } = this.props;
     const gameCards = games.map((game) =>
-      <GameCard title={game.title} subTitle={game.subTitle} onPress={null} />);
+      <GameCard title={game.title} subTitle={game.category} onPress={null} />);
     return (
       <Content style={{ backgroundColor: '#00bfff'  }}>
         <List style={{ padding: 5}}>

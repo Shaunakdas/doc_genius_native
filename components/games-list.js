@@ -26,9 +26,9 @@ export default class GamesList extends Component {
   }
   static defaultProps = {
     games: [
-      { id: 1, title: 'Bounce',subTitle: 'MEMORY',image: null },
-      { id: 2, title: 'True View',subTitle: 'FOCUS',image: null },
-      { id: 3, title: 'Jump Control',subTitle: 'COORDINATION',image: null },
+      // { id: 1, title: 'Bounce',subTitle: 'MEMORY',image: null },
+      // { id: 2, title: 'True View',subTitle: 'FOCUS',image: null },
+      // { id: 3, title: 'Jump Control',subTitle: 'COORDINATION',image: null },
     ],
   }
   render() {
