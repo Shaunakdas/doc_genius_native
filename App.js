@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Provider } from 'react-redux';
 import moment from 'moment';
-import { BlurView } from 'expo';
+// import { BlurView } from 'expo';
 import SwipeALot from './swipealot';
 
 
@@ -273,7 +273,8 @@ class MainApp extends Component {
       color: COLORS.WHITE,
       textAlign: 'center',
     };
-    return (<BlurView tint="dark" intensity={80} style={StyleSheet.absoluteFill}>
+    return (
+
       <SwipeALot
         onSetActivePage={this.onPageChange}
         autoPlay={{
@@ -540,7 +541,7 @@ class MainApp extends Component {
           </Text>
         </View>
       </SwipeALot>
-    </BlurView>);
+    );
   };
 
   renderStudentOnBoarding = () => {
@@ -549,7 +550,7 @@ class MainApp extends Component {
       color: COLORS.WHITE,
       textAlign: 'center',
     };
-    return (<BlurView tint="dark" intensity={80} style={StyleSheet.absoluteFill}>
+    return (
       <SwipeALot
         onSetActivePage={this.onPageChange}
         autoPlay={{
@@ -846,7 +847,7 @@ class MainApp extends Component {
           </Text>
         </View>
       </SwipeALot>
-    </BlurView>);
+    );
   };
 
   render() {

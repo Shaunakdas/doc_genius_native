@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, Image, ActivityIndicator, Platform } from 'react-native';
 import { PropTypes } from 'prop-types';
-import { Font, Notifications, Permissions, Asset } from 'expo';
+import { Font, Asset } from 'expo';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 

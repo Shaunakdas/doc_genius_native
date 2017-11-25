@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, Image, ActivityIndicator, Platform } from 'react-native';
 import { PropTypes } from 'prop-types';
-import { Font, Notifications, Permissions, Asset } from 'expo';
+// import { Font, Notifications, Permissions, Asset } from 'expo';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
@@ -41,18 +41,18 @@ class SplashPage extends React.Component {
   }
 
   async componentDidMount() {
-    const imageAssets = this.cacheImages(Object.values(IMAGES));
-    await Promise.all(...imageAssets, Font.loadAsync({
-      'firasans-light': require('../assets/fonts/light.ttf'),
-      'firasans-regular': require('../assets/fonts/regular.ttf'),
-      'firasans-semibold': require('../assets/fonts/semibold.ttf'),
-    }));
-    this.start();
-  }
+  //   const imageAssets = this.cacheImages(Object.values(IMAGES));
+  //   await Promise.all(...imageAssets, Font.loadAsync({
+  //     'firasans-light': require('../assets/fonts/light.ttf'),
+  //     'firasans-regular': require('../assets/fonts/regular.ttf'),
+  //     'firasans-semibold': require('../assets/fonts/semibold.ttf'),
+  //   }));
+  //   this.start();
+  // }
 
   setMessage = loadingMessage => this.setState({ loadingMessage });
 
-  cacheImages = images => images.map(image => Asset.fromModule(image).downloadAsync())
+  // cacheImages = images => images.map(image => Asset.fromModule(image).downloadAsync())
 
   registerForPushNotificationsAsync = async () => {
     const { status: existingStatus } = await Permissions.getAsync(

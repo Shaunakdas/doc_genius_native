@@ -11,7 +11,7 @@ import { Text,
   TouchableOpacity,
   RefreshControl,
 } from 'react-native';
-import { WebBrowser } from 'expo';
+// import { WebBrowser } from 'expo';
 
 import { commonStyle as cs, chatPageStyle as s, fullHeight, fullWidth } from '../common/styles';
 import { Button, IconButton, HighlightText } from '../components';
@@ -127,7 +127,7 @@ class ChatPage extends React.Component {
 
   handleOpeningUrl = async (url) => {
     if (url) {
-      await WebBrowser.openBrowserAsync(url);
+      // await WebBrowser.openBrowserAsync(url);
     }
   }
 

@@ -3,7 +3,7 @@ import { Text, View, ScrollView, Image, TouchableOpacity, ActivityIndicator, Pla
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
-import { ImagePicker } from 'expo';
+// import { ImagePicker } from 'expo';
 
 import IMAGES from '../common/images';
 import { Button, IconButton, Input } from '../components';
@@ -141,23 +141,23 @@ class ProfileEditPage extends React.Component {
   showModal = () => this.setState({ isModalVisible: true })
 
   hideModal = () => this.setState({ isModalVisible: false })
-
+  
   takePhoto = async () => {
-    const pickerResult = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [3, 3],
-      quality: 0,
-    });
-    await this.handleImagePicked(pickerResult);
+    // const pickerResult = await ImagePicker.launchCameraAsync({
+    //   allowsEditing: true,
+    //   aspect: [3, 3],
+    //   quality: 0,
+    // });
+    // await this.handleImagePicked(pickerResult);
   };
 
   pickImage = async () => {
-    const pickerResult = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [3, 3],
-      quality: 0,
-    });
-    await this.handleImagePicked(pickerResult);
+    // const pickerResult = await ImagePicker.launchImageLibraryAsync({
+    //   allowsEditing: true,
+    //   aspect: [3, 3],
+    //   quality: 0,
+    // });
+    // await this.handleImagePicked(pickerResult);
   };
 
   handleImagePicked = async (pickerResult) => {

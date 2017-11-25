@@ -12,7 +12,7 @@ import {
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 // import moment from 'moment';
-import { Font } from 'expo';
+// import { Font } from 'expo';
 
 // import IMAGES from '../common/images';
 import COLORS, { alpha } from '../common/colors';
