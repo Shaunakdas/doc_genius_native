@@ -21,6 +21,7 @@ import { NavigationActions } from 'react-navigation';
 //   Text,  
 // } from 'react-native';
 // import IMAGES from '../common/images';
+import { font } from '../common/styles';
 import { updateAPI } from '../common/api';
 import COLORS, { alpha } from '../common/colors';
 import TextInput from './text-input';
@@ -318,19 +319,17 @@ export default class SignUpform extends Component {
                   </Item>
                 </Col>
               </Row>
-              <Row style={{ padding: 40, justifyContent: 'center' }}>
-                {errors.overall ?
+              {errors.overall ?
                   <Text
                     style={{
-                      color: alpha(COLORS.RED, 0.7),
-                      marginTop: 3,
-                      marginBottom: 20,
-                      ...font(11),
+                      color: alpha(COLORS.RED, 0.7), paddingHorizontal: 20, paddingTop:20, alignContent: 'center'
                     }}
                   >
                     {errors.overall}
                   </Text>
                   : null}
+              <Row style={{ padding: 20, justifyContent: 'center' }}>
+                
                 <Col>
                   <Button block primary rounded
                   onPress={this.getStarted}>

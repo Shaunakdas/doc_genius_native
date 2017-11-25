@@ -9,7 +9,7 @@ import {
 import { NavigationActions } from 'react-navigation';
 
 
-import { commonStyle as cs, signupPageStyle as s, font } from '../common/styles';
+import { commonStyle as cs, signupPageStyle as s } from '../common/styles';
 import { SignUpForm, IconButton, Input } from '../components';
 import IMAGES from '../common/images';
 // import { validateEmail } from '../common/helper';

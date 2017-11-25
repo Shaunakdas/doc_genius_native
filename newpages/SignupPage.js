@@ -12,7 +12,7 @@ import { validateEmail, saveData } from '../common/helper';
 import COLORS, { alpha } from '../common/colors';
 // import { STUDENT_ROLE, COUNSELOR_ROLE } from '../common/constants';
 import { signupAPI } from '../common/api';
-import { loggedIn, setLoggedInUser } from '../store/actions';
+import { loggedIn, setLoggedInUser, setAuthToken } from '../store/actions';
 
 const commonInputProps = {
   style: cs.input,
@@ -140,6 +140,7 @@ class SignupPage extends React.Component {
       setUser(response);
       const { auth_token: authToken } = response;
       saveData('AUTH_TOKEN', authToken);
+      this.props.setToken(authToken);
       this.setState({ signingUp: false });
       this.props.navigation.dispatch(
         {
@@ -243,6 +244,7 @@ class SignupPage extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
+  setToken: authToken => dispatch(setAuthToken(authToken)),
   setLoggedIn: () => dispatch(loggedIn()),
   setUser: user => dispatch(setLoggedInUser(user)),
 });

@@ -19,6 +19,7 @@ import {
   startLogIn,
   loginError,
   loggedIn,
+  setAuthToken,
   setLoggedInUser,
 } from '../store/actions';
 
@@ -192,6 +193,7 @@ class LoginPage extends React.Component {
     } else {
       const { auth_token: authToken } = response;
       await saveData('AUTH_TOKEN', authToken);
+      this.props.setToken(authToken);
       finish();
       const resetAction = NavigationActions.reset({
         index: 0,
@@ -292,6 +294,7 @@ const mapStateToProps = ({ loginState }) => {
 };
 
 const mapDispatchToProps = dispatch => ({
+  setToken: authToken => dispatch(setAuthToken(authToken)),
   start: () => dispatch(startLogIn()),
   finish: () => dispatch(loggedIn()),
   setUser: user => dispatch(setLoggedInUser(user)),
