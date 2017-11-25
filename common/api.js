@@ -54,14 +54,14 @@ const jsonFetch = async (url, options = {}, authToken = '') => {
 
 export const signupAPI = async (email, password) => {
   const body = JSON.stringify({ email, password });
-  const response = await jsonFetch(`${ADMIN_BASE_URL}/auth_tokens/1`, { method: 'GET' });
+  const response = await jsonFetch(`${ADMIN_BASE_URL}/sign_up`, { method: 'GET' });
   // console.log(response);
   return response;
 };
 
 export const loginAPI = async (email, password) => {
   const body = JSON.stringify({ email, password });
-  const response = await jsonFetch(`${ADMIN_BASE_URL}/auth_tokens/1`, { method: 'GET' });
+  const response = await jsonFetch(`${ADMIN_BASE_URL}/login`, { method: 'GET' });
   // console.log(response);
   return response;
 };
@@ -69,7 +69,7 @@ export const loginAPI = async (email, password) => {
 export const updateAPI = async (authToken, firstName, lastName, standard, dateOfBirth, mobileNumber) => {
   const body = JSON.stringify({ firstName, lastName, standard, dateOfBirth, mobileNumber });
   // const response = await jsonFetch(`${ADMIN_BASE_URL}/users`, { body, method: 'POST' }, authToken);
-  const response = await jsonFetch(`${ADMIN_BASE_URL}/auth_tokens/1`, { method: 'GET' });
+  const response = await jsonFetch(`${ADMIN_BASE_URL}/email`, { method: 'GET' });
   // console.log(response);
   return response;
 };
@@ -132,7 +132,7 @@ export const homePageAPI = async (authToken) => {
 };
 
 export const gameDetailsAPI = async (authToken) => {
-  const response = await jsonFetch(`${BASE_URL}/game_list/1`, { method: 'GET' }, authToken);
+  const response = await jsonFetch(`${BASE_URL}/question_type`, { method: 'GET' }, authToken);
   return response;
 };
 

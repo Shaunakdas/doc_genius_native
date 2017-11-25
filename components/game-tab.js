@@ -44,7 +44,7 @@ export default class GameTab extends Component {
       games,
       goToGame } = this.props;
     const gameCards = games.map((game) =>
-      <GameCard title={game.title} subTitle={game.category} onPress={ (game) => goToGame(game) } />);
+      <GameCard title={game.title} subTitle={game.subTitle} onPress={ (game) => goToGame(game) } />);
     return (
       <Content style={{ backgroundColor: '#00bfff'  }}>
         <List style={{ padding: 5}}>

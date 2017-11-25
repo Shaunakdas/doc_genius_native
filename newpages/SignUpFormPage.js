@@ -40,9 +40,10 @@ class SignupFormPage extends React.Component {
     this.inputs = {};
     this.state = {
       signingUp: false,
-      standards:[
-      { label: '6th Class', key: '6' },
-    ],
+      standards: [
+        { label: '6th Class', key: '6' },
+        { label: '6th Class', key: '7' },
+      ],
       values: {
         firstName: '',
         lastName: '',

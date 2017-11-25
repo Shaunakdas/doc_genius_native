@@ -1,4 +1,266 @@
 {
+  
+  "sign_up": {
+    "auth_token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyfQ.XEZE4bkgRq2jX4woVUMxJWQEHGekJKsCZaZ0jIIjGaQ",
+    "user": {
+        "id": 2,
+        "email": "shaunakdas2020+cira@gmail.com"
+    },
+    "standards": {
+        "result": [
+            {
+                "id": 1,
+                "name": "6",
+                "slug": "6",
+                "sequence": "null",
+                "created_at": "2017-11-24T15:42:51.972Z",
+                "updated_at": "2017-11-24T15:42:51.972Z"
+            },
+            {
+                "id": 2,
+                "name": "7",
+                "slug": "7",
+                "sequence": "null",
+                "created_at": "2017-11-24T15:42:55.887Z",
+                "updated_at": "2017-11-24T15:42:55.887Z"
+            }
+        ],
+        "page": 1,
+        "limit": 10,
+        "total_count": 2,
+        "search": "null"
+      }
+    },
+  "login": {
+    "auth_token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.UgzskYkiAusgKKp9YoXsoOaEzw-gTUpiA66utvgVjLE",
+    "user": {
+      "id": 1,
+      "email": "shaunakdas2020+etsuko@gmail.com"
+    }
+  },
+  "homepage":{
+    "homepage": {
+        "id": 2,
+        "first_name": "cira",
+        "last_name": "Das",
+        "email": "shaunakdas2020+cira@gmail.com",
+        "sex": "Male",
+        "birth": "1991-08-20",
+        "standard": {
+            "id": 1,
+            "name": "6",
+            "slug": "6",
+            "sequence": null
+        },
+        "recent_questions": [
+            {
+                "id": 1,
+                "name": "Comparing multiple numbers",
+                "slug": "comparing-multiple-numbers",
+                "sub_topic": {
+                    "id": 1,
+                    "name": "Comparing Numbers",
+                    "slug": "comparing-numbers",
+                    "topic": {
+                        "id": 2,
+                        "name": "Comparing Numbers",
+                        "slug": "comparing-numbers",
+                        "chapter": {
+                            "id": 1,
+                            "name": "Knowing the Numbers",
+                            "slug": "knowing-the-numbers",
+                            "sequence_standard": 1
+                        },
+                        "sequence": 2
+                    },
+                    "sequence": 1
+                },
+                "sequence": 1,
+                "image_url": null,
+                "title": "Comparing multiple numbers",
+                "subTitle": "Knowing the Numbers"
+            },
+            {
+                "id": 2,
+                "name": "Making largest or smallest numbers without repeatition",
+                "slug": "making-largest-or-smallest-numbers-without-repeatition",
+                "sub_topic": {
+                    "id": 2,
+                    "name": "Making number by rearranging digits",
+                    "slug": "making-number-by-rearranging-digits",
+                    "topic": {
+                        "id": 2,
+                        "name": "Comparing Numbers",
+                        "slug": "comparing-numbers",
+                        "chapter": {
+                            "id": 1,
+                            "name": "Knowing the Numbers",
+                            "slug": "knowing-the-numbers",
+                            "sequence_standard": 1
+                        },
+                        "sequence": 2
+                    },
+                    "sequence": 2
+                },
+                "sequence": 1,
+                "image_url": null,
+                "title": "Making largest or smallest numbers without repeatition",
+                "subTitle": "Knowing the Numbers"
+            },
+            {
+                "id": 3,
+                "name": "Expanding in indian system",
+                "slug": "expanding-in-indian-system",
+                "sub_topic": {
+                    "id": 4,
+                    "name": "Number Expansion",
+                    "slug": "number-expansion",
+                    "topic": {
+                        "id": 2,
+                        "name": "Comparing Numbers",
+                        "slug": "comparing-numbers",
+                        "chapter": {
+                            "id": 1,
+                            "name": "Knowing the Numbers",
+                            "slug": "knowing-the-numbers",
+                            "sequence_standard": 1
+                        },
+                        "sequence": 2
+                    },
+                    "sequence": 4
+                },
+                "sequence": 1,
+                "image_url": null,
+                "title": "Expanding in indian system",
+                "subTitle": "Knowing the Numbers"
+            },
+            {
+                "id": 4,
+                "name": "Finding Place Value in Indian System of Numeration",
+                "slug": "finding-place-value-in-indian-system-of-numeration",
+                "sub_topic": {
+                    "id": 5,
+                    "name": "Indian System of Numeration",
+                    "slug": "indian-system-of-numeration",
+                    "topic": {
+                        "id": 2,
+                        "name": "Comparing Numbers",
+                        "slug": "comparing-numbers",
+                        "chapter": {
+                            "id": 1,
+                            "name": "Knowing the Numbers",
+                            "slug": "knowing-the-numbers",
+                            "sequence_standard": 1
+                        },
+                        "sequence": 2
+                    },
+                    "sequence": 5
+                },
+                "sequence": 1,
+                "image_url": null,
+                "title": "Finding Place Value in Indian System of Numeration",
+                "subTitle": "Knowing the Numbers"
+            },
+            {
+                "id": 5,
+                "name": "Finding Place Value in International System of Numeration",
+                "slug": "finding-place-value-in-international-system-of-numeration",
+                "sub_topic": {
+                    "id": 6,
+                    "name": "International System of Numeration",
+                    "slug": "international-system-of-numeration",
+                    "topic": {
+                        "id": 2,
+                        "name": "Comparing Numbers",
+                        "slug": "comparing-numbers",
+                        "chapter": {
+                            "id": 1,
+                            "name": "Knowing the Numbers",
+                            "slug": "knowing-the-numbers",
+                            "sequence_standard": 1
+                        },
+                        "sequence": 2
+                    },
+                    "sequence": 6
+                },
+                "sequence": 1,
+                "image_url": null,
+                "title": "Finding Place Value in International System of Numeration",
+                "subTitle": "Knowing the Numbers"
+            }
+        ]
+    }
+  },
+  "question_type":{
+    "question_type": {
+        "id": 1,
+        "name": "Comparing multiple numbers",
+        "slug": "comparing-multiple-numbers",
+        "sub_topic": {
+            "id": 1,
+            "name": "Comparing Numbers",
+            "slug": "comparing-numbers",
+            "topic": {
+                "id": 2,
+                "name": "Comparing Numbers",
+                "slug": "comparing-numbers",
+                "chapter": {
+                    "id": 1,
+                    "name": "Knowing the Numbers",
+                    "slug": "knowing-the-numbers",
+                    "sequence_standard": 1
+                },
+                "sequence": 2
+            },
+            "sequence": 1
+        },
+        "sequence": 1,
+        "top_score": 0,
+        "challenges": [],
+        "scores": {
+            "recent": [],
+            "top": []
+        },
+        "benifits": [],
+        "current": {
+            "id": 1,
+            "name": "Working Rule for comparing multiple numbers",
+            "slug": "working-rule-for-comparing-multiple-numbers",
+            "sequence": "null",
+            "question_text": "<p type=\"comprehension\"> <line type=\"text\" locationType=\"top\"> Compare following numbers \\n 250105, 2496, 255006 </line></p><p type=\"question_step\" align=\"vertical\" correctType=\"single_correct\"> <line type=\"text\" locationType=\"top\">Write number of digits in each number</line> <line type=\"post_submit_text\">We know that number with least amount of digits is the smallest</line> <line type=\"table\"> <trow> <tcell type=\"text\">250105</tcell> <tcell type=\"drop_zone\" answer=\"6\"></tcell> </trow> <trow> <tcell type=\"text\">1056</tcell> <tcell type=\"drop_zone\" answer=\"4\"></tcell> </trow> <trow> <tcell type=\"text\">255006</tcell> <tcell type=\"drop_zone\" answer=\"6\"></tcell> </trow> </line><line type=\"table\" locationType=\"bottom\"> <trow type=\"drag_source_line\" sourceType=\"integer\" start=\"0\" end=\"9\"> </trow> </line></p><p type=\"question_step\" align=\"vertical\" correctType=\"single_correct\"> <line type=\"text\" locationType=\"top\">Drag the smallest number to the first spot on the compairision table</line> <line type=\"post_submit_text\">Now we have to compare 2 numbers with same number of digits</line> <line type=\"table\"> <trow> <tcell type=\"text\">250105</tcell> <tcell type=\"text\">6</tcell> </trow> <trow> <tcell type=\"text\">1056</tcell> <tcell type=\"text\">4</tcell> </trow> <trow> <tcell type=\"text\">255006</tcell> <tcell type=\"text\">6</tcell> </trow> </line> <line type=\"table\"> <trow> <tcell type=\"drop_zone\" id=\"1\" size=\"5\"></tcell> <tcell type=\"text\">&lt;</tcell> <tcell type=\"text\"> </tcell> <tcell type=\"text\">&lt;</tcell> <tcell type=\"text\"> </tcell> </trow> </line><line type=\"table\" locationType=\"bottom\"> <trow type=\"drag_source_line\"> <tcell type=\"text\">250105</tcell> <tcell type=\"text\" id=\"1\">1056</tcell> <tcell type=\"text\">255006</tcell> </trow> </line></p><p type=\"question_step\" align=\"vertical\" correctType=\"single_correct\"> <line type=\"text\" locationType=\"top\">In the remaining 2 numbers, find the largest digit where 2 numbers differ</line> <line type=\"post_submit_text\">Now we know digit at the thousands place of 255006 is greater than 250105</line> <line type=\"text\">250105 and 255006</line> <line type=\"table\"> <trow> <tcell type=\"selectable_button\" answer=\"0\">2</tcell> <tcell type=\"selectable_button\" answer=\"0\">5</tcell> <tcell type=\"selectable_button\" answer=\"0\">0</tcell> <tcell type=\"selectable_button\" answer=\"0\">1</tcell> <tcell type=\"selectable_button\" answer=\"0\">0</tcell> <tcell type=\"selectable_button\" answer=\"0\">5</tcell> </trow> <trow> <tcell type=\"selectable_button\" answer=\"0\">2</tcell> <tcell type=\"selectable_button\" answer=\"0\">5</tcell> <tcell type=\"selectable_button\" answer=\"1\">5</tcell> <tcell type=\"selectable_button\" answer=\"0\">0</tcell> <tcell type=\"selectable_button\" answer=\"0\">0</tcell> <tcell type=\"selectable_button\" answer=\"0\">6</tcell> </trow> </line></p><p type=\"question_step\" align=\"vertical\" correctType=\"single_correct\"> <line type=\"text\" locationType=\"top\">Arrange the remaining 2 numbers on the compairision table</line> <line type=\"post_submit_text\">Now you know how to arrange large numbers. Yay!!</line> <line type=\"table\"> <trow> <tcell type=\"text\"> 25{\\bg[yellow]\\color[black]0}106</tcell> <tcell type=\"text\"> 25{\\bg[yellow]\\color[black]5}006</tcell> </trow> </line> <line type=\"table\"> <trow> <tcell type=\"text\">1056</tcell> <tcell type=\"text\">&lt;</tcell> <tcell type=\"drop_zone\" id=\"2\" size=\"8\"></tcell> <tcell type=\"text\">&lt;</tcell> <tcell type=\"drop_zone\" id=\"1\" size=\"8\"></tcell> </trow> </line> <line type=\"table\" locationType=\"bottom\"> <trow type=\"drag_source_line\"> <tcell type=\"text\" id=\"1\">250105</tcell> <tcell type=\"text\" id=\"2\">255006</tcell> </trow> </line></p>"
+        }
+    }
+  },
+  "game_session":{
+    "game_session": {
+        "id": 2,
+        "start": "2017-11-25T02:05:17.732Z",
+        "finish": "2017-11-25T02:05:47.000Z",
+        "user": {
+            "id": 1,
+            "first_name": "etsuko",
+            "last_name": "Das",
+            "email": "shaunakdas2020+etsuko@gmail.com",
+            "sex": "Male",
+            "birth": "1991-08-20",
+            "standard": {
+                "id": 1,
+                "name": "6",
+                "slug": "6",
+                "sequence": "null"
+            }
+        },
+        "session_score": {
+            "value": "236.0",
+            "time_taken": 568,
+            "correct_count": 0,
+            "incorrect_count": 0,
+            "seen": "false",
+            "passed": "false",
+            "failed": "true"
+        }
+    }
+  },
   "users": [
     {
       "id": 1,
@@ -28,6 +290,9 @@
   "profile": {
     "name": "typicode"
   },
+  "profile": {
+    "name": "typicode"
+  },
   "standards":[
     { "label": "5th Class", "key": "5" },
     { "label": "6th Class", "key": "6" },
@@ -36,7 +301,7 @@
     { "label": "9th Class", "key": "9" },
     { "label": "10th Class", "key": "10" }
   ],
-  "homepage":{
+  "homepage_old":{
     "game_list":[
       {
         "id":1,
@@ -156,10 +421,10 @@
     "title": "Memory",
     "highest": 2300,
     "recent":[
-      { "value":308, "recent": false, "title":"" },
-      { "value":412, "recent": false, "title":"" },
-      { "value":112, "recent": false, "title":"" },
-      { "value":213, "recent": true, "title":"3rd Best" }
+      { "value":308, "recent": "false", "title":"" },
+      { "value":412, "recent": "false", "title":"" },
+      { "value":112, "recent": "false", "title":"" },
+      { "value":213, "recent": "true", "title":"3rd Best" }
     ],
     "comparision":[
       { "value":308, "title":"You" },

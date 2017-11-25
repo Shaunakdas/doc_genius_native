@@ -33,7 +33,7 @@ class GameListPage extends React.Component {
     super(props);
     this.state = {
       // searchTerm: '',
-      games: null,
+      games: [],
       refreshing: false,
       loading: false,
     };
@@ -41,9 +41,9 @@ class GameListPage extends React.Component {
   
   fetchGames = async () =>{
     const gamesResponse = await gamesAPI() || {};
-    console.log(gamesResponse);
+    console.log(gamesResponse.homepage.recent_questions);
     if (gamesResponse.success !== false) {
-      this.setState({ games: gamesResponse});
+      this.setState({ games: gamesResponse.homepage.recent_questions});
     }
   }
   
@@ -65,11 +65,8 @@ class GameListPage extends React.Component {
 
   render() {
     const { games, refreshing, loading, addingMore } = this.state;
-    const { game_list } = games || {
-      game_list: [],
-    };
     return (
-      <GamesList games={game_list} goToGame = {this.goToGame}/>
+      <GamesList games={games} goToGame = {this.goToGame}/>
     );
   }
 }
