@@ -1,26 +1,34 @@
 {
   "expo": {
-   "name": "ConnecPath",
-   "icon": "./assets/img/logo.png",
-   "version": "1.0.5",
-   "slug": "connecpath-forum",
-   "sdkVersion": "21.0.0",
-   "privacy": "unlisted",   
-   "ios": {
-     "bundleIdentifier": "com.connecpath.forum",
-     "buildNumber": "5",
-     "supportsTablet": false,
-     "icon":"./assets/img/apple_logo.png"
-   },
-   "android": {
-     "package": "com.connecpath.forum",
-     "versionCode": 5
-   },
-   "orientation" : "portrait",
-   "loading":{
-    "icon": "./assets/img/logo_small.png",    
-    "backgroundColor":"#019AC1",
-    "hideExponentText": true
-   }
+    "name": "ConnecPath",
+    "icon": "./assets/img/logo.png",
+    "version": "1.0.5",
+    "slug": "connecpath-forum",
+    "sdkVersion": "21.0.0",
+    "privacy": "unlisted",
+    "ios": {
+      "bundleIdentifier": "com.connecpath.forum",
+      "buildNumber": "5",
+      "supportsTablet": false,
+      "icon": "./assets/img/apple_logo.png",
+      "publishBundlePath": "ios/connecpath/Supporting/shell-app.bundle",
+      "publishManifestPath": "ios/connecpath/Supporting/shell-app-manifest.json"
+    },
+    "android": {
+      "package": "com.connecpath.forum",
+      "versionCode": 5
+    },
+    "orientation": "portrait",
+    "loading": {
+      "icon": "./assets/img/logo_small.png",
+      "backgroundColor": "#019AC1",
+      "hideExponentText": true
+    },
+    "isDetached": true,
+    "detach": {
+      "scheme": "expea75739a31a245a0ba5273b127934cab",
+      "iosExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/ios-v1.20.5-sdk21.0.0-11e2eb3f-807e-48d4-8685-b0694f874637.tar.gz",
+      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v1.20.0-sdk21.0.0-38791499-fe99-4600-950d-cf7e2e85cea9.tar.gz"
+    }
   }
 }
