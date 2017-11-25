@@ -153,6 +153,9 @@ const getNavigator = () => {
     GameDetailsPage: {
       screen: PAGES.GameDetailsPage,
     },
+    GameResultPage: {
+      screen: PAGES.GameResultPage,
+    },
   }, {
     headerMode: 'none',
     navigationOptions: {

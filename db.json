@@ -154,14 +154,14 @@
     ],
   "game_attempts":{
     "title": "Memory",
-    "high_score": 2300,
-    "recent_scores":[
+    "highest": 2300,
+    "recent":[
       { "value":308, "recent": false, "title":"" },
       { "value":412, "recent": false, "title":"" },
       { "value":112, "recent": false, "title":"" },
       { "value":213, "recent": true, "title":"3rd Best" }
     ],
-    "scores_comparision":[
+    "comparision":[
       { "value":308, "title":"You" },
       { "value":200, "title":"Other Students \n (Average)" }
     ],
