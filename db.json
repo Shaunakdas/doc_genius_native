@@ -297,14 +297,32 @@
   "profile": {
     "name": "typicode"
   },
-  "standards":[
-    { "label": "5th Class", "key": "5" },
-    { "label": "6th Class", "key": "6" },
-    { "label": "7th Class", "key": "7" },
-    { "label": "8th Class", "key": "8" },
-    { "label": "9th Class", "key": "9" },
-    { "label": "10th Class", "key": "10" }
-  ],
+  "standards":{
+    "standards": [
+        {
+            "id": 1,
+            "name": "6",
+            "slug": "6",
+            "sequence": "null",
+            "key": "6",
+            "label": "6th Class"
+        },
+        {
+            "id": 2,
+            "name": "7",
+            "slug": "7",
+            "sequence": "null",
+            "key": "7",
+            "label": "7th Class"
+        }
+    ],
+    "meta": {
+        "page": 1,
+        "limit": 10,
+        "total_count": 2,
+        "search": "null"
+    }
+  },
   "homepage_old":{
     "game_list":[
       {

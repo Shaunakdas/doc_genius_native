@@ -84,7 +84,7 @@ class SignupFormPage extends React.Component {
     const standardResponse = await standardsAPI() || {};
     console.log(standardResponse);
     if (standardResponse.success !== false) {
-      this.setState({ standards: standardResponse});
+      this.setState({ standards: standardResponse.standards});
     }
   }
   
@@ -194,7 +194,7 @@ class SignupFormPage extends React.Component {
           <SignUpForm
             standards={this.state.standards} nextAction={this.nextAction}
              />
-            }
+            
         </ScrollView>
         <IconButton
           source={IMAGES.BACK}

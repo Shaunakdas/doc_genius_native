@@ -71,6 +71,7 @@ class SplashPage extends React.Component {
   tryLogin = async () => {
     // const { finish, setToken, setUser, setRelevantCategories, setBotChannel } = this.props;
     const authToken = await getData('AUTH_TOKEN');
+    console.log(authToken);
     try {
       if (authToken) {
         this.setMessage('Loading Profile...');
