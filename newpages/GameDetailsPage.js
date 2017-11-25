@@ -76,7 +76,7 @@ export default class GameDetailsPage extends Component {
     const gameDetailResponse = await gameDetailsAPI(1) || {};
     console.log(gameDetailResponse);
     if (gameDetailResponse.success !== false) {
-      this.setState({ gameDetails: gameDetailResponse });
+      this.setState({ gameDetails: gameDetailResponse.question_type });
       console.log(this.state.gameDetails.title);
     }
   }

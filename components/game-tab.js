@@ -45,6 +45,8 @@ export default class GameTab extends Component {
       goToGame } = this.props;
     const gameCards = games.map((game) =>
       <GameCard title={game.title} subTitle={game.subTitle} onPress={ (game) => goToGame(game) } />);
+    const oddCards = gameCards.filter((v, i) => i % 2);
+    const evenCards = gameCards.filter((v, i) => !(i % 2));
     return (
       <Content style={{ backgroundColor: '#00bfff'  }}>
         <List style={{ padding: 5}}>
@@ -55,10 +57,10 @@ export default class GameTab extends Component {
             {(games.length>0)?
               <Grid >
                 <Col style={{ padding: 5 }}>
-                  {gameCards}
+                  {oddCards}
                 </Col>
                 <Col style={{ padding: 5 }}>
-                  {gameCards}
+                  {evenCards}
                 </Col>
               </Grid>
               : <Spinner color='blue' /> }
