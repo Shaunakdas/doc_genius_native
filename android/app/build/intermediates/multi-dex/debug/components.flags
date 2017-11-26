@@ -1,0 +1,101 @@
+-injars /Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/transforms/jarMerging/debug/jars/1/1f/combined.jar
+-outjars /Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/multi-dex/debug/componentClasses.jar
+
+-libraryjars /Users/shaunakdas2020/Library/Android/sdk/build-tools/25.0.2/lib/shrinkedAndroid.jar
+
+-forceprocessing
+-dontoptimize
+-dontobfuscate
+-dontusemixedcaseclassnames
+-dontpreverify
+-dontnote **,com.android.tools.fd.**,android.support.multidex.MultiDexExtractor
+-dontwarn **
+-printconfiguration /Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/multi-dex/debug/components.flags
+
+
+-keep class com.connecpath.forum.MainApplication {
+    <init>();
+    void attachBaseContext(android.content.Context);
+}
+
+-keep class com.connecpath.forum.MainActivity {
+    <init>();
+}
+
+-keep class host.exp.exponent.notifications.ScheduledNotificationReceiver {
+    <init>();
+}
+
+-keep class android.support.v4.content.FileProvider {
+    <init>();
+}
+
+-keep class com.google.android.gms.common.api.GoogleApiActivity {
+    <init>();
+}
+
+-keep class com.google.android.gms.auth.api.signin.internal.SignInHubActivity {
+    <init>();
+}
+
+-keep class com.google.android.gms.auth.api.signin.RevocationBoundService {
+    <init>();
+}
+
+-keep class com.google.android.gms.ads.AdActivity {
+    <init>();
+}
+
+-keep class com.google.android.gms.ads.purchase.InAppPurchaseActivity {
+    <init>();
+}
+
+-keep class net.openid.appauth.AuthorizationManagementActivity {
+    <init>();
+}
+
+-keep class net.openid.appauth.RedirectUriReceiverActivity {
+    <init>();
+}
+
+-keep class com.facebook.internal.FacebookInitProvider {
+    <init>();
+}
+
+-keep class com.facebook.FacebookActivity {
+    <init>();
+}
+
+-keep class com.facebook.CustomTabMainActivity {
+    <init>();
+}
+
+-keep class com.facebook.ads.AudienceNetworkActivity {
+    <init>();
+}
+
+-keep class io.nlopez.smartlocation.activity.providers.ActivityGooglePlayServicesProvider$ActivityRecognitionService {
+    <init>();
+}
+
+-keep class io.nlopez.smartlocation.geofencing.providers.GeofencingGooglePlayServicesProvider$GeofencingService {
+    <init>();
+}
+
+-keep class io.nlopez.smartlocation.geocoding.providers.AndroidGeocodingProvider$AndroidGeocodingService {
+    <init>();
+}
+
+-keep public class * extends android.app.backup.BackupAgent {
+    <init>();
+}
+
+-keep public class * extends java.lang.annotation.Annotation {
+    <fields>;
+    <methods>;
+}
+
+-keep class com.android.tools.fd.** {
+    <fields>;
+    <methods>;
+}
