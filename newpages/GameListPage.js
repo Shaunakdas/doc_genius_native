@@ -57,8 +57,8 @@ class GameListPage extends React.Component {
     }
   }
   
-  goToGame = (game) => {
-    console.log(game);
+  goToGame = (id) => {
+    // console.log(game);
     const { navigation } = this.props;
     navigation.navigate('GameDetailsPage', {  });
   }
