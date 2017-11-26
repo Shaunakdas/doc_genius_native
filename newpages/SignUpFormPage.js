@@ -185,7 +185,6 @@ class SignupFormPage extends React.Component {
     return (
       <KeyboardAvoidingView
         style={[cs.container, s.container]}
-        behavior="padding"
       >
         <ScrollView
           style={cs.scroll}

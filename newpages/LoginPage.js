@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { Image, ScrollView, KeyboardAvoidingView, View } from 'react-native';
 import { Text } from 'native-base';
 import { PropTypes } from 'prop-types';
 import { NavigationActions } from 'react-navigation';
@@ -215,7 +215,6 @@ class LoginPage extends React.Component {
     return (
       <KeyboardAvoidingView
         style={[cs.container, s.container]}
-        behavior="padding"
       >
         <ScrollView
           style={cs.scroll}
