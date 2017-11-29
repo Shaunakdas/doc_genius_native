@@ -4,6 +4,14 @@
         "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color/abc_tint_spinner.xml"
     },
     {
+        "merged": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/res/merged/debug/color/abc_secondary_text_material_dark.xml",
+        "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/color/abc_secondary_text_material_dark.xml"
+    },
+    {
+        "merged": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/res/merged/debug/color/abc_secondary_text_material_light.xml",
+        "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/color/abc_secondary_text_material_light.xml"
+    },
+    {
         "merged": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/res/merged/debug/color/abc_tint_switch_thumb.xml",
         "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color/abc_tint_switch_thumb.xml"
     },
@@ -52,12 +60,24 @@
         "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/color/abc_secondary_text_material_dark.xml"
     },
     {
+        "merged": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/res/merged/debug/color/switch_thumb_material_light.xml",
+        "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/color/switch_thumb_material_light.xml"
+    },
+    {
+        "merged": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/res/merged/debug/color/abc_primary_text_material_dark.xml",
+        "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/color/abc_primary_text_material_dark.xml"
+    },
+    {
         "merged": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/res/merged/debug/color/abc_tint_btn_checkable.xml",
         "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color/abc_tint_btn_checkable.xml"
     },
     {
         "merged": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/res/merged/debug/color/com_facebook_button_text_color.xml",
         "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-common/4.28.0/res/color/com_facebook_button_text_color.xml"
+    },
+    {
+        "merged": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/res/merged/debug/color/abc_primary_text_disable_only_material_light.xml",
+        "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/color/abc_primary_text_disable_only_material_light.xml"
     },
     {
         "merged": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/res/merged/debug/color/abc_btn_colored_text_material.xml",
@@ -96,11 +116,27 @@
         "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color/abc_tint_edittext.xml"
     },
     {
+        "merged": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/res/merged/debug/color/switch_thumb_material_dark.xml",
+        "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/color/switch_thumb_material_dark.xml"
+    },
+    {
+        "merged": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/res/merged/debug/color/abc_primary_text_material_light.xml",
+        "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/color/abc_primary_text_material_light.xml"
+    },
+    {
+        "merged": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/res/merged/debug/color/abc_search_url_text.xml",
+        "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/color/abc_search_url_text.xml"
+    },
+    {
         "merged": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/res/merged/debug/color/wallet_secondary_text_holo_dark.xml",
         "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/9.8.0/res/color/wallet_secondary_text_holo_dark.xml"
     },
     {
         "merged": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/res/merged/debug/color/abc_tint_seek_thumb.xml",
         "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_eject/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color/abc_tint_seek_thumb.xml"
+    },
+    {
+        "merged": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/res/merged/debug/color/abc_primary_text_disable_only_material_dark.xml",
+        "source": "/Users/shaunakdas2020/Documents/workspace/react_native_projects/genius_native_exp/genius_native_eject/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/color/abc_primary_text_disable_only_material_dark.xml"
     }
 ]

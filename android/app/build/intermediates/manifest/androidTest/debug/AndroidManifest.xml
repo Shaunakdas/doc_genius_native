@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.connecpath.forum.test" >
+    package="com.connecpath.test">
 
-    <uses-sdk
-        android:minSdkVersion="19"
-        android:targetSdkVersion="25" />
-
-    <instrumentation
-        android:name="com.android.test.runner.MultiDexTestRunner"
-        android:functionalTest="false"
-        android:handleProfiling="false"
-        android:label="Tests for com.connecpath.forum"
-        android:targetPackage="com.connecpath.forum" />
+    <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="22" />
 
     <application>
         <uses-library android:name="android.test.runner" />
     </application>
 
+    <instrumentation android:name="android.test.InstrumentationTestRunner"
+                     android:targetPackage="com.connecpath"
+                     android:handleProfiling="false"
+                     android:functionalTest="false"
+                     android:label="Tests for com.connecpath"/>
 </manifest>
