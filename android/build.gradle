@@ -39,7 +39,7 @@ android {
 
     defaultConfig {
         targetSdkVersion 24
-        applicationId 'line.ngui.trial'
+        applicationId 'com.math.genius'
     }
 
     lintOptions {

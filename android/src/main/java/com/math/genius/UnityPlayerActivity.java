@@ -1,5 +1,4 @@
-package line.ngui.trial;
-
+package com.math.genius;
 import com.unity3d.player.*;
 import android.app.Activity;
 import android.content.Intent;

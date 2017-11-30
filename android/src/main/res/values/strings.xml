@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">VectrsotiyNGUITrial</string>
-    <string name="title_activity_trial">TrialActivity</string>
-    <string name="title_activity_my_react">MyReactActivity</string>
+    <string name="app_name">MathWorkingRule</string>
 </resources>

@@ -1,4 +1,4 @@
-package line.ngui.trial;
+package com.math.genius;
 
 import android.os.Bundle;
 import android.app.Activity;
