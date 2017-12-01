@@ -31,7 +31,7 @@
     "moment": "^2.18.1",
     "native-base": "^2.3.3",
     "prop-types": "^15.5.10",
-    "react": "^16.0.0-beta.5",
+    "react": "^16.0.0-alpha.12",
     "react-balloon": "^0.2.5",
     "react-native": "^0.48.0",
     "react-native-datepicker": "^1.6.0",
