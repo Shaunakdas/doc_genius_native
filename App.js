@@ -12,17 +12,17 @@ import {
 import { Provider } from 'react-redux';
 import moment from 'moment';
 // import { BlurView } from 'expo';
-import SwipeALot from './swipealot';
+import SwipeALot from './pure/swipealot';
 
 
-import configureStore from './store/configureStore';
-import PAGES from './newpages';
-import COLORS, { alpha } from './common/colors';
-import { font, chatPageStyle as chs, fullWidth } from './common/styles';
-import IMAGES from './common/images';
-import { DISMISSED_FILTER, REFRESH_PROFILE, STUDENT_ROLE, COUNSELOR_ROLE } from './common/constants';
-import { Navigation } from './components';
-import { disconnectFromSendbird } from './common/api';
+import configureStore from './pure/store/configureStore';
+import PAGES from './pure/newpages';
+import COLORS, { alpha } from './pure/common/colors';
+import { font, chatPageStyle as chs, fullWidth } from './pure/common/styles';
+import IMAGES from './pure/common/images';
+import { DISMISSED_FILTER, REFRESH_PROFILE, STUDENT_ROLE, COUNSELOR_ROLE } from './pure/common/constants';
+import { Navigation } from './pure/components';
+import { disconnectFromSendbird } from './pure/common/api';
 
 const getNavigator = () => {
   // const ChatNavigator = StackNavigator({

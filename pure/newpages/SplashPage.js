@@ -46,6 +46,7 @@ class SplashPage extends React.Component {
       'firasans-light': require('../assets/fonts/light.ttf'),
       'firasans-regular': require('../assets/fonts/regular.ttf'),
       'firasans-semibold': require('../assets/fonts/semibold.ttf'),
+      'Ionicons': require('native-base/Fonts/Ionicons.ttf'),
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     }));
