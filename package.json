@@ -5,6 +5,7 @@
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "babel-jest": "^20.0.3",
+    "babel-preset-react-native-stage-0": "^1.0.1",
     "eslint": "^4.6.0",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-plugin-import": "^2.7.0",
@@ -12,15 +13,12 @@
     "eslint-plugin-react": "^7.3.0",
     "jest": "^20.0.4",
     "jest-expo": "~20.0.0",
-    "react-native-scripts": "1.2.1",
     "react-test-renderer": "^16.0.0-alpha.12"
   },
-  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
-    "start": "react-native-scripts start",
-    "eject": "react-native-scripts eject",
-    "android": "react-native-scripts android",
-    "ios": "react-native-scripts ios",
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "test": "node node_modules/jest/bin/jest.js --watch"
   },
   "jest": {
@@ -29,12 +27,11 @@
   "dependencies": {
     "@expo/vector-icons": "^6.1.0",
     "events": "^1.1.1",
-    "expo": "^21.0.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "native-base": "^2.3.3",
     "prop-types": "^15.5.10",
-    "react": "^16.0.0-beta.5",
+    "react": "^16.0.0-alpha.12",
     "react-balloon": "^0.2.5",
     "react-native": "^0.48.0",
     "react-native-datepicker": "^1.6.0",

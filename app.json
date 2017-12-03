@@ -1,26 +1,4 @@
 {
-  "expo": {
-   "name": "ConnecPath",
-   "icon": "./assets/img/logo.png",
-   "version": "1.0.5",
-   "slug": "connecpath-forum",
-   "sdkVersion": "21.0.0",
-   "privacy": "unlisted",   
-   "ios": {
-     "bundleIdentifier": "com.connecpath.forum",
-     "buildNumber": "5",
-     "supportsTablet": false,
-     "icon":"./assets/img/apple_logo.png"
-   },
-   "android": {
-     "package": "com.connecpath.forum",
-     "versionCode": 5
-   },
-   "orientation" : "portrait",
-   "loading":{
-    "icon": "./assets/img/logo_small.png",    
-    "backgroundColor":"#019AC1",
-    "hideExponentText": true
-   }
-  }
+  "name": "connecpath",
+  "displayName": "connecpath"
 }

@@ -88,6 +88,7 @@ export default class GameDetailsPage extends Component {
 
   nextAction = () => {
     console.log('nextAction');
+     NativeModules.ActivityStarter.navigateToExample();
     const { navigation } = this.props;
     navigation.navigate('GameResultPage', { });
   }
