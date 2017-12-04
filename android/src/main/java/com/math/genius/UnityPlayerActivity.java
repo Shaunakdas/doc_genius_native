@@ -2,6 +2,7 @@ package com.math.genius;
 import com.unity3d.player.*;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.net.Uri;
@@ -13,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import static com.math.genius.MainActivity.LINK_PREFS;
 
 public class UnityPlayerActivity extends Activity
 {
@@ -129,5 +132,20 @@ public class UnityPlayerActivity extends Activity
                 }
             }
         }
+    }
+
+    // Get for Shared Preferences of return type string
+    public String getPrefsValue(String key){
+        SharedPreferences settings = getSharedPreferences(LINK_PREFS, 0);
+        return settings.getString(key, "");
+    }
+
+    // Set for Shared Preferences of return type string
+    public void setPrefsValue(String key, String value){
+        SharedPreferences settings = getSharedPreferences(LINK_PREFS, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(key, value);
+        // Commit the edits!
+        editor.commit();
     }
 }
