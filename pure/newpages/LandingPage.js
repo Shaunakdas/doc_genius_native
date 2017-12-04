@@ -18,7 +18,12 @@ export default class LandingPage extends React.Component {
     ToastExample.show('Awesome', ToastExample.SHORT);
     navigation.navigate(page);
   }
-
+  tryPrefs = () => {
+    const key = 'key';
+    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { console.log(value); });
+    NativeModules.ActivityStarter.setPrefsValue(key, 'old');
+    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { console.log(value); });
+  }
   render() {
     return (
       <View style={{ backgroundColor: COLORS.PRIMARY, flex: 1 }}>
@@ -50,13 +55,12 @@ export default class LandingPage extends React.Component {
             textStyle={cs.buttonText}
             onPress={this.goTo('GameListPage')}
           />
-
-        <Button
-          text="Unity"
-          style={[cs.button, s.button]}
-          textStyle={cs.buttonText}
-          onPress={() => NativeModules.ActivityStarter.getActivityName((name) => { console.log(name); })}
-        />
+          <Button
+            text="Unity"
+            style={[cs.button, s.button]}
+            textStyle={cs.buttonText}
+            onPress={this.tryPrefs}
+          />
         </ScrollView>
       </View>
     );
