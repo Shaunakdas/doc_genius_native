@@ -2,6 +2,7 @@ package com.math.genius;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 
 import com.facebook.react.ReactInstanceManager;
@@ -22,6 +23,8 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import static com.math.genius.MainActivity.LINK_PREFS;
 
 /**
  * Expose Java to JavaScript.
@@ -64,6 +67,23 @@ class ActivityStarterModule extends ReactContextBaseJavaModule {
             Intent intent = new Intent(activity, UnityPlayerActivity.class);
             activity.startActivity(intent);
         }
+    }
+
+    @ReactMethod
+    // Get for Shared Preferences of return type string
+    void getPrefsValue(@Nonnull String key, @Nonnull Callback callback){
+        SharedPreferences settings = getReactApplicationContext().getSharedPreferences(LINK_PREFS, 0);
+        callback.invoke(settings.getString(key, ""));
+    }
+
+    @ReactMethod
+    // Set for Shared Preferences of return type string
+    void setPrefsValue(@Nonnull String key, @Nonnull  String value){
+        SharedPreferences settings = getReactApplicationContext().getSharedPreferences(LINK_PREFS, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(key, value);
+        // Commit the edits!
+        editor.commit();
     }
 
     @ReactMethod
