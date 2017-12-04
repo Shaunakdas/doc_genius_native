@@ -59,7 +59,7 @@ export default class LandingPage extends React.Component {
             text="Unity"
             style={[cs.button, s.button]}
             textStyle={cs.buttonText}
-            onPress={this.tryPrefs}
+            onPress={() => NativeModules.ActivityStarter.navigateToExample()}
           />
         </ScrollView>
       </View>

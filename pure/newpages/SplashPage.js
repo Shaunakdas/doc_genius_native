@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ActivityIndicator, Platform } from 'react-native';
+import { Text, View, Image, ActivityIndicator, Platform, NativeModules } from 'react-native';
 import { PropTypes } from 'prop-types';
 // import { Font, Asset } from 'expo';
 import { NavigationActions } from 'react-navigation';
@@ -37,6 +37,7 @@ class SplashPage extends React.Component {
     super(props);
     this.state = {
       loadingMessage: 'Please wait while loading assets ...',
+      showResult: '0',
     };
   }
 
@@ -49,12 +50,12 @@ class SplashPage extends React.Component {
     //   'Roboto': require('native-base/Fonts/Roboto.ttf'),
     //   'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     // }));
-    this.start();
+    if (!this.checkForResults()) { this.start(); }
   }
 
   setMessage = loadingMessage => this.setState({ loadingMessage });
 
-  cacheImages = images => images.map(image => Asset.fromModule(image).downloadAsync())
+  // cacheImages = images => images.map(image => Asset.fromModule(image).downloadAsync());
 
   start = async () => {
     const resetAction = NavigationActions.reset({
@@ -66,6 +67,23 @@ class SplashPage extends React.Component {
     const isLoginSuccess = false;
     // const isLoginSuccess = await this.tryLogin();
     if (!isLoginSuccess) { this.props.navigation.dispatch(resetAction); }
+  }
+
+  checkForResults = () => {
+    const key = 'ShowResult';
+    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.state.showResult = value; });
+    console.log(this.state.showResult);
+    if (this.state.showResult !== '1') { return false; }
+    NativeModules.ActivityStarter.setPrefsValue(key, '0');
+    this.setMessage('Calculating Score...');
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'GameResultPage' }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
+    return true;
   }
 
   tryLogin = async () => {
