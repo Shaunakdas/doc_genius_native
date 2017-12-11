@@ -50,7 +50,10 @@ class SplashPage extends React.Component {
     //   'Roboto': require('native-base/Fonts/Roboto.ttf'),
     //   'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     // }));
-    if (!this.checkForResults()) { this.start(); }
+    // if (!this.checkForResults()) { this.start(); }
+    // NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.state.showResult = value;});
+    // NativeModules.ActivityStarter.setPrefsValue(key, '0');
+    this.checkForResults();
   }
 
   setMessage = loadingMessage => this.setState({ loadingMessage });
@@ -71,10 +74,13 @@ class SplashPage extends React.Component {
 
   checkForResults = () => {
     const key = 'ShowResult';
-    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.state.showResult = value; });
-    console.log(this.state.showResult);
-    if (this.state.showResult !== '1') { return false; }
-    NativeModules.ActivityStarter.setPrefsValue(key, '0');
+    // NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.state.showResult = value;});
+    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.checkResultFlag(value);});
+  }
+  checkResultFlag = (value) => {
+    console.log(value);
+    if (value !== '1') { this.start();  return false; }
+    NativeModules.ActivityStarter.setPrefsValue('ShowResult', '0');
     this.setMessage('Calculating Score...');
     const resetAction = NavigationActions.reset({
       index: 0,
@@ -85,7 +91,6 @@ class SplashPage extends React.Component {
     this.props.navigation.dispatch(resetAction);
     return true;
   }
-
   tryLogin = async () => {
     // const { finish, setToken, setUser, setRelevantCategories, setBotChannel } = this.props;
     const authToken = await getData('AUTH_TOKEN');
