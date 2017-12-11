@@ -442,12 +442,13 @@
   "game_attempts":{
     "title": "Memory",
     "highest": 2300,
-    "recent":[
+    "recent_scores":[
       { "value":308, "recent": "false", "title":"" },
-      { "value":412, "recent": "false", "title":"" },
+      {"value":"119.11","time_taken":42,"correct_count":7,"incorrect_count":7,"seen":true,"passed":true,"failed":false},
       { "value":112, "recent": "false", "title":"" },
       { "value":213, "recent": "true", "title":"3rd Best" }
     ],
+    "score_rank":6,
     "comparision":[
       { "value":308, "title":"You" },
       { "value":200, "title":"Other Students \n (Average)" }
