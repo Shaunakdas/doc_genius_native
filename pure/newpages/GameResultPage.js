@@ -66,17 +66,20 @@ export default class GameResultPage extends Component {
 
   async componentDidMount() {
     const key = 'GameResult';
-    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.state.resultBody = value; });
-    if (this.state.resultBody !== 'null') { await this.fetchResult(); }
-    NativeModules.ActivityStarter.setPrefsValue(key, 'null');
+    NativeModules.ActivityStarter.getPrefsValue(key, (value) => {  await this.fetchResult(value);});
+    // if (this.state.resultBody !== 'null') { await this.fetchResult(); }
+    // NativeModules.ActivityStarter.setPrefsValue(key, 'null');
   }
 
-  fetchResult = async () => {
-    // const gamesResponse = await gamesAPI() || {};
-    // console.log(gamesResponse.homepage.recent_questions);
-    // if (gamesResponse.success !== false) {
-    //   this.setState({ games: gamesResponse.homepage.recent_questions});
-    // }
+  fetchResult = async (value) => {
+    value = '{"score":"0", "time_taken":"0", "correct_count":"0", "incorrect_count":"0", "seen":"True", "passed":"True", "failed":"False"}';
+    console.log(value);
+    // TODO change value to game_session object
+    const gameResultsResponse = await gameResultsAPI(value) || {};
+    console.log(gameResultsResponse);
+    if (gamesResponse.success !== false) {
+      this.setState({ gameResults: gamesResponse});
+    }
   }
   
   render() {
