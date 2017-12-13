@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, ScrollView, Image, View } from 'react-native';
+import { Text, ScrollView, Image, View, NativeModules } from 'react-native';
+import ToastExample from './ToastExample';
 import { PropTypes } from 'prop-types';
 
 import { commonStyle as cs, landingPageStyle as s } from '../common/styles';
@@ -14,9 +15,15 @@ export default class LandingPage extends React.Component {
 
   goTo = page => () => {
     const { navigation } = this.props;
+    // ToastExample.show('Awesome', ToastExample.SHORT);
     navigation.navigate(page);
   }
-
+  tryPrefs = () => {
+    const key = 'key';
+    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { console.log(value); });
+    NativeModules.ActivityStarter.setPrefsValue(key, 'old');
+    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { console.log(value); });
+  }
   render() {
     return (
       <View style={{ backgroundColor: COLORS.PRIMARY, flex: 1 }}>
@@ -46,7 +53,13 @@ export default class LandingPage extends React.Component {
             text="Games List"
             style={cs.button}
             textStyle={cs.buttonText}
-            onPress={this.goTo('GameListPage')}
+            onPress={this.goTo('GameResultPage')}
+          />
+          <Button
+            text="Unity"
+            style={[cs.button, s.button]}
+            textStyle={cs.buttonText}
+            onPress={() => NativeModules.ActivityStarter.navigateToExample()}
           />
         </ScrollView>
       </View>

@@ -23,6 +23,7 @@ import {
 import {
   Image,
   View,
+  NativeModules,
 } from 'react-native';
 
 import { GameDetails } from '../components';
@@ -88,8 +89,14 @@ export default class GameDetailsPage extends Component {
 
   nextAction = () => {
     console.log('nextAction');
-    const { navigation } = this.props;
-    navigation.navigate('GameResultPage', { });
+    const question_text = this.state.gameDetails.current.question_text;
+    const key = 'QuestionText';
+    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { console.log(value); });
+    NativeModules.ActivityStarter.setPrefsValue(key, question_text);
+    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { console.log(value); });
+    NativeModules.ActivityStarter.navigateToExample();
+    // const { navigation } = this.props;
+    // navigation.navigate('GameResultPage', { });
   }
 
   render() {

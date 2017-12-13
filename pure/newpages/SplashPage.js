@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, View, Image, ActivityIndicator, Platform } from 'react-native';
+import { Text, View, Image, ActivityIndicator, Platform, NativeModules } from 'react-native';
 import { PropTypes } from 'prop-types';
+// Uncomment this for expo
 import { Font, Asset } from 'expo';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -37,10 +38,13 @@ class SplashPage extends React.Component {
     super(props);
     this.state = {
       loadingMessage: 'Please wait while loading assets ...',
+      showResult: '0',
     };
   }
 
   async componentDidMount() {
+
+    // Uncomment this for expo
     const imageAssets = this.cacheImages(Object.values(IMAGES));
     await Promise.all(...imageAssets, Font.loadAsync({
       'firasans-light': require('../assets/fonts/light.ttf'),
@@ -51,11 +55,17 @@ class SplashPage extends React.Component {
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     }));
     this.start();
+    // Leave it
+    // NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.state.showResult = value;});
+    // NativeModules.ActivityStarter.setPrefsValue(key, '0');
+    // Uncomment this for Integrated
+    // this.checkForResults();
   }
 
   setMessage = loadingMessage => this.setState({ loadingMessage });
-
-  cacheImages = images => images.map(image => Asset.fromModule(image).downloadAsync())
+  
+  // Uncomment this for expo
+  cacheImages = images => images.map(image => Asset.fromModule(image).downloadAsync());
 
   start = async () => {
     const resetAction = NavigationActions.reset({
@@ -69,6 +79,25 @@ class SplashPage extends React.Component {
     if (!isLoginSuccess) { this.props.navigation.dispatch(resetAction); }
   }
 
+  checkForResults = () => {
+    const key = 'ShowResult';
+    // NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.state.showResult = value;});
+    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.checkResultFlag(value);});
+  }
+  checkResultFlag = (value) => {
+    console.log(value);
+    if (value !== '1') { this.start();  return false; }
+    NativeModules.ActivityStarter.setPrefsValue('ShowResult', '0');
+    this.setMessage('Calculating Score...');
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'GameResultPage' }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
+    return true;
+  }
   tryLogin = async () => {
     // const { finish, setToken, setUser, setRelevantCategories, setBotChannel } = this.props;
     const authToken = await getData('AUTH_TOKEN');

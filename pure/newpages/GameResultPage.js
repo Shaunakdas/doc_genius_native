@@ -18,9 +18,9 @@ import {
   Footer,
   FooterTab,
 } from 'native-base';
-// import {
-//   View,
-// } from 'react-native';
+import {
+  NativeModules,
+} from 'react-native';
 // import { VictoryScatter, VictoryArea, VictoryLine, VictoryTheme, VictoryGroup, VictoryLabel } from 'victory-native';
 
 // const data = [
@@ -41,6 +41,7 @@ export default class GameResultPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      resultBody: '',
       gameResults: {
         title: 'Memory',
         highest: 2300,
@@ -63,6 +64,24 @@ export default class GameResultPage extends Component {
     };
   }
 
+  async componentDidMount() {
+    const key = 'GameResult';
+    NativeModules.ActivityStarter.getPrefsValue(key, (value) => {   this.fetchResult(value);});
+    // if (this.state.resultBody !== 'null') { await this.fetchResult(); }
+    // NativeModules.ActivityStarter.setPrefsValue(key, 'null');
+  }
+
+  fetchResult = async (value) => {
+    value = '{"score":"0", "time_taken":"0", "correct_count":"0", "incorrect_count":"0", "seen":"True", "passed":"True", "failed":"False"}';
+    console.log(value);
+    // TODO change value to game_session object
+    const gameResultsResponse = await gameResultsAPI(value) || {};
+    console.log(gameResultsResponse);
+    if (gamesResponse.success !== false) {
+      this.setState({ gameResults: gamesResponse});
+    }
+  }
+  
   render() {
     const { gameResults } = this.state;
     return (
