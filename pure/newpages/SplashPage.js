@@ -10,7 +10,7 @@ import { commonStyle as cs, splashPageStyle as s } from '../common/styles';
 import COLORS from '../common/colors';
 import IMAGES from '../common/images';
 import { getData, removeData, saveData } from '../common/helper';
-import { STUDENT_ROLE } from '../common/constants';
+import { STUDENT_ROLE, ENVIRONMENT } from '../common/constants';
 import {
   userAPI,
   categoriesAPI,
@@ -43,27 +43,30 @@ class SplashPage extends React.Component {
   }
 
   async componentDidMount() {
-
-    // Uncomment this for expo
-    const imageAssets = this.cacheImages(Object.values(IMAGES));
-    await Promise.all(...imageAssets, Font.loadAsync({
-      'firasans-light': require('../assets/fonts/light.ttf'),
-      'firasans-regular': require('../assets/fonts/regular.ttf'),
-      'firasans-semibold': require('../assets/fonts/semibold.ttf'),
-      'Ionicons': require('native-base/Fonts/Ionicons.ttf'),
-      'Roboto': require('native-base/Fonts/Roboto.ttf'),
-      'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-    }));
-    this.start();
+    // Uncomment this for Expo
+    if (ENVIRONMENT === 'expo') {
+      const imageAssets = this.cacheImages(Object.values(IMAGES));
+      await Promise.all(...imageAssets, Font.loadAsync({
+        'firasans-light': require('../assets/fonts/light.ttf'),
+        'firasans-regular': require('../assets/fonts/regular.ttf'),
+        'firasans-semibold': require('../assets/fonts/semibold.ttf'),
+        'Ionicons': require('native-base/Fonts/Ionicons.ttf'),
+        'Roboto': require('native-base/Fonts/Roboto.ttf'),
+        'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+      }));
+      this.start();
+    }
     // Leave it
     // NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.state.showResult = value;});
     // NativeModules.ActivityStarter.setPrefsValue(key, '0');
     // Uncomment this for Integrated
-    // this.checkForResults();
+    if (ENVIRONMENT === 'integrated') {
+      // this.checkForResults();
+    }
   }
 
   setMessage = loadingMessage => this.setState({ loadingMessage });
-  
+
   // Uncomment this for expo
   cacheImages = images => images.map(image => Asset.fromModule(image).downloadAsync());
 
@@ -82,7 +85,7 @@ class SplashPage extends React.Component {
   checkForResults = () => {
     const key = 'ShowResult';
     // NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.state.showResult = value;});
-    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.checkResultFlag(value);});
+    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.checkResultFlag(value); });
   }
   checkResultFlag = (value) => {
     console.log(value);

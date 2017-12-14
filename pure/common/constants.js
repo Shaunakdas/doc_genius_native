@@ -1,6 +1,8 @@
-export const BASE_URL = 'http://6a611a09.ngrok.io';
-export const ADMIN_BASE_URL = 'http://6a611a09.ngrok.io';
+export const BASE_URL = 'http://ed34dee4.ngrok.io';
+export const ADMIN_BASE_URL = 'http://ed34dee4.ngrok.io';
 export const IMAGE_SERVICE_URL = 'http://13.59.133.37';
+
+export const ENVIRONMENT = 'expo';
 
 export const APPSTATE_LOGGING_IN = 'APPSTATE_LOGGING_IN';
 export const LOGINSTATE_LOGGING_IN = 'LOGINSTATE_LOGGING_IN';

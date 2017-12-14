@@ -53,7 +53,7 @@ export default class LandingPage extends React.Component {
             text="Games List"
             style={cs.button}
             textStyle={cs.buttonText}
-            onPress={this.goTo('GameResultPage')}
+            onPress={this.goTo('GameListPage')}
           />
           <Button
             text="Unity"

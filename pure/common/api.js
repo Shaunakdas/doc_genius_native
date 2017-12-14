@@ -93,7 +93,7 @@ export const standardsAPI = async () => {
 
 export const gameResultsAPI = async (gameSession) => {
   const body = JSON.stringify({ gameSession });
-  const response = await jsonFetch(`${ADMIN_BASE_URL}/game_attempts`, { body, method: 'POST' },{ method: 'POST' });
+  const response = await jsonFetch(`${ADMIN_BASE_URL}/game_result`, { method: 'GET' });
   console.log(response);
   return response;
 };
