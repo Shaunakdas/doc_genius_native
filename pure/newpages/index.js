@@ -21,6 +21,7 @@ import WebPage from './WebPage';
 import GameListPage from './GameListPage';
 import GameDetailsPage from './GameDetailsPage';
 import GameResultPage from './GameResultPage';
+import AllGamesPage from './AllGamesPage';
 
 export default {
   LandingPage,
@@ -46,4 +47,5 @@ export default {
   GameListPage,
   GameDetailsPage,
   GameResultPage,
+  AllGamesPage,
 };

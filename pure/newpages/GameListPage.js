@@ -39,6 +39,10 @@ class GameListPage extends React.Component {
     };
   }
   
+  allGames = () => {
+    const { navigation } = this.props;
+    navigation.navigate('AllGamesPage', { });
+  }
   fetchGames = async () =>{
     const gamesResponse = await gamesAPI() || {};
     console.log(gamesResponse.homepage.recent_questions);
@@ -67,7 +71,7 @@ class GameListPage extends React.Component {
   render() {
     const { games, refreshing, loading, addingMore } = this.state;
     return (
-      <GamesList games={games} goToGame={this.goToGame} />
+      <GamesList games={games} goToGame={this.goToGame} allGames={this.allGames}/>
     );
   }
 }

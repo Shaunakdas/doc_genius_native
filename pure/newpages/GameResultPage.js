@@ -171,7 +171,7 @@ export default class GameResultPage extends Component {
             : <Spinner color='blue' /> }
           
         </Content>
-          <Footer>
+        <Footer>
           <FooterTab>
             <Button full>
               <Text>Footer</Text>
