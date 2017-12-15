@@ -68,6 +68,7 @@ public class UnityPlayerActivity extends Activity
     @Override protected void onResume()
     {
         super.onResume();
+        mUnityPlayer.UnitySendMessage("UI Root", "reloadScene", "");
         mUnityPlayer.resume();
     }
 
