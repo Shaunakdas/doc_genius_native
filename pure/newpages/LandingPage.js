@@ -2,9 +2,10 @@ import React from 'react';
 import { Text, ScrollView, Image, View, NativeModules } from 'react-native';
 import ToastExample from './ToastExample';
 import { PropTypes } from 'prop-types';
+import { Button, Grid, Col } from 'native-base';
 
 import { commonStyle as cs, landingPageStyle as s } from '../common/styles';
-import { Button } from '../components';
+// import { Button } from '../components';
 import IMAGES from '../common/images';
 import COLORS from '../common/colors';
 
@@ -15,7 +16,7 @@ export default class LandingPage extends React.Component {
 
   goTo = page => () => {
     const { navigation } = this.props;
-    ToastExample.show('Awesome', ToastExample.SHORT);
+    // ToastExample.show('Awesome', ToastExample.SHORT);
     navigation.navigate(page);
   }
   tryPrefs = () => {
@@ -28,7 +29,7 @@ export default class LandingPage extends React.Component {
     return (
       <View style={{ backgroundColor: COLORS.PRIMARY, flex: 1 }}>
         <ScrollView
-          style={{ flex: 1 }}
+          style={{ flex: 1, paddingHorizontal: 15 }}
           contentContainerStyle={[cs.container, s.container]}
         >
           <Text style={s.brandText}>Genius</Text>
@@ -38,29 +39,42 @@ export default class LandingPage extends React.Component {
           />
           <Text style={s.typeText}>The Awesome way of learning Maths</Text>
           <Button
-            text="Sign Up"
-            style={cs.button}
-            textStyle={cs.buttonText}
+            style={{ marginVertical: 8 }}
             onPress={this.goTo('SignupPage')}
-          />
+            primary block>
+            <Text style={{ fontSize: 20, color: '#fffff0' }}>Sign Up</Text>
+          </Button>
           <Button
-            text="Log In"
-            style={cs.button}
-            textStyle={cs.buttonText}
+            style={{ marginVertical: 8 }}
             onPress={this.goTo('LoginPage')}
-          />
+            primary block>
+            <Text style={{ fontSize: 20, color: '#fffff0' }}>Login</Text>
+          </Button>
           <Button
-            text="Games List"
-            style={cs.button}
-            textStyle={cs.buttonText}
+            style={{ marginVertical: 8 }}
             onPress={this.goTo('GameListPage')}
-          />
-          <Button
-            text="Unity"
-            style={[cs.button, s.button]}
-            textStyle={cs.buttonText}
-            onPress={() => NativeModules.ActivityStarter.navigateToExample()}
-          />
+            primary block>
+            <Text style={{ fontSize: 20, color: '#fffff0' }}>Game List</Text>
+          </Button>
+          <Grid >
+            <Col style={{ paddingHorizontal: 10 }}>
+              <Button
+                style={{ marginVertical: 8 }}
+                onPress={this.goTo('GameListPage')}
+                primary block>
+                <Text style={{ fontSize: 20, color: '#fffff0' }}>Google</Text>
+              </Button>
+            </Col>
+            <Col style={{ paddingHorizontal: 10 }}>
+              <Button
+                style={{ marginVertical: 8 }}
+                onPress={this.goTo('GameListPage')}
+                primary block>
+                <Text style={{ fontSize: 20, color: '#fffff0' }}>Fb</Text>
+              </Button>
+
+            </Col>
+          </Grid>
         </ScrollView>
       </View>
     );

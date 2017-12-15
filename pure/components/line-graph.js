@@ -68,6 +68,8 @@ export default class LineGraph extends Component {
             <VictoryGroup
               animate={ animation }
               data={ data }
+              x='id'
+              y='value'
               color={'blue'}
               style={{ parent: { maxWidth: '100%' } }}
             >

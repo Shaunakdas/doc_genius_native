@@ -25,10 +25,13 @@ import {
   View,
   NativeModules,
 } from 'react-native';
+import moment from 'moment';
 
 import { GameDetails } from '../components';
+import { ENVIRONMENT } from '../common/constants';
 // import IMAGES from '../common/images';
 import { gameDetailsAPI } from '../common/api';
+import { saveData } from '../common/helper';
 
 export default class GameDetailsPage extends Component {
   static propTypes = {
@@ -73,30 +76,44 @@ export default class GameDetailsPage extends Component {
   fetchGameDetails = async () => {
     const { navigation } = this.props;
     const { params = {} } = navigation.state;
-    const { game = { title: '' } } = params;
-    const gameDetailResponse = await gameDetailsAPI(1) || {};
+    const { gameHolderId } = params;
+    const gameDetailResponse = await gameDetailsAPI(gameHolderId) || {};
     console.log(gameDetailResponse);
     if (gameDetailResponse.success !== false) {
       this.setState({ gameDetails: gameDetailResponse.question_type });
       console.log(this.state.gameDetails.title);
     }
   }
-  
+
   goBack = () => {
     const { navigation } = this.props;
     navigation.goBack();
   }
 
-  nextAction = () => {
+  nextAction = async () => {
     console.log('nextAction');
-    const question_text = this.state.gameDetails.current.question_text;
-    const key = 'QuestionText';
-    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { console.log(value); });
-    NativeModules.ActivityStarter.setPrefsValue(key, question_text);
-    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { console.log(value); });
-    NativeModules.ActivityStarter.navigateToExample();
-    // const { navigation } = this.props;
-    // navigation.navigate('GameResultPage', { });
+    console.log(ENVIRONMENT);
+    console.log(this.props);
+    console.log(this.props.navigation.state.params.gameHolderId);
+    // Storing Start and GameHolderId in AsyncStorage
+    await saveData('GAME_HOLDER_ID', this.props.navigation.state.params.gameHolderId);
+    // finish();
+    await saveData('START', moment().format());
+    // finish();
+    if (ENVIRONMENT === 'integrated') {
+      const question_text = this.state.gameDetails.current.question_text;
+      const key = 'QuestionText';
+      NativeModules.ActivityStarter.getPrefsValue(key, (value) => { console.log(value); });
+      NativeModules.ActivityStarter.setPrefsValue(key, question_text);
+      NativeModules.ActivityStarter.getPrefsValue(key, (value) => { console.log(value); });
+      NativeModules.ActivityStarter.navigateToExample();
+    } else if (ENVIRONMENT === 'expo') {
+      setTimeout(() => { 
+        const { navigation } = this.props;
+        navigation.navigate('GameResultPage', { });
+      }, 3000);
+      
+    }
   }
 
   render() {
@@ -105,7 +122,7 @@ export default class GameDetailsPage extends Component {
       <Container style={{ marginTop: 25 }}>
         <Header style={{ backgroundColor: '#00bfff' }}>
           <Left>
-            <Button  onPress={ this.goBack} transparent>
+            <Button onPress={ this.goBack} transparent>
               <Icon name={'arrow-round-back'} />
             </Button>
           </Left>

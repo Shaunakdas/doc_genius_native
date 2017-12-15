@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, Image, ActivityIndicator, Platform, NativeModules } from 'react-native';
 import { PropTypes } from 'prop-types';
+// Uncomment this for expo
 // import { Font, Asset } from 'expo';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -9,7 +10,7 @@ import { commonStyle as cs, splashPageStyle as s } from '../common/styles';
 import COLORS from '../common/colors';
 import IMAGES from '../common/images';
 import { getData, removeData, saveData } from '../common/helper';
-import { STUDENT_ROLE } from '../common/constants';
+import { STUDENT_ROLE, ENVIRONMENT } from '../common/constants';
 import {
   userAPI,
   categoriesAPI,
@@ -42,23 +43,32 @@ class SplashPage extends React.Component {
   }
 
   async componentDidMount() {
-    // const imageAssets = this.cacheImages(Object.values(IMAGES));
-    // await Promise.all(...imageAssets, Font.loadAsync({
-    //   'firasans-light': require('../assets/fonts/light.ttf'),
-    //   'firasans-regular': require('../assets/fonts/regular.ttf'),
-    //   'firasans-semibold': require('../assets/fonts/semibold.ttf'),
-    //   'Roboto': require('native-base/Fonts/Roboto.ttf'),
-    //   'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-    // }));
-    // if (!this.checkForResults()) { this.start(); }
+    // Uncomment this for Expo
+    if (ENVIRONMENT === 'expo') {
+      const imageAssets = this.cacheImages(Object.values(IMAGES));
+      await Promise.all(...imageAssets, Font.loadAsync({
+        'firasans-light': require('../assets/fonts/light.ttf'),
+        'firasans-regular': require('../assets/fonts/regular.ttf'),
+        'firasans-semibold': require('../assets/fonts/semibold.ttf'),
+        'Ionicons': require('native-base/Fonts/Ionicons.ttf'),
+        'Roboto': require('native-base/Fonts/Roboto.ttf'),
+        'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+      }));
+      this.start();
+    }
+    // Leave it
     // NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.state.showResult = value;});
     // NativeModules.ActivityStarter.setPrefsValue(key, '0');
-    this.checkForResults();
+    // Uncomment this for Integrated
+    if (ENVIRONMENT === 'integrated') {
+      this.checkForResults();
+    }
   }
 
   setMessage = loadingMessage => this.setState({ loadingMessage });
 
-  // cacheImages = images => images.map(image => Asset.fromModule(image).downloadAsync());
+  // Uncomment this for expo
+  cacheImages = images => images.map(image => Asset.fromModule(image).downloadAsync());
 
   start = async () => {
     const resetAction = NavigationActions.reset({
@@ -75,7 +85,7 @@ class SplashPage extends React.Component {
   checkForResults = () => {
     const key = 'ShowResult';
     // NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.state.showResult = value;});
-    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.checkResultFlag(value);});
+    NativeModules.ActivityStarter.getPrefsValue(key, (value) => { this.checkResultFlag(value); });
   }
   checkResultFlag = (value) => {
     console.log(value);

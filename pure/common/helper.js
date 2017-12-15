@@ -69,7 +69,7 @@ export const saveData = async (key, data) => {
   try {
     await AsyncStorage.setItem(key, JSON.stringify(data));
   } catch (error) {
-    // Do nothing
+    console.log("in saveData, got error: "+error);
   }
 };
 

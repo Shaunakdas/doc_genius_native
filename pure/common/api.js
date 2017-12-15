@@ -85,6 +85,16 @@ export const gamesAPI = async (authToken, page = 1, limit = 10) => {
   return response;
 };
 
+export const allGamesAPI = async (authToken, page = 1, limit = 10) => {
+  const queryString = buildQuery({
+    limit,
+    page,
+  });
+  const url = `${BASE_URL}/all_games`;
+  const response = await jsonFetch(url, { method: 'GET' }, authToken);
+  return response;
+};
+
 export const standardsAPI = async () => {
   const url = `${BASE_URL}/standards`;
   const response = await jsonFetch(url, { method: 'GET' });
@@ -93,7 +103,7 @@ export const standardsAPI = async () => {
 
 export const gameResultsAPI = async (gameSession) => {
   const body = JSON.stringify({ gameSession });
-  const response = await jsonFetch(`${ADMIN_BASE_URL}/game_attempts`, { body, method: 'POST' },{ method: 'POST' });
+  const response = await jsonFetch(`${ADMIN_BASE_URL}/game_result`, { method: 'GET' });
   console.log(response);
   return response;
 };

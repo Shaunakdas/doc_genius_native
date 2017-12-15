@@ -39,11 +39,16 @@ class GameListPage extends React.Component {
     };
   }
   
+  allGames = () => {
+    const { navigation } = this.props;
+    navigation.navigate('AllGamesPage', { });
+  }
   fetchGames = async () =>{
     const gamesResponse = await gamesAPI() || {};
     console.log(gamesResponse.homepage.recent_questions);
     if (gamesResponse.success !== false) {
       this.setState({ games: gamesResponse.homepage.recent_questions});
+      console.log(this.state.games[0]);
     }
   }
   
@@ -57,16 +62,16 @@ class GameListPage extends React.Component {
     }
   }
   
-  goToGame = (id) => {
-    // console.log(game);
+  goToGame = (gameHolderId) => {
+    console.log(gameHolderId);
     const { navigation } = this.props;
-    navigation.navigate('GameDetailsPage', {  });
+    navigation.navigate('GameDetailsPage', { gameHolderId: gameHolderId });
   }
 
   render() {
     const { games, refreshing, loading, addingMore } = this.state;
     return (
-      <GamesList games={games} goToGame = {this.goToGame}/>
+      <GamesList games={games} goToGame={this.goToGame} allGames={this.allGames}/>
     );
   }
 }

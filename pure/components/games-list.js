@@ -5,10 +5,12 @@ import {
   Container,
   Tab,
   Tabs,
-  Content,
+  Text,
   Left, Right, Body, Button,
   Title,
   Icon,
+  Footer,
+  FooterTab,
   // Card,
   // CardItem,
 } from 'native-base';
@@ -24,6 +26,7 @@ export default class GamesList extends Component {
   static propTypes = {
     games: PropTypes.any,
     goToGame: PropTypes.func,
+    allGames: PropTypes.func,
   }
   static defaultProps = {
     games: [
@@ -32,11 +35,14 @@ export default class GamesList extends Component {
       // { id: 3, title: 'Jump Control',subTitle: 'COORDINATION',image: null },
     ],
     goToGame: () => {},
+    allGames: () => {},
   }
+
   render() {
     const {
       games,
-      goToGame } = this.props;
+      goToGame,
+      allGames } = this.props;
     return (
       <Container style={{ marginTop: 25 }}>
         <Header hasTabs>
@@ -57,6 +63,14 @@ export default class GamesList extends Component {
           <Tab heading="PERFORMANCE">
           </Tab>
         </Tabs>
+
+        <Footer>
+          <FooterTab>
+            <Button block  onPress={allGames}>
+              <Text style={{ fontSize: 20 }}>All Games</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
       </Container>
     );
   }

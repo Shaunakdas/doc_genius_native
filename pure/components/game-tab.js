@@ -44,7 +44,7 @@ export default class GameTab extends Component {
       games,
       goToGame } = this.props;
     const gameCards = games.map((game) =>
-      <GameCard title={game.title} subTitle={game.subTitle} onPress={ (game) => goToGame(game.id) } />);
+      <GameCard title={game.title} subTitle={game.subTitle} onPress={ () => goToGame(game.id) } />);
     const oddCards = gameCards.filter((v, i) => i % 2);
     const evenCards = gameCards.filter((v, i) => !(i % 2));
     return (
