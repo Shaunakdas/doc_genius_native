@@ -28,6 +28,7 @@ import {
 import BenifitsTab from './benifits-tab';
 import ChallengesTab from './challenges-tab';
 import ScoresTab from './scores-tab';
+import ChatView from './chat-view';
 
 import IMAGES from '../common/images';
 
@@ -81,6 +82,7 @@ export default class GameDetails extends Component {
       benifits } = this.props.gameDetails;
       const {color} = this.props;
     return (
+
       <Grid>
         <Row style={{ height: 150, backgroundColor: '#00bfff' }}>
           <Image opacity={0.1} style={{ height: 150, width: null, flex: 1 }} source={IMAGES.LOGO}>

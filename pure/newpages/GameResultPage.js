@@ -36,7 +36,7 @@ import {
 // }
 import moment from 'moment';
 
-import { LineGraph, BarGraph } from '../components';
+import { LineGraph, BarGraph,ChatView } from '../components';
 import { gameResultsAPI } from '../common/api';
 import { ENVIRONMENT } from '../common/constants';
 import { saveData, getData } from '../common/helper';
@@ -175,6 +175,7 @@ export default class GameResultPage extends Component {
         <Content style={{ paddingHorizontal: 25 }}>
           {(gameResults.recent.length>0)?
             <View>
+            <ChatView />
             <LineGraph labels={gameResults.labels} data={gameResults.recent} />
             <BarGraph data={gameResults.comparision} />
             </View>
