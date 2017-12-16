@@ -21,18 +21,21 @@ export default class CircularGameCard extends Component {
     onPress: PropTypes.func,
     title: PropTypes.string,
     navigation: PropTypes.any,
+    color: PropTypes.any,
   }
 
   static defaultProps = {
     onPress: () => {},
     title: null,
+    color: '#800080',
   }
 
 
   render() {
     const {
       onPress,
-      title } = this.props;
+      title,
+      color } = this.props;
     return (
       <TouchableOpacity style={{  justifyContent: 'center', alignItems: 'center', marginHorizontal: 5  }} onPress={onPress}>
         <Thumbnail large source={IMAGES.LOGO} />

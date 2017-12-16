@@ -27,12 +27,14 @@ export default class GameListCard extends Component {
     games: PropTypes.any,
     title: PropTypes.string,
     navigation: PropTypes.any,
+    color: PropTypes.any,
   }
 
   static defaultProps = {
     goToGame: () => {},
     games: [],
     title: null,
+    color: '#32CD32',
   }
 
 
@@ -40,23 +42,24 @@ export default class GameListCard extends Component {
     const {
       goToGame,
       games,
-      title } = this.props;
+      title,
+      color } = this.props;
     return (
       <View >
         <Card >
           <CardItem header>
             <Left>
-            <Icon name={'jet'} />
+            <Icon style={{ color: color }} name={'jet'} />
             <Body>
-              <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+              <Text style={{ fontWeight: 'bold', color: color }}>{title}</Text>
               </Body>
             </Left>
             <Right>
-              <Text>3</Text>
-              <Icon name={'flash'} />
+              <Text style={{ color: color }}>3</Text>
+              <Icon style={{ color: color }} name={'flash'} />
             </Right>
           </CardItem>
-          <CardItem cardBody style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
+          <CardItem cardBody style={{ paddingBottom: 10 }}>
             <FlatList
               horizontal={true}
               data={games}

@@ -18,6 +18,7 @@ import {
 // } from 'react-native';
 // import IMAGES from '../common/images';
 import GameCard from './game-card';
+import COLORS from '../common/colors';
 
 // const goNext = () => {
 //     console.log('goNext');
@@ -49,12 +50,12 @@ export default class GameTab extends Component {
     const oddCards = gameCards.filter((v, i) => i % 2);
     const evenCards = gameCards.filter((v, i) => !(i % 2));
     return (
-      <Content style={{ backgroundColor: '#00bfff'  }}>
+      <Content style={{ backgroundColor: COLORS.PRIMARY  }}>
         <List style={{ padding: 5}}>
-          <ListItem style={{ backgroundColor: '#00bfff', justifyContent: 'center' }}>
+          <ListItem style={{ backgroundColor: COLORS.PRIMARY, justifyContent: 'center' }}>
             <Text style={{ color: '#ffffff'}}>Hello, Shaunak</Text>
           </ListItem>
-          <ListItem style={{ backgroundColor: '#00bfff', justifyContent: 'center' }}>
+          <ListItem style={{ backgroundColor: COLORS.PRIMARY, justifyContent: 'center' }}>
             {(games.length>0)?
               <Grid >
                 <Col style={{ padding: 5 }}>
