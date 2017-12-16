@@ -49,7 +49,10 @@ export default class AllGamesPage extends Component {
       console.log(this.state.allStreams);
     }
   }
-  
+  goBack = () => {
+    const { navigation } = this.props;
+    navigation.goBack();
+  }
   async componentDidMount() {
     await this.fetchGames();
   }
@@ -60,8 +63,8 @@ export default class AllGamesPage extends Component {
       <Container style={{ marginTop: 25, backgroundColor: '#00bfff' }}>
         <Header>
           <Left>
-            <Button transparent>
-              <Icon name='arrow-back' />
+            <Button transparent onPress={this.goBack}>
+              <Icon name='arrow-round-back' />
             </Button>
           </Left>
           <Body>
@@ -72,6 +75,12 @@ export default class AllGamesPage extends Component {
         <Content style={{ paddingHorizontal: 25 }}>
           <AllGames allStreams={allStreams} goToGame={this.goToGame} />
         </Content>
+
+        <Footer style={{backgroundColor:'transparent'}}>
+          <Button rounded style={{ flex: 0.95, alignItems: 'center', justifyContent: 'center'  }} >
+            <Text style={{ fontSize: 20 }}>Unlock All Games</Text>
+          </Button>
+        </Footer>
       </Container>
     );
   }

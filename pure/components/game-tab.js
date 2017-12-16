@@ -8,6 +8,7 @@ import {
   Text,
   Content,
   Spinner,
+  Button,
   // Card,
   // CardItem,
 } from 'native-base';

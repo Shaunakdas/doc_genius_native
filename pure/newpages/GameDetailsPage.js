@@ -138,12 +138,11 @@ export default class GameDetailsPage extends Component {
         <Content>
           <GameDetails gameDetails={gameDetails} />
         </Content>
-        <Footer>
-          <FooterTab>
-            <Button rounded onPress={this.nextAction}>
-              <Text style={{ fontSize: 20 }}>PLAY GAME</Text>
-            </Button>
-          </FooterTab>
+        <Footer style={{backgroundColor:'transparent'}}>
+          <Button style={{ flex: 0.4, alignItems: 'center', justifyContent: 'center'  }} iconRight rounded onPress={this.nextAction}>
+            <Icon name={'play'} />
+            <Text>Play</Text>
+          </Button>
         </Footer>
       </Container>
     );

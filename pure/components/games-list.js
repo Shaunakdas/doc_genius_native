@@ -64,12 +64,10 @@ export default class GamesList extends Component {
           </Tab>
         </Tabs>
 
-        <Footer>
-          <FooterTab>
-            <Button block  onPress={allGames}>
+        <Footer style={{backgroundColor:'transparent'}}>
+            <Button rounded style={{ flex: 0.95, alignItems: 'center', justifyContent: 'center', marginTop: 5  }} onPress={allGames}>
               <Text style={{ fontSize: 20 }}>All Games</Text>
             </Button>
-          </FooterTab>
         </Footer>
       </Container>
     );

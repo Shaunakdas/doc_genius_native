@@ -146,6 +146,12 @@ export default class GameResultPage extends Component {
       // console.log(this.state.recentScores);
     }
   }
+
+
+  goBack = () => {
+    const { navigation } = this.props;
+    navigation.goBack();
+  }
   gameListPage = () => {
     const { navigation } = this.props;
     navigation.navigate('GameListPage', { });
@@ -156,8 +162,8 @@ export default class GameResultPage extends Component {
       <Container style={{ marginTop: 25, backgroundColor: '#000080' }}>
         <Header>
           <Left>
-            <Button transparent>
-              <Icon name='arrow-back' />
+            <Button transparent onPress={this.goBack}>
+              <Icon name='arrow-round-back' />
             </Button>
           </Left>
           <Body>
@@ -175,12 +181,11 @@ export default class GameResultPage extends Component {
             : <Spinner color='blue' /> }
           
         </Content>
+
         <Footer>
-          <FooterTab>
-            <Button full onPress={this.gameListPage}>
+            <Button rounded style={{ flex: 0.95, alignItems: 'center', justifyContent: 'center'  }} onPress={this.gameListPage}>
               <Text style={{ fontSize: 20 }}>Back To Games</Text>
             </Button>
-          </FooterTab>
         </Footer>
       </Container>
     );

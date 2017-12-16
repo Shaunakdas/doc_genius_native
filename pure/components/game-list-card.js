@@ -6,9 +6,11 @@ import {
   Text,
   Body,
   Left,
+  Right,
   Button,
   List,
   ListItem,
+  Icon,
   View,
 } from 'native-base';
 
@@ -41,11 +43,20 @@ export default class GameListCard extends Component {
       title } = this.props;
     return (
       <View >
-        <Card style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
+        <Card >
           <CardItem header>
-            <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+            <Left>
+            <Icon name={'jet'} />
+            <Body>
+              <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+              </Body>
+            </Left>
+            <Right>
+              <Text>3</Text>
+              <Icon name={'flash'} />
+            </Right>
           </CardItem>
-          <CardItem cardBody >
+          <CardItem cardBody style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
             <FlatList
               horizontal={true}
               data={games}
