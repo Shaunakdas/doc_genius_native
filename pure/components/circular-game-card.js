@@ -36,10 +36,16 @@ export default class CircularGameCard extends Component {
       onPress,
       title,
       color } = this.props;
+      const cicleRadius = 100;
+      const halfRadius = 50;
     return (
-      <TouchableOpacity style={{  justifyContent: 'center', alignItems: 'center', marginHorizontal: 5  }} onPress={onPress}>
-        <Thumbnail large source={IMAGES.LOGO} />
-        <Text style={{  paddingTop: 5 }}>{title}</Text>
+      
+      <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', marginHorizontal: 5 }} onPress={onPress}>
+        <View style={{ width: cicleRadius, height: cicleRadius, position: 'relative', overflow: 'hidden', borderRadius: halfRadius  }} >
+          <Image source={IMAGES.LOGO} style={{   height: cicleRadius, width: cicleRadius, borderRadius: halfRadius,position: 'absolute', overflow: 'hidden'}}>
+          </Image>
+        </View>
+        <Text style={{ paddingTop: 5 }}>{title}</Text>
       </TouchableOpacity>
     );
   }
