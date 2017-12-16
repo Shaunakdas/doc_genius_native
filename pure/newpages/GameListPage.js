@@ -62,10 +62,10 @@ class GameListPage extends React.Component {
     }
   }
   
-  goToGame = (gameHolderId) => {
+  goToGame = (gameHolderId,color) => {
     console.log(gameHolderId);
     const { navigation } = this.props;
-    navigation.navigate('GameDetailsPage', { gameHolderId: gameHolderId });
+    navigation.navigate('GameDetailsPage', { gameHolderId: gameHolderId, color });
   }
 
   render() {

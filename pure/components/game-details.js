@@ -41,6 +41,7 @@ export default class GameDetails extends Component {
       scores: PropTypes.any,
       benifits: PropTypes.any,
     }),
+      color: PropTypes.any,
     // onGameStart: PropTypes.func,
   }
   static defaultProps = {
@@ -68,6 +69,7 @@ export default class GameDetails extends Component {
       },
     },
     onGameStart: null,
+    color: '#e52b50',
   }
   render() {
     const {
@@ -77,6 +79,7 @@ export default class GameDetails extends Component {
       challenges,
       scores,
       benifits } = this.props.gameDetails;
+      const {color} = this.props;
     return (
       <Grid>
         <Row style={{ height: 150, backgroundColor: '#00bfff' }}>
@@ -96,14 +99,14 @@ export default class GameDetails extends Component {
           </Image>
         </Row>
         <Row size={45}>
-          <Tabs initialPage={0} >
-            <Tab heading="BENIFITS">
-              <BenifitsTab benifits={benifits} />
+          <Tabs initialPage={0}>
+            <Tab heading="BENIFITS" tabStyle={{ backgroundColor: color }} activeTabStyle={{ backgroundColor: color }}>
+              <BenifitsTab benifits={benifits}  />
             </Tab>
-            <Tab heading="CHALLENGES">
-              <ChallengesTab challenges={challenges} />
+            <Tab heading="CHALLENGES" tabStyle={{ backgroundColor: color }} activeTabStyle={{ backgroundColor: color }}>
+              <ChallengesTab challenges={challenges}  />
             </Tab>
-            <Tab heading="SCORES">
+            <Tab heading="SCORES" tabStyle={{ backgroundColor: color }} activeTabStyle={{ backgroundColor: color }}>
               <ScoresTab scores={scores} />
             </Tab>
           </Tabs>

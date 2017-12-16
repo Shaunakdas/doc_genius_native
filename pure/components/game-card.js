@@ -21,12 +21,14 @@ export default class GameCard extends Component {
     title: PropTypes.string,
     subTitle: PropTypes.string,
     navigation: PropTypes.any,
+    color: PropTypes.any,
   }
 
   static defaultProps = {
     onPress: () => {},
     title: null,
     subTitle: null,
+    color: null,
   }
 
 
@@ -34,7 +36,8 @@ export default class GameCard extends Component {
     const {
       onPress,
       title,
-      subTitle } = this.props;
+      subTitle,
+      color } = this.props;
     return (
       <View>
         <Card onPress={this.goNext}>
@@ -44,7 +47,7 @@ export default class GameCard extends Component {
           <CardItem cardBody button onPress={onPress} style={{ marginBottom: 20, marginTop: 20 }} >
             <Left>
               <Body>
-                <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+                <Text style={{ fontWeight: 'bold', color: color }}>{title}</Text>
                 <Text style={{ fontVariant: ['small-caps'] }}>{subTitle}</Text>
               </Body>
             </Left>

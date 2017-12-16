@@ -63,7 +63,7 @@ export default class GameListCard extends Component {
             <FlatList
               horizontal={true}
               data={games}
-              renderItem={({item}) => <CircularGameCard title={item.title} key={item.id} onPress={() => goToGame(item.id)}  />}
+              renderItem={({item}) => <CircularGameCard title={item.title} key={item.id} onPress={() => goToGame(item.id,color)} color={color} />}
             />
             
           </CardItem>

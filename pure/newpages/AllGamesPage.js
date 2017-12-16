@@ -37,10 +37,10 @@ export default class AllGamesPage extends Component {
       allStreams: [],
     };
   }
-  goToGame = (gameHolderId) => {
+  goToGame = (gameHolderId,color) => {
     console.log(gameHolderId);
     const { navigation } = this.props;
-    navigation.navigate('GameDetailsPage', { gameHolderId });
+    navigation.navigate('GameDetailsPage', { gameHolderId,color });
   }
   fetchGames = async () =>{
     const gamesResponse = await allGamesAPI() || {};

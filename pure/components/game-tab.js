@@ -19,13 +19,13 @@ import {
 // import IMAGES from '../common/images';
 import GameCard from './game-card';
 import COLORS from '../common/colors';
-
 // const goNext = () => {
 //     console.log('goNext');
 //     // const { navigation } = this.props;
 //     // navigation.navigate('GameDetailsPage', {  });
 //   }
 
+const colourOptions = [COLORS.GAME_PURPLE, COLORS.GAME_BLUE, COLORS.GAME_GREEN, COLORS.GAME_ORANGE, COLORS.GAME_RED];
 export default class GameTab extends Component {
   static propTypes = {
     games: PropTypes.any,
@@ -41,12 +41,16 @@ export default class GameTab extends Component {
     goToGame: () => {},
   }
   
+  rndColor = (arr,id) => {
+    const randIndex = id % arr.length;
+    return arr[randIndex];
+  };
   render() {
     const {
       games,
       goToGame } = this.props;
     const gameCards = games.map((game) =>
-      <GameCard title={game.title} subTitle={game.subTitle} onPress={ () => goToGame(game.id) } />);
+      <GameCard title={game.title} subTitle={game.subTitle} onPress={ () => goToGame(game.id,this.rndColor(colourOptions,game.id))}  color={this.rndColor(colourOptions,game.id) } />);
     const oddCards = gameCards.filter((v, i) => i % 2);
     const evenCards = gameCards.filter((v, i) => !(i % 2));
     return (

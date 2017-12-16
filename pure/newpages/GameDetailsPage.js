@@ -36,6 +36,7 @@ import { saveData } from '../common/helper';
 export default class GameDetailsPage extends Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
+    color: PropTypes.any,
   }
   constructor(props) {
     super(props);
@@ -118,9 +119,10 @@ export default class GameDetailsPage extends Component {
 
   render() {
     const { gameDetails } = this.state;
+    const color = this.props.navigation.state.params.color;
     return (
       <Container style={{ marginTop: 25 }}>
-        <Header style={{ backgroundColor: '#00bfff' }}>
+        <Header style={{ backgroundColor: color }}>
           <Left>
             <Button onPress={ this.goBack} transparent>
               <Icon name={'arrow-round-back'} />
@@ -136,10 +138,10 @@ export default class GameDetailsPage extends Component {
           </Right>
         </Header>
         <Content>
-          <GameDetails gameDetails={gameDetails} />
+          <GameDetails gameDetails={gameDetails} color = {color}/>
         </Content>
         <Footer style={{backgroundColor:'transparent'}}>
-          <Button style={{ flex: 0.4, alignItems: 'center', justifyContent: 'center'  }} iconRight rounded onPress={this.nextAction}>
+          <Button style={{ flex: 0.4, alignItems: 'center', justifyContent: 'center',backgroundColor: color  }} iconRight rounded onPress={this.nextAction}>
             <Icon name={'play'} />
             <Text>Play</Text>
           </Button>
