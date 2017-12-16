@@ -61,7 +61,7 @@ class SplashPage extends React.Component {
     // NativeModules.ActivityStarter.setPrefsValue(key, '0');
     // Uncomment this for Integrated
     if (ENVIRONMENT === 'integrated') {
-      // this.checkForResults();
+      this.checkForResults();
     }
   }
 

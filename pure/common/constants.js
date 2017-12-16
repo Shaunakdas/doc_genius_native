@@ -1,5 +1,5 @@
-export const BASE_URL = 'http://39395b0c.ngrok.io';
-export const ADMIN_BASE_URL = 'http://39395b0c.ngrok.io';
+export const BASE_URL = 'http://06da380e.ngrok.io';
+export const ADMIN_BASE_URL = 'http://06da380e.ngrok.io';
 export const IMAGE_SERVICE_URL = 'http://13.59.133.37';
 
 export const ENVIRONMENT = 'expo';

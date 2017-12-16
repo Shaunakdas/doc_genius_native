@@ -146,6 +146,10 @@ export default class GameResultPage extends Component {
       // console.log(this.state.recentScores);
     }
   }
+  gameListPage = () => {
+    const { navigation } = this.props;
+    navigation.navigate('GameListPage', { });
+  }
   render() {
     const { gameResults,recentScores } = this.state;
     return (
@@ -173,8 +177,8 @@ export default class GameResultPage extends Component {
         </Content>
         <Footer>
           <FooterTab>
-            <Button full>
-              <Text>Footer</Text>
+            <Button full onPress={this.gameListPage}>
+              <Text style={{ fontSize: 20 }}>Back To Games</Text>
             </Button>
           </FooterTab>
         </Footer>
