@@ -122,10 +122,12 @@ class SignupPage extends React.Component {
     const {
       email,
       password,
+      confirmPassword,
     } = this.state.values;
     const response = await signupAPI({
       email,
       password,
+      confirmPassword,
     });
     if (response.success === false) {
       // console.log(response.json());

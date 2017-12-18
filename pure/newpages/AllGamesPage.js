@@ -23,11 +23,12 @@ import {
 import {
   NativeModules,
 } from 'react-native';
+import { connect } from 'react-redux';
 import COLORS from '../common/colors';
 import { AllGames } from '../components';
 import { allGamesAPI } from '../common/api';
 
-export default class AllGamesPage extends Component {
+class AllGamesPage extends Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
   }
@@ -43,7 +44,8 @@ export default class AllGamesPage extends Component {
     navigation.navigate('GameDetailsPage', { gameHolderId,color });
   }
   fetchGames = async () =>{
-    const gamesResponse = await allGamesAPI() || {};
+    const { authToken } = this.props;
+    const gamesResponse = await allGamesAPI(authToken) || {};
     console.log(gamesResponse);
     if (gamesResponse.success !== false) {
       this.setState({ allStreams: gamesResponse.streams});
@@ -86,3 +88,10 @@ export default class AllGamesPage extends Component {
     );
   }
 }
+
+const mapStateToProps = ({
+  loginState: { authToken },
+}) =>
+  ({  authToken });
+
+export default connect(mapStateToProps)(AllGamesPage);

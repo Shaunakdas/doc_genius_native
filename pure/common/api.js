@@ -55,13 +55,14 @@ const jsonFetch = async (url, options = {}, authToken = '') => {
 
 // Genius APIs
 
-export const signupAPI = async (email, password) => {
-  const body = JSON.stringify({ email, password });
+export const signupAPI = async (params) => {
+  const body = JSON.stringify({ user: params });
+  console.log(body);
   let response;
-  if (SERVER === 'mock') {
+  if (SERVER === 'MOCK') {
     response = await jsonFetch(`${URL(SERVER)}/sign_up`, { method: 'GET' });
-  } else if (SERVER === 'live') {
-    response = await jsonFetch(`${URL(SERVER)}/sign_up`, { body, method: 'POST' });
+  } else {
+    response = await jsonFetch(`${URL(SERVER)}/sign_up/email`, { body, method: 'POST' });
   }
   console.log(response);
   return response;
@@ -70,22 +71,23 @@ export const signupAPI = async (email, password) => {
 export const loginAPI = async (email, password) => {
   const body = JSON.stringify({ email, password });
   let response;
-  if (SERVER === 'mock') {
+  if (SERVER === 'MOCK') {
     response = await jsonFetch(`${URL(SERVER)}/login`, { method: 'GET' });
   } else {
-    response = await jsonFetch(`${URL(SERVER)}/login`, { body, method: 'POST' });
+    response = await jsonFetch(`${URL(SERVER)}/login/email`, { body, method: 'POST' });
   }
   console.log(response);
   return response;
 };
 
-export const updateAPI = async (authToken, firstName, lastName, standard, dateOfBirth, mobileNumber) => {
-  const body = JSON.stringify({ firstName, lastName, standard, dateOfBirth, mobileNumber });
+export const updateAPI = async ( params) => {
+  console.log(params);
+  const body = JSON.stringify({ user: params });
   let response;
-  if (SERVER === 'mock') {
+  if (SERVER === 'MOCK') {
     response = await jsonFetch(`${URL(SERVER)}/login`, { method: 'GET' });
   } else {
-    response = await jsonFetch(`${URL(SERVER)}/users`, { body, method: 'POST' }, authToken);
+    response = await jsonFetch(`${URL(SERVER)}/fill_form`, { body, method: 'PUT' }, params.authToken);
   }
   console.log(response);
   return response;
@@ -108,14 +110,24 @@ export const allGamesAPI = async (authToken, page = 1, limit = 10) => {
     limit,
     page,
   });
-  const url = `${URL(SERVER)}/all_games?${queryString}`;
+  let url;
+  if (SERVER === 'MOCK') {
+    url = `${URL(SERVER)}/all_games?${queryString}`;
+  } else {
+    url = `${URL(SERVER)}/question_types/all?${queryString}`;
+  }
   const response = await jsonFetch(url, { method: 'GET' }, authToken);
   console.log(response);
   return response;
 };
 
-export const gameDetailsAPI = async (authToken) => {
-  const response = await jsonFetch(`${URL(SERVER)}/question_type`, { method: 'GET' }, authToken);
+export const gameDetailsAPI = async (authToken, gameHolderId) => {
+  let response;
+  if (SERVER === 'MOCK') {
+    response = await jsonFetch(`${URL(SERVER)}/question_type`, { method: 'GET' }, authToken);
+  } else {
+    response = await jsonFetch(`${URL(SERVER)}/question_type/${gameHolderId}/show`, { method: 'GET' }, authToken);
+  }
   return response;
 };
 
@@ -126,13 +138,13 @@ export const standardsAPI = async () => {
   return response;
 };
 
-export const gameResultsAPI = async (authToken, gameSession) => {
-  const body = JSON.stringify({ gameSession });
+export const gameResultsAPI = async (authToken, params) => {
+  const body = JSON.stringify({ gameSession: params });
   let response;
-  if (SERVER === 'mock') {
+  if (SERVER === 'MOCK') {
     response = await jsonFetch(`${URL(SERVER)}/game_result`, { method: 'GET' });
-  } else if (SERVER === 'live') {
-    response = await jsonFetch(`${URL(SERVER)}/game_result`, { body, method: 'POST' }, authToken);
+  } else {
+    response = await jsonFetch(`${URL(SERVER)}/game_session`, { body, method: 'POST' }, authToken);
   }
   console.log(response);
   return response;

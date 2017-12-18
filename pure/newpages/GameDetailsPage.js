@@ -26,6 +26,7 @@ import {
   NativeModules,
 } from 'react-native';
 import moment from 'moment';
+import { connect } from 'react-redux';
 
 import { GameDetails } from '../components';
 import { ENVIRONMENT } from '../common/constants';
@@ -33,7 +34,7 @@ import { ENVIRONMENT } from '../common/constants';
 import { gameDetailsAPI } from '../common/api';
 import { saveData } from '../common/helper';
 
-export default class GameDetailsPage extends Component {
+class GameDetailsPage extends Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
     color: PropTypes.any,
@@ -75,10 +76,10 @@ export default class GameDetailsPage extends Component {
   }
 
   fetchGameDetails = async () => {
-    const { navigation } = this.props;
+    const { navigation, authToken } = this.props;
     const { params = {} } = navigation.state;
     const { gameHolderId } = params;
-    const gameDetailResponse = await gameDetailsAPI(gameHolderId) || {};
+    const gameDetailResponse = await gameDetailsAPI(authToken,gameHolderId) || {};
     console.log(gameDetailResponse);
     if (gameDetailResponse.success !== false) {
       this.setState({ gameDetails: gameDetailResponse.question_type });
@@ -150,3 +151,10 @@ export default class GameDetailsPage extends Component {
     );
   }
 }
+
+const mapStateToProps = ({
+  loginState: { authToken },
+}) =>
+  ({  authToken });
+
+export default connect(mapStateToProps)(GameDetailsPage);

@@ -78,9 +78,15 @@ class SignupFormPage extends React.Component {
     });
     this.props.navigation.dispatch(resetAction);
   }
-
+  
+  auth = () =>{
+    const { authToken } = this.props;
+    return authToken;
+  }
   fetchStandards = async () =>{
     console.log('fetchStandards');
+    const { authToken } = this.props;
+    console.log(authToken);
     const standardResponse = await standardsAPI() || {};
     console.log(standardResponse);
     if (standardResponse.success !== false) {
@@ -191,9 +197,10 @@ class SignupFormPage extends React.Component {
           contentContainerStyle={cs.scrollContent}
         >
           <SignUpForm
-            standards={this.state.standards} nextAction={this.nextAction}
-             />
-            
+            standards={this.state.standards}
+            nextAction={this.nextAction}
+            authtoken={this.auth}
+          />
         </ScrollView>
         <IconButton
           source={IMAGES.BACK}
@@ -207,13 +214,8 @@ class SignupFormPage extends React.Component {
 }
 
 const mapStateToProps = ({
-  currentUser,
   loginState: { authToken },
 }) =>
-  ({ currentUser, authToken });
+  ({  authToken });
 
-const mapDispatchToProps = dispatch => ({
-  setUser: user => dispatch(setLoggedInUser(user)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignupFormPage);
+export default connect(mapStateToProps)(SignupFormPage);
