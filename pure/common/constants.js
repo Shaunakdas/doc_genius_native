@@ -1,13 +1,13 @@
 export const MOCK_URL = 'http://bf21766f.ngrok.io';
 export const DEV_URL = 'http://bf21766f.ngrok.io';
 export const TEST_URL = 'http://9f93b39b.ngrok.io';
-export const STAGE_URL = 'http://9f93b39b.ngrok.io';
+export const STAGE_URL = 'http://13.126.154.129';
 export const PROD_URL = 'http://9f93b39b.ngrok.io';
 
 // Options: 'expo' and 'integrated'
 export const ENVIRONMENT = 'expo';
 // Options: 'MOCK','DEV','TEST','STAGE','PROD'
-export const SERVER = 'MOCK';
+export const SERVER = 'STAGE';
 export const VERSION = '/api/v1';
 
 export const URL = (serv) => {

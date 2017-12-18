@@ -108,7 +108,7 @@ class SplashPage extends React.Component {
     const authToken = await getData('AUTH_TOKEN');
     this.props.setToken(authToken);
     console.log(authToken);
-    if (SERVER !== 'DEV') {
+    if (SERVER === 'PROD') {
       try {
         if (authToken) {
           this.setMessage('Loading Profile...');
