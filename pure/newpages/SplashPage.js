@@ -10,7 +10,7 @@ import { commonStyle as cs, splashPageStyle as s } from '../common/styles';
 import COLORS from '../common/colors';
 import IMAGES from '../common/images';
 import { getData, removeData, saveData } from '../common/helper';
-import { STUDENT_ROLE, ENVIRONMENT } from '../common/constants';
+import { STUDENT_ROLE, ENVIRONMENT, SERVER } from '../common/constants';
 import {
   userAPI,
   categoriesAPI,
@@ -77,8 +77,10 @@ class SplashPage extends React.Component {
         NavigationActions.navigate({ routeName: 'LandingPage' }),
       ],
     });
-    const isLoginSuccess = false;
-    // const isLoginSuccess = await this.tryLogin();
+    let isLoginSuccess = false;
+    if (SERVER !== 'MOCK') {
+      isLoginSuccess = await this.tryLogin();
+    }
     if (!isLoginSuccess) { this.props.navigation.dispatch(resetAction); }
   }
 
@@ -104,22 +106,25 @@ class SplashPage extends React.Component {
   tryLogin = async () => {
     // const { finish, setToken, setUser, setRelevantCategories, setBotChannel } = this.props;
     const authToken = await getData('AUTH_TOKEN');
+    this.props.setToken(authToken);
     console.log(authToken);
-    try {
-      if (authToken) {
-        this.setMessage('Loading Profile...');
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'GameListPage' }),
-          ],
-        });
-        this.props.navigation.dispatch(resetAction);
-        return true;
+    if (SERVER !== 'DEV') {
+      try {
+        if (authToken) {
+          this.setMessage('Loading Profile...');
+          const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'GameListPage' }),
+            ],
+          });
+          this.props.navigation.dispatch(resetAction);
+          return true;
+        }
+        await removeData('AUTH_TOKEN');
+      } catch (error) {
+        console.log(error); // eslint-disable-line no-console
       }
-      await removeData('AUTH_TOKEN');
-    } catch (error) {
-      console.log(error); // eslint-disable-line no-console
     }
     return false;
   }

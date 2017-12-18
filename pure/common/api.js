@@ -139,7 +139,7 @@ export const standardsAPI = async () => {
 };
 
 export const gameResultsAPI = async (authToken, params) => {
-  const body = JSON.stringify({ gameSession: params });
+  const body = JSON.stringify({ game_session: params });
   let response;
   if (SERVER === 'MOCK') {
     response = await jsonFetch(`${URL(SERVER)}/game_result`, { method: 'GET' });

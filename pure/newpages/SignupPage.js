@@ -141,7 +141,7 @@ class SignupPage extends React.Component {
       console.log(response);
       setUser(response);
       const { auth_token: authToken } = response;
-      saveData('AUTH_TOKEN', authToken);
+      await saveData('AUTH_TOKEN', authToken);
       this.props.setToken(authToken);
       this.setState({ signingUp: false });
       this.props.navigation.dispatch(

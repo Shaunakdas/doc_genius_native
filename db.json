@@ -560,47 +560,49 @@
     ]
   },
   "game_result": {
-    "title": "Memory",
-    "highest": 2300,
-    "recent_scores": [
-      {
-        "value": "308.3",
-        "recent": "false",
-        "title": ""
-      },
-      {
-        "value": "119",
-        "time_taken": 42,
-        "correct_count": 7,
-        "incorrect_count": 7,
-        "seen": true,
-        "passed": true,
-        "failed": false
-      },
-      {
-        "value": "112.4",
-        "recent": "false",
-        "title": ""
-      },
-      {
-        "value": "213.6",
-        "recent": "true",
-        "title": "3rd Best"
+    "game_session":{
+      "title": "Memory",
+      "highest": 2300,
+      "recent_scores": [
+        {
+          "value": "308.3",
+          "recent": "false",
+          "title": ""
+        },
+        {
+          "value": "119",
+          "time_taken": 42,
+          "correct_count": 7,
+          "incorrect_count": 7,
+          "seen": true,
+          "passed": true,
+          "failed": false
+        },
+        {
+          "value": "112.4",
+          "recent": "false",
+          "title": ""
+        },
+        {
+          "value": "213.6",
+          "recent": "true",
+          "title": "3rd Best"
+        }
+      ],
+      "score_rank": 6,
+      "comparision": [
+        {
+          "value": 308,
+          "title": "You"
+        },
+        {
+          "value": 200,
+          "title": "Other Students \n (Average)"
+        }
+      ],
+      "result": {
+        "title": "You keep imprressing me Shaunak. Thats a great performance"
       }
-    ],
-    "score_rank": 6,
-    "comparision": [
-      {
-        "value": 308,
-        "title": "You"
-      },
-      {
-        "value": 200,
-        "title": "Other Students \n (Average)"
-      }
-    ],
-    "result": {
-      "title": "You keep imprressing me Shaunak. Thats a great performance"
     }
   },
   "game_attempts": {
