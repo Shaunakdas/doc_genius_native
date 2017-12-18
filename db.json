@@ -491,69 +491,69 @@
     "streams":[
       {
         "id": 1,
-        "title": "Number Sytem",
-        "games":[
+        "name": "Number Sytem",
+        "question_types":[
           {
             "id": 1,
-            "title": "Game 1"
+            "name": "Comparing multiple numbers"
           },
           {
             "id": 2,
-            "title": "Game 2"
+            "name": "Making largest or smallest numbers without repeatition"
           },
           {
             "id": 3,
-            "title": "Game 3"
+            "name": "Expanding in indian system"
           },
           {
             "id": 4,
-            "title": "Game 4"
+            "name": "Finding Place Value in Indian System of Numeration"
           },
           {
             "id": 5,
-            "title": "Game 5"
+            "name": "Finding Place Value in International System of Numeration"
           },
           {
             "id": 6,
-            "title": "Game 6"
+            "name": "Writing and reading numbers using placement boxes"
           },
           {
             "id": 7,
-            "title": "Game 7"
+            "name": "Changing physical quantity from one unit to other"
           }
         ]
       },
       {
         "id": 2,
-        "title": "Alegbra",
-        "games":[
+        "name": "Alegbra",
+        "question_types":[
           {
             "id": 8,
-            "title": "Game 8"
+            "name": "Game 8"
           },
           {
             "id": 9,
-            "title": "Game 9"
+            "name": "Game 9"
           },
           {
             "id": 10,
-            "title": "Game 10"
+            "name": "Game 10"
           },
           {
             "id": 11,
-            "title": "Game 11"
+            "name": "Game 11"
           },
           {
             "id": 12,
-            "title": "Game 12"
+            "name": "Game 12"
           },
           {
             "id": 13,
-            "title": "Game 13"
+            "name": "Game 13"
           },
           {
             "id": 14,
-            "title": "Game 14"
+            "name": "Game 14"
           }
         ]
       }

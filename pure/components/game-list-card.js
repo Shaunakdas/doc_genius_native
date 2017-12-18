@@ -25,7 +25,7 @@ export default class GameListCard extends Component {
   static propTypes = {
     goToGame: PropTypes.func,
     games: PropTypes.any,
-    title: PropTypes.string,
+    name: PropTypes.string,
     navigation: PropTypes.any,
     color: PropTypes.any,
   }
@@ -33,7 +33,7 @@ export default class GameListCard extends Component {
   static defaultProps = {
     goToGame: () => {},
     games: [],
-    title: null,
+    name: null,
     color: '#32CD32',
   }
 
@@ -42,7 +42,7 @@ export default class GameListCard extends Component {
     const {
       goToGame,
       games,
-      title,
+      name,
       color } = this.props;
     return (
       <View >
@@ -51,11 +51,11 @@ export default class GameListCard extends Component {
             <Left>
             <Icon style={{ color: color }} name={'jet'} />
             <Body>
-              <Text style={{ fontWeight: 'bold', color: color }}>{title}</Text>
+              <Text style={{ fontWeight: 'bold', color: color }}>{name}</Text>
               </Body>
             </Left>
             <Right>
-              <Text style={{ color: color }}>3</Text>
+              <Text style={{ color: color }}>{games.length}</Text>
               <Icon style={{ color: color }} name={'flash'} />
             </Right>
           </CardItem>
@@ -63,7 +63,7 @@ export default class GameListCard extends Component {
             <FlatList
               horizontal={true}
               data={games}
-              renderItem={({item}) => <CircularGameCard title={item.title} key={item.id} onPress={() => goToGame(item.id,color)} color={color} />}
+              renderItem={({item}) => <CircularGameCard name={item.name} key={item.id} onPress={() => goToGame(item.id,color)} color={color} />}
             />
             
           </CardItem>

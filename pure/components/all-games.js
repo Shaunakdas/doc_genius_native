@@ -51,7 +51,7 @@ export default class AllGames extends Component {
       allStreams,
       goToGame } = this.props;
     const gameCards = allStreams.map((stream) =>
-      <GameListCard title={stream.title} goToGame={goToGame} games={stream.games} color={this.rndColor(colourOptions,stream.id)}/>);
+      <GameListCard name={stream.name} goToGame={goToGame} games={stream.question_types} color={this.rndColor(colourOptions,stream.id)}/>);
     return (
       <Content>
         {gameCards}

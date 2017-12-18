@@ -7,7 +7,7 @@ export const PROD_URL = 'http://9f93b39b.ngrok.io';
 // Options: 'expo' and 'integrated'
 export const ENVIRONMENT = 'expo';
 // Options: 'MOCK','DEV','TEST','STAGE','PROD'
-export const SERVER = 'MOCK';
+export const SERVER = 'DEV';
 export const VERSION = '/api/v1';
 
 export const URL = (serv) => {

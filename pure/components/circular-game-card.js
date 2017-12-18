@@ -20,14 +20,14 @@ import IMAGES from '../common/images';
 export default class CircularGameCard extends Component {
   static propTypes = {
     onPress: PropTypes.func,
-    title: PropTypes.string,
+    name: PropTypes.string,
     navigation: PropTypes.any,
     color: PropTypes.any,
   }
 
   static defaultProps = {
     onPress: () => {},
-    title: null,
+    name: null,
     color: '#800080',
   }
   
@@ -35,7 +35,7 @@ export default class CircularGameCard extends Component {
   render() {
     const {
       onPress,
-      title,
+      name,
       color } = this.props;
     const cicleRadius = 100;
     const halfRadius = 50;
@@ -49,12 +49,12 @@ export default class CircularGameCard extends Component {
       },
     });
     return (
-      <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', marginHorizontal: 5 }} onPress={onPress}>
+      <TouchableOpacity style={{ width: cicleRadius+30,justifyContent: 'center', alignItems: 'center', marginHorizontal: 10 }} onPress={onPress}>
         <View style={{ width: cicleRadius, height: cicleRadius, position: 'relative' , overflow: 'hidden', borderRadius: halfRadius  }} >
           <Image source={IMAGES.LOGO} style={{ width: cicleRadius, height: cicleRadius, position: 'absolute' , overflow: 'hidden', borderRadius: halfRadius  }} />
           <View style={{  height: cicleRadius, width: cicleRadius, borderRadius: halfRadius, backgroundColor: color,opacity: 0.5   }} />
         </View>
-        <Text style={{ paddingTop: 5 }}>{title}</Text>
+        <Text style={{ paddingTop: 5, flexWrap: 'wrap'}}>{name}</Text>
       </TouchableOpacity>
     );
   }
