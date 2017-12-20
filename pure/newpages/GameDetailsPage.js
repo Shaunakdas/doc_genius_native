@@ -106,7 +106,7 @@ class GameDetailsPage extends Component {
       const question_text = this.state.gameDetails.current.question_text;
       const key = 'QuestionText';
       NativeModules.ActivityStarter.getPrefsValue(key, (value) => { console.log(value); });
-      NativeModules.ActivityStarter.setPrefsValue(key, question_text);
+      // NativeModules.ActivityStarter.setPrefsValue(key, question_text);
       NativeModules.ActivityStarter.getPrefsValue(key, (value) => { console.log(value); });
       NativeModules.ActivityStarter.navigateToExample();
     } else if (ENVIRONMENT === 'expo') {
