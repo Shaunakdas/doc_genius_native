@@ -21,7 +21,7 @@ export default class ChatView extends React.Component {
   render() {
     const showButtons = false;
     const showIntents = false;
-    const chat = 'Hello, Shaunak. This is a random selection of games that we change everyday to let you practice with Drona';
+    const chat = 'Hello, Shaunak. This is a random selection of games that we change everyday to let you practice with me';
     return (
       <View>
         <View

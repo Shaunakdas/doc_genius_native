@@ -32,7 +32,7 @@ export default class LandingPage extends React.Component {
           style={{ flex: 1, paddingHorizontal: 15 }}
           contentContainerStyle={[cs.container, s.container]}
         >
-          <Text style={s.brandText}>Genius</Text>
+          <Text style={s.brandText}>Drona</Text>
           <Image
             style={s.logo}
             source={IMAGES.LOGO}
