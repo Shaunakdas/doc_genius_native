@@ -1,4 +1,4 @@
-package com.math.genius;
+package com.edu.genius;
 
 import com.unity3d.player.*;
 import android.app.NativeActivity;

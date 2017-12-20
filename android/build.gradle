@@ -39,7 +39,7 @@ android {
 
     defaultConfig {
         targetSdkVersion 24
-        applicationId 'com.math.genius'
+        applicationId 'com.edu.genius'
     }
 
     lintOptions {

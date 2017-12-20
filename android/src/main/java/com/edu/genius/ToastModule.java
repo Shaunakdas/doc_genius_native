@@ -1,4 +1,4 @@
-package com.math.genius;
+package com.edu.genius;
 import android.widget.Toast;
 
 import com.facebook.react.bridge.NativeModule;

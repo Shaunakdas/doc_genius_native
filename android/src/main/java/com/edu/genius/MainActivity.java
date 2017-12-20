@@ -1,4 +1,4 @@
-package com.math.genius;
+package com.edu.genius;
 import android.content.SharedPreferences;
 
 import com.facebook.react.ReactActivity;
