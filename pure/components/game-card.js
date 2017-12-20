@@ -12,6 +12,7 @@ import {
 
 import {
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import IMAGES from '../common/images';
 
@@ -21,12 +22,14 @@ export default class GameCard extends Component {
     title: PropTypes.string,
     subTitle: PropTypes.string,
     navigation: PropTypes.any,
+    color: PropTypes.any,
   }
 
   static defaultProps = {
     onPress: () => {},
     title: null,
     subTitle: null,
+    color: null,
   }
 
 
@@ -34,23 +37,26 @@ export default class GameCard extends Component {
     const {
       onPress,
       title,
-      subTitle } = this.props;
+      subTitle,
+      color } = this.props;
     return (
-      <View>
-        <Card onPress={this.goNext}>
-          <CardItem cardBody button onPress={onPress}>
-            <Image style={{ height: 100, width: null, flex: 1 }} source={IMAGES.LOGO} />
+      <TouchableOpacity onPress={onPress}>
+        <Card >
+          <CardItem cardBody  >
+            <Image style={{ height: 100, width: null, flex: 1 }} source={IMAGES.LOGO} >
+              <View style={{ flex: 1, height: 100, backgroundColor: color,opacity: 0.5, margin: 0 }} />
+            </Image>
           </CardItem>
-          <CardItem cardBody button onPress={onPress} style={{ marginBottom: 20, marginTop: 20 }} >
+          <CardItem cardBody   style={{ marginBottom: 20, marginTop: 20 }} >
             <Left>
               <Body>
-                <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+                <Text style={{ fontWeight: 'bold', color: color }}>{title}</Text>
                 <Text style={{ fontVariant: ['small-caps'] }}>{subTitle}</Text>
               </Body>
             </Left>
           </CardItem>
         </Card>
-      </View>
+      </TouchableOpacity>
     );
   }
 }

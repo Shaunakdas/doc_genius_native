@@ -6,9 +6,11 @@ import {
   Text,
   Body,
   Left,
+  Right,
   Button,
   List,
   ListItem,
+  Icon,
   View,
 } from 'native-base';
 
@@ -23,14 +25,16 @@ export default class GameListCard extends Component {
   static propTypes = {
     goToGame: PropTypes.func,
     games: PropTypes.any,
-    title: PropTypes.string,
+    name: PropTypes.string,
     navigation: PropTypes.any,
+    color: PropTypes.any,
   }
 
   static defaultProps = {
     goToGame: () => {},
     games: [],
-    title: null,
+    name: null,
+    color: '#32CD32',
   }
 
 
@@ -38,18 +42,28 @@ export default class GameListCard extends Component {
     const {
       goToGame,
       games,
-      title } = this.props;
+      name,
+      color } = this.props;
     return (
       <View >
-        <Card style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
+        <Card >
           <CardItem header>
-            <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+            <Left>
+            <Icon style={{ color: color }} name={'jet'} />
+            <Body>
+              <Text style={{ fontWeight: 'bold', color: color }}>{name}</Text>
+              </Body>
+            </Left>
+            <Right>
+              <Text style={{ color: color }}>{games.length}</Text>
+              <Icon style={{ color: color }} name={'flash'} />
+            </Right>
           </CardItem>
-          <CardItem cardBody >
+          <CardItem cardBody style={{ paddingBottom: 10 }}>
             <FlatList
               horizontal={true}
               data={games}
-              renderItem={({item}) => <CircularGameCard title={item.title} key={item.id} onPress={() => goToGame(item.id)}  />}
+              renderItem={({item}) => <CircularGameCard name={item.name} key={item.id} onPress={() => goToGame(item.id,color)} color={color} />}
             />
             
           </CardItem>

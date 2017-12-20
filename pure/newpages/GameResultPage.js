@@ -23,6 +23,7 @@ import {
 import {
   NativeModules,
 } from 'react-native';
+import { connect } from 'react-redux';
 // import { VictoryScatter, VictoryArea, VictoryLine, VictoryTheme, VictoryGroup, VictoryLabel } from 'victory-native';
 
 // const data = [
@@ -36,12 +37,12 @@ import {
 // }
 import moment from 'moment';
 
-import { LineGraph, BarGraph } from '../components';
+import { LineGraph, BarGraph,ChatView } from '../components';
 import { gameResultsAPI } from '../common/api';
 import { ENVIRONMENT } from '../common/constants';
 import { saveData, getData } from '../common/helper';
 
-export default class GameResultPage extends Component {
+class GameResultPage extends Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
   }
@@ -92,7 +93,7 @@ export default class GameResultPage extends Component {
   checkForResult = async (value) => {
     let sessionScore = '';
     if ((value === 'null') || (value.length === 0)) {
-      sessionScore = '{"score":"0", "time_taken":"0", "correct_count":"0", "incorrect_count":"0", "seen":"True", "passed":"True", "failed":"False"}';
+      sessionScore = '{"value":"0", "time_taken":"0", "correct_count":"0", "incorrect_count":"0", "seen":"True", "passed":"True", "failed":"False"}';
       console.log(sessionScore);
     } else {
       sessionScore = value;
@@ -113,28 +114,30 @@ export default class GameResultPage extends Component {
   fetchResult = async (value) => {
     console.log(value);
     // TODO change value to game_session object
-    const gameResultsResponse = await gameResultsAPI(value) || {};
+    const {  authToken } = this.props;
+    const gameResultsResponse = await gameResultsAPI(authToken, value) || {};
     console.log(gameResultsResponse);
     if (gameResultsResponse.success !== false) {
-      const updatedScores = gameResultsResponse.recent_scores;
-      gameResultsResponse.recent_scores.map((score, i) => updatedScores[i].id = (''+i));
-      gameResultsResponse.recent_scores.map((score, i) => updatedScores[i].value = parseFloat(score.value));
-      const scoresLength = gameResultsResponse.recent_scores.length;
+      const gameSession = gameResultsResponse.game_session;
+      const updatedScores = gameSession.recent_scores;
+      gameSession.recent_scores.map((score, i) => updatedScores[i].id = (''+i));
+      gameSession.recent_scores.map((score, i) => updatedScores[i].value = parseFloat(score.value));
+      const scoresLength = gameSession.recent_scores.length;
       const updatedLabels = Array(scoresLength).fill('');
-      updatedLabels[scoresLength - 1] = gameResultsResponse.score_rank+'th Best\n\n '+updatedScores[scoresLength - 1].value;
+      updatedLabels[scoresLength - 1] = gameSession.score_rank+'th Best\n\n '+updatedScores[scoresLength - 1].value;
       console.log(updatedLabels);
       // updating labels
       this.setState({
         gameResults: {
-          title: gameResultsResponse.title,
-          highest: gameResultsResponse.highest,
+          title: 'Game Results',
+          highest: '340',
           recent: updatedScores,
           comparision: [
             { user: 1, time: 3.0 },
             { user: 2, time: 6.5 },
           ],
           result: {
-            title: gameResultsResponse.result.title,
+            title: 'That was a good attempt',
           },
           labels: updatedLabels,
         },
@@ -146,6 +149,12 @@ export default class GameResultPage extends Component {
       // console.log(this.state.recentScores);
     }
   }
+
+
+  goBack = () => {
+    const { navigation } = this.props;
+    navigation.goBack();
+  }
   gameListPage = () => {
     const { navigation } = this.props;
     navigation.navigate('GameListPage', { });
@@ -156,8 +165,8 @@ export default class GameResultPage extends Component {
       <Container style={{ marginTop: 25, backgroundColor: '#000080' }}>
         <Header>
           <Left>
-            <Button transparent>
-              <Icon name='arrow-back' />
+            <Button transparent onPress={this.goBack}>
+              <Icon name='arrow-round-back' />
             </Button>
           </Left>
           <Body>
@@ -169,20 +178,28 @@ export default class GameResultPage extends Component {
         <Content style={{ paddingHorizontal: 25 }}>
           {(gameResults.recent.length>0)?
             <View>
+            <ChatView />
             <LineGraph labels={gameResults.labels} data={gameResults.recent} />
             <BarGraph data={gameResults.comparision} />
             </View>
             : <Spinner color='blue' /> }
           
         </Content>
+
         <Footer>
-          <FooterTab>
-            <Button full onPress={this.gameListPage}>
+            <Button rounded style={{ flex: 0.95, alignItems: 'center', justifyContent: 'center'  }} onPress={this.gameListPage}>
               <Text style={{ fontSize: 20 }}>Back To Games</Text>
             </Button>
-          </FooterTab>
         </Footer>
       </Container>
     );
   }
 }
+
+
+const mapStateToProps = ({
+  loginState: { authToken },
+}) =>
+  ({  authToken });
+
+export default connect(mapStateToProps)(GameResultPage);

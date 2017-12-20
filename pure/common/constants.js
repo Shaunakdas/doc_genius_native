@@ -1,9 +1,41 @@
-export const BASE_URL = 'http://06da380e.ngrok.io';
-export const ADMIN_BASE_URL = 'http://06da380e.ngrok.io';
-export const IMAGE_SERVICE_URL = 'http://13.59.133.37';
+export const MOCK_URL = 'http://bf21766f.ngrok.io';
+export const DEV_URL = 'http://bf21766f.ngrok.io';
+export const TEST_URL = 'http://9f93b39b.ngrok.io';
+export const STAGE_URL = 'http://13.126.154.129';
+export const PROD_URL = 'http://9f93b39b.ngrok.io';
 
+// Options: 'expo' and 'integrated'
 export const ENVIRONMENT = 'expo';
+// Options: 'MOCK','DEV','TEST','STAGE','PROD'
+export const SERVER = 'STAGE';
+export const VERSION = '/api/v1';
 
+export const URL = (serv) => {
+  let url;
+  switch (serv) {
+    case 'MOCK':
+      url = MOCK_URL;
+      break;
+    case 'DEV':
+      url = DEV_URL + VERSION;
+      break;
+    case 'TEST':
+      url = TEST_URL + VERSION;
+      break;
+    case 'STAGE':
+      url = STAGE_URL + VERSION;
+      break;
+    case 'PROD':
+      url = PROD_URL + VERSION;
+      break;
+    default:
+      url = MOCK_URL + VERSION;
+  }
+  return url;
+};
+export const BASE_URL = 'http://9f93b39b.ngrok.io';
+export const ADMIN_BASE_URL = 'http://9f93b39b.ngrok.io';
+export const IMAGE_SERVICE_URL = 'http://13.59.133.37';
 export const APPSTATE_LOGGING_IN = 'APPSTATE_LOGGING_IN';
 export const LOGINSTATE_LOGGING_IN = 'LOGINSTATE_LOGGING_IN';
 export const SET_AUTH_TOKEN = 'SET_AUTH_TOKEN';
