@@ -73,14 +73,18 @@ export default class LineGraph extends Component {
               color={'blue'}
               style={{ parent: { maxWidth: '100%' } }}
             >
-              <VictoryLine />
-              <VictoryArea style={{ data: { fill: '#0000ff' } }} />
+              {(data.length > 1) ?
+                  <VictoryLine />
+                   : null }
+              {(data.length > 1) ?
+                  <VictoryArea style={{ data: { fill: '#0000ff' } }} />
+                   : null }
               <VictoryScatter
                 size={6}
                 symbol={'circle'}
                 style={{ data: { fill: '#ffffff' }, labels: { fill: 'white', fontSize: 20 } }}
-                labels={ labels }
-                labelComponent={ <VictoryLabel renderInPortal dx={-40} dy={20} /> } />
+                labels={labels}
+                labelComponent={<VictoryLabel renderInPortal dx={-40} dy={20} />} />
             </VictoryGroup>
           </View>
         </CardItem>

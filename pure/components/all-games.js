@@ -19,6 +19,7 @@ import {
 import GameCard from './game-card';
 import CircularGameCard from './circular-game-card';
 import GameListCard from './game-list-card';
+import COLORS from '../common/colors';
 
 // const goNext = () => {
 //     console.log('goNext');
@@ -26,6 +27,7 @@ import GameListCard from './game-list-card';
 //     // navigation.navigate('GameDetailsPage', {  });
 //   }
 
+  const colourOptions = [COLORS.GAME_PURPLE, COLORS.GAME_BLUE, COLORS.GAME_GREEN, COLORS.GAME_ORANGE, COLORS.GAME_RED]; 
 export default class AllGames extends Component {
   static propTypes = {
     allStreams: PropTypes.any,
@@ -40,13 +42,16 @@ export default class AllGames extends Component {
     ],
     goToGame: () => {},
   }
-  
+  rndColor = (arr,id) => {
+    const randIndex = id % arr.length;
+    return arr[randIndex];
+  };
   render() {
     const {
       allStreams,
       goToGame } = this.props;
     const gameCards = allStreams.map((stream) =>
-      <GameListCard title={stream.title} goToGame={goToGame} games={stream.games} />);
+      <GameListCard name={stream.name} goToGame={goToGame} games={stream.question_types} color={this.rndColor(colourOptions,stream.id)}/>);
     return (
       <Content>
         {gameCards}

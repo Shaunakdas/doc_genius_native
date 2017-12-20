@@ -11,3 +11,4 @@ export { default as GameDetails } from './game-details.js';
 export { default as LineGraph } from './line-graph.js';
 export { default as BarGraph } from './bar-graph.js';
 export { default as AllGames } from './all-games.js';
+export { default as ChatView } from './chat-view.js';

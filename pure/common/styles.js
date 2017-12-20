@@ -367,7 +367,7 @@ export const chatPageStyle = StyleSheet.create({
     marginHorizontal: 5,
   },
   chatBotTextContainer: {
-    backgroundColor: COLORS.PRIMARY,
+    backgroundColor: COLORS.PALE_GREY,
     padding: 8,
     borderRadius: 15,
     marginLeft: 5,
@@ -382,7 +382,7 @@ export const chatPageStyle = StyleSheet.create({
   chatBotText: {
     ...font(14),
     backgroundColor: COLORS.TRANSPARENT,
-    color: COLORS.WHITE,
+    color: COLORS.BLACK,
     width: fullWidth - 120,
   },
   chatUserText: {
