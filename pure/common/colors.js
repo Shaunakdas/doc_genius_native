@@ -1,6 +1,6 @@
 export default {
   TRANSPARENT: 'transparent',
-  PRIMARY: '#019AC1',
+  PRIMARY: '#00bfff',
   WHITE: '#FFFFFF',
   BLACK: '#000000',
   SECONDARY: '#95989A',
@@ -24,6 +24,11 @@ export default {
   MODAL_BUTTON: '#507fc7',
   MODAL_BORDER: '#b9b9b9',
   MODAL_TEXT: '#060606',
+  GAME_PURPLE: '#800080',
+  GAME_BLUE: '#000080',
+  GAME_GREEN: '#00CE00',
+  GAME_ORANGE: '#FFA500',
+  GAME_RED: '#e52b50',
 };
 
 

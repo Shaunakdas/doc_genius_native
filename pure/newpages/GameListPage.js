@@ -44,7 +44,8 @@ class GameListPage extends React.Component {
     navigation.navigate('AllGamesPage', { });
   }
   fetchGames = async () =>{
-    const gamesResponse = await gamesAPI() || {};
+    const { authToken } = this.props;
+    const gamesResponse = await gamesAPI(authToken) || {};
     console.log(gamesResponse.homepage.recent_questions);
     if (gamesResponse.success !== false) {
       this.setState({ games: gamesResponse.homepage.recent_questions});
@@ -62,10 +63,10 @@ class GameListPage extends React.Component {
     }
   }
   
-  goToGame = (gameHolderId) => {
+  goToGame = (gameHolderId,color) => {
     console.log(gameHolderId);
     const { navigation } = this.props;
-    navigation.navigate('GameDetailsPage', { gameHolderId: gameHolderId });
+    navigation.navigate('GameDetailsPage', { gameHolderId: gameHolderId, color });
   }
 
   render() {

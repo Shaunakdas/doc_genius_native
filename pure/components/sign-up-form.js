@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   Form,
   Container,
@@ -37,7 +38,7 @@ const commonInputProps = {
   maxLength: 30,
   autoCapitalize: 'none',
 };
-export default class SignUpform extends Component {
+class SignUpform extends Component {
   constructor(props) {
     super(props);
     this.inputs = {};
@@ -167,12 +168,12 @@ export default class SignUpform extends Component {
     const { authToken } = this.props;
     const response = await updateAPI({
       authToken,
-      firstName,
-      lastName,
+      first_name: firstName,
+      last_name: lastName,
       sex,
-      dateOfBirth,
-      mobileNumber,
-      standard,
+      birth: dateOfBirth,
+      mobile_number: mobileNumber,
+      standard_id: 1,
     });
     console.log(response);
     if (response.success === false) {
@@ -344,3 +345,9 @@ export default class SignUpform extends Component {
     );
   }
 }
+const mapStateToProps = ({
+  loginState: { authToken },
+}) =>
+  ({  authToken });
+
+export default connect(mapStateToProps)(SignUpform);
