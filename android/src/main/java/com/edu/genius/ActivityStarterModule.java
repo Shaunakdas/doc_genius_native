@@ -1,4 +1,4 @@
-package com.math.genius;
+package com.edu.genius;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,7 +24,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static com.math.genius.MainActivity.LINK_PREFS;
+import static com.edu.genius.MainActivity.LINK_PREFS;
 
 /**
  * Expose Java to JavaScript.

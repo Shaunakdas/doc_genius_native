@@ -132,7 +132,7 @@ class SplashPage extends React.Component {
   render() {
     return (
       <View style={[cs.container, s.container]}>
-        <Text style={s.brandText}>ConnecPath</Text>
+        <Text style={s.brandText}>Drona</Text>
         <Image
           style={s.logo}
           source={IMAGES.LOGO}

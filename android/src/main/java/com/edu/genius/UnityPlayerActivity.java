@@ -1,4 +1,4 @@
-package com.math.genius;
+package com.edu.genius;
 import com.unity3d.player.*;
 import android.app.Activity;
 import android.content.Intent;
@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import static com.math.genius.MainActivity.LINK_PREFS;
+import static com.edu.genius.MainActivity.LINK_PREFS;
 
 public class UnityPlayerActivity extends Activity
 {

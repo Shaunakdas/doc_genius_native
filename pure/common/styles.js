@@ -165,9 +165,8 @@ export const splashPageStyle = StyleSheet.create({
     color: COLORS.WHITE,
   },
   logo: {
-    marginVertical: 40,
-    height: 120,
-    width: 120,
+    height: 180,
+    width: 180,
   },
 });
 
@@ -183,9 +182,9 @@ export const landingPageStyle = StyleSheet.create({
     color: COLORS.WHITE,
   },
   logo: {
-    marginVertical: 30,
-    height: 110,
-    width: 110,
+    marginVertical: 1,
+    height: 130,
+    width: 130,
   },
   typeText: {
     color: COLORS.WHITE,
@@ -226,15 +225,15 @@ export const signupPageStyle = StyleSheet.create({
   },
   mainText: {
     ...font(35),
-    marginTop: 15,
+    marginTop: 5,
     color: COLORS.WHITE,
     marginBottom: 20,
   },
   logo: {
-    marginTop: 45,
-    marginBottom: 35,
-    height: 55,
-    width: 55,
+    marginTop: 20,
+    marginBottom: 1,
+    height: 100,
+    width: 100,
   },
   button: {
     marginVertical: 30,
@@ -263,15 +262,15 @@ export const loginPageStyle = StyleSheet.create({
   },
   mainText: {
     ...font(35),
-    marginTop: 15,
+    marginTop: 5,
     color: COLORS.WHITE,
     marginBottom: 20,
   },
   logo: {
-    marginTop: 45,
-    marginBottom: 35,
-    height: 55,
-    width: 55,
+    marginTop: 20,
+    marginBottom: 1,
+    height: 100,
+    width: 100,
   },
   button: {
     marginTop: 40,
@@ -350,7 +349,8 @@ export const chatPageStyle = StyleSheet.create({
     resizeMode: 'contain',
     position: 'absolute',
     bottom: 0,
-    left: 40,
+    left: 70,
+    marginBottom: 20,
   },
   userBubbleImage: {
     height: 14,
@@ -361,16 +361,16 @@ export const chatPageStyle = StyleSheet.create({
     right: 34,
   },
   chatImage: {
-    height: 30,
-    width: 30,
+    height: 70,
+    width: 70,
     resizeMode: 'contain',
-    marginHorizontal: 5,
   },
   chatBotTextContainer: {
     backgroundColor: COLORS.PALE_GREY,
     padding: 8,
     borderRadius: 15,
     marginLeft: 5,
+    marginBottom: 20,
   },
   chatUserTextContainer: {
     backgroundColor: COLORS.CHAT_BG,

@@ -103,9 +103,11 @@ class GameDetailsPage extends Component {
     await saveData('START', moment().format());
     // finish();
     if (ENVIRONMENT === 'integrated') {
-      const question_text = this.state.gameDetails.current.question_text;
+      const question_text = this.state.gameDetails.current.question_text.replace(/"/g, "'");
+      console.log(question_text);
       const key = 'QuestionText';
       NativeModules.ActivityStarter.getPrefsValue(key, (value) => { console.log(value); });
+      NativeModules.ActivityStarter.setPrefsValue(key, '');
       NativeModules.ActivityStarter.setPrefsValue(key, question_text);
       NativeModules.ActivityStarter.getPrefsValue(key, (value) => { console.log(value); });
       NativeModules.ActivityStarter.navigateToExample();

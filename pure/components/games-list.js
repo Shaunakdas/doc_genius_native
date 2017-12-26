@@ -52,7 +52,7 @@ export default class GamesList extends Component {
             </Button>
           </Left>
           <Body style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Title>Genius</Title>
+            <Title>Drona</Title>
           </Body>
           <Right style={{ flex: 1 }} />
         </Header>

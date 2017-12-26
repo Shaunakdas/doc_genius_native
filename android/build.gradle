@@ -39,13 +39,20 @@ android {
 
     defaultConfig {
         targetSdkVersion 24
-        applicationId 'com.math.genius'
+        applicationId 'com.edu.genius'
     }
 
     lintOptions {
         abortOnError false
     }
 
+    signingConfigs { release {
+        storeFile file('/Users/shaunakdas2020/Documents/workspace/android_keystores/drona.keystore')
+        storePassword 'docgenius'
+        keyAlias 'genius'
+        keyPassword 'docgenius'
+    } }
+    
     buildTypes {
         debug {
             jniDebuggable true
@@ -54,6 +61,7 @@ android {
             // Set minifyEnabled to true if you want to run ProGuard on your project
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-unity.txt'
+            signingConfig signingConfigs.release
 
         }
     }

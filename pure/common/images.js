@@ -49,4 +49,6 @@ export default {
   WHITE_BOTBUBBLE: require('../assets/img/whitebotbubble.png'),
   ONBOARD_LOGO: require('../assets/img/onboard_logo.png'),
   OB_PROFILE_BG: require('../assets/img/ob_profile_bg.png'),
+  GAME_RANK: require('../assets/img/game_rank_small.png'),
+  BEST_SCORE: require('../assets/img/best_score_small.png'),
 };

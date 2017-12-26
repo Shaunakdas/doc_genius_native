@@ -84,16 +84,16 @@ export default class GameDetails extends Component {
     return (
 
       <Grid>
-        <Row style={{ height: 150, backgroundColor: '#00bfff' }}>
+        <Row style={{ height: 150, backgroundColor: color }}>
           <Image opacity={0.1} style={{ height: 150, width: null, flex: 1 }} source={IMAGES.LOGO}>
             <View style={{ flex: 1, flexDirection: 'row' }}>
               <Col style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Icon name={'ribbon'} />
+                <Image style={{ height: 45, width: 30 }} source={IMAGES.BEST_SCORE} />
                 <Title style={{ color: '#fff0f0', fontSize: 25 }}> {best} </Title>
                 <Text style={{ color: '#fff0f0' }}> BEST SCORE </Text>
               </Col>
               <Col style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Icon name={'school'} />
+                <Image style={{ height: 45, width: 30 }} source={IMAGES.GAME_RANK} />
                 <Title style={{ color: '#fff0f0', fontSize: 25 }}> {rank} </Title>
                 <Text style={{ color: '#fff0f0' }}> GAME RANK </Text>
               </Col>
@@ -102,14 +102,14 @@ export default class GameDetails extends Component {
         </Row>
         <Row size={45}>
           <Tabs initialPage={0}>
+            <Tab heading="SCORES" tabStyle={{ backgroundColor: color }} activeTabStyle={{ backgroundColor: color }}>
+              <ScoresTab scores={scores} />
+            </Tab>
             <Tab heading="BENIFITS" tabStyle={{ backgroundColor: color }} activeTabStyle={{ backgroundColor: color }}>
               <BenifitsTab benifits={benifits}  />
             </Tab>
             <Tab heading="CHALLENGES" tabStyle={{ backgroundColor: color }} activeTabStyle={{ backgroundColor: color }}>
               <ChallengesTab challenges={challenges}  />
-            </Tab>
-            <Tab heading="SCORES" tabStyle={{ backgroundColor: color }} activeTabStyle={{ backgroundColor: color }}>
-              <ScoresTab scores={scores} />
             </Tab>
           </Tabs>
         </Row>
